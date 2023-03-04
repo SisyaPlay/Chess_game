@@ -1,3 +1,4 @@
+package Figures;
 
 public class Rook extends Figure {
 

@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Iterator;
 
-import org.apache.batik.swing.*;
+
 //import org.apache.batik.swing.svg.SVGIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;

@@ -1,3 +1,4 @@
+package Figures;
 
 enum ESide {
 	BLACK, WHITE;

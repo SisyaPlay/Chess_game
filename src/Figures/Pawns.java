@@ -1,3 +1,4 @@
+package Figures;
 
 public class Pawns extends Figure {
 

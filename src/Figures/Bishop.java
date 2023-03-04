@@ -1,9 +1,13 @@
+package Figures;
+
 import java.io.File;
 
 import javax.swing.JPanel;
 
-import org.apache.batik.swing.JSVGCanvas;
-import org.apache.batik.swing.svg.SVGUserAgent;
+import Figures.EFigure;
+import Figures.ESide;
+import Figures.Figure;
+
 
 public class Bishop extends Figure {
 
