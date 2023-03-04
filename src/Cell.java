@@ -1,6 +1,4 @@
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 
 import javax.swing.JPanel;
 
@@ -19,16 +17,26 @@ public class Cell extends JPanel{
 	
 	@Override
 	public void paintComponent(Graphics g){
-		g.setColor(color);
-		g.fillRect((int)x1 , (int)y1, (int)square_size, (int)square_size);
-
-		if(color == Color.BLACK) {
+		if(color == Color.lightGray) {
+			g.setColor(Color.WHITE);
+			g.fillRect((int)x1 , (int)y1, (int)square_size, (int)square_size);
 			drawHetch(g);
+		}
+		else{
+			g.setColor(color);
+			g.fillRect((int)x1 , (int)y1, (int)square_size, (int)square_size);
 		}
 	
 	}
 
 	private void drawHetch(Graphics g) {
-		
+		Graphics2D g2 = (Graphics2D)g;
+		g2.setStroke(new BasicStroke(3));
+		// Заштриховываем квадрат
+		g.setColor(Color.lightGray);
+		for (int i = 0; i < square_size; i += 10) {
+			g.drawLine((int)x1, (int)y1 + i, (int)x1 + i, (int)y1);
+			g.drawLine((int)x1 + (int)square_size, (int)y1 + i, (int)x1 + i, (int)y1 + (int)square_size);
+		}
 	}
 }

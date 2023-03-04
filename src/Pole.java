@@ -55,7 +55,7 @@ public class Pole extends JPanel{
 					Cell cell = new Cell(x1 + shiftX, y1 + shiftY, x2 + shiftX, y2 + shiftY, square_size, Color.WHITE);
 					cell.paintComponent(g2);
                 } else {
-                	Cell cell = new Cell(x1 + shiftX, y1 + shiftY, x2 + shiftX, y2 + shiftY, square_size, Color.black);
+                	Cell cell = new Cell(x1 + shiftX, y1 + shiftY, x2 + shiftX, y2 + shiftY, square_size, Color.lightGray);
 					cell.paintComponent(g2);
                 	
                 }
