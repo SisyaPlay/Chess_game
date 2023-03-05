@@ -34,7 +34,7 @@ public class Cell extends JPanel{
 		g2.setStroke(new BasicStroke(3));
 		// Заштриховываем квадрат
 		g.setColor(Color.lightGray);
-		for (int i = 0; i < square_size; i += 10) {
+		for (int i = 0; i < square_size; i += 9) {
 			g.drawLine((int)x1, (int)y1 + i, (int)x1 + i, (int)y1);
 			g.drawLine((int)x1 + (int)square_size, (int)y1 + i, (int)x1 + i, (int)y1 + (int)square_size);
 		}

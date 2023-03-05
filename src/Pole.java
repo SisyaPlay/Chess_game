@@ -51,15 +51,26 @@ public class Pole extends JPanel{
 				y1 = row * square_size;
 				x2 = x1 + square_size;
 				y2 = y1 + square_size;
-				if ((row + col) % 2 == 0) {
-					Cell cell = new Cell(x1 + shiftX, y1 + shiftY, x2 + shiftX, y2 + shiftY, square_size, Color.WHITE);
-					cell.paintComponent(g2);
-                } else {
+				if ((row + col) % 2 != 0) {
                 	Cell cell = new Cell(x1 + shiftX, y1 + shiftY, x2 + shiftX, y2 + shiftY, square_size, Color.lightGray);
 					cell.paintComponent(g2);
                 	
                 }
                // g.fillRect((int)(x1 + shiftX), (int)(y1 + shiftY), (int)square_size, (int)square_size);
+			}
+
+		}
+		for (row = 0; row < ROW_COUNT; row++) {
+			for (col = 0; col < ROW_COUNT; col++) {
+				x1 = col * square_size;
+				y1 = row * square_size;
+				x2 = x1 + square_size;
+				y2 = y1 + square_size;
+				if ((row + col) % 2 == 0) {
+					Cell cell = new Cell(x1 + shiftX, y1 + shiftY, x2 + shiftX, y2 + shiftY, square_size, Color.WHITE);
+					cell.paintComponent(g2);
+				}
+				// g.fillRect((int)(x1 + shiftX), (int)(y1 + shiftY), (int)square_size, (int)square_size);
 			}
 
 		}
