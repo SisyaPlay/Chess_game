@@ -31,20 +31,15 @@ public class Pole extends JPanel{
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
-		calculateSize();
-		
 		shiftX = (frame.getWidth() - (ROW_COUNT * square_size)) / 2;
 		shiftY = (frame.getHeight() - (ROW_COUNT * square_size)) / 2;
 		
+		calculateSize();
+		
 		drawSquere(g);
-		for (double i = 0; i < square_size * 8; i += square_size) {
-			Pawns pawnsB = new Pawns((int)((shiftX) + i), (int)shiftY, ESide.BLACK, square_size);
-			pawnsB.paint(g);
-		}
 
-		Knight knight = new Knight((int)(shiftX), (int)shiftY, ESide.BLACK, square_size);
-		knight.paint(g);
+		drawFigures(g);
+
 	}
 	
 	public double calculateSize() {
@@ -82,5 +77,29 @@ public class Pole extends JPanel{
 				}
 			}
 		}
+	}
+
+	public void drawFigures(Graphics g) {
+		for (double i = 0; i < square_size * 8; i += square_size) {
+			Pawns pawns = new Pawns((int)((shiftX) + i), (int)(shiftY + (square_size / 2) + square_size), ESide.BLACK, square_size);
+			pawns.paint(g);
+		}
+
+		Knight knightb1 = new Knight((int) (shiftX + square_size), (int) shiftY, ESide.BLACK, square_size);
+		knightb1.paint(g);
+
+		Knight knightb2 = new Knight((int) (shiftX + square_size * 6), (int) shiftY, ESide.BLACK, square_size);
+		knightb2.paint(g);
+
+		for (double i = 0; i < square_size * 8; i += square_size) {
+			Pawns pawns = new Pawns((int)((shiftX) + i), (int)(shiftY + (square_size / 2) + square_size * 6), ESide.WHITE, square_size);
+			pawns.paint(g);
+		}
+
+		Knight knightw1 = new Knight((int) (shiftX + square_size), (int)(shiftY + square_size * 7), ESide.WHITE, square_size);
+		knightw1.paint(g);
+
+		Knight knightw2 = new Knight((int) (shiftX + square_size * 6), (int)(shiftY + square_size * 7), ESide.WHITE, square_size);
+		knightw2.paint(g);
 	}
 }
