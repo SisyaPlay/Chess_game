@@ -14,7 +14,6 @@ public class Rook extends Figure {
 		super.paint(g);
 
 		x = (int)(x + square_size / 4);
-		y = y * 4;
 
 		double R = square_size / 2;
 		Graphics2D g2 = (Graphics2D)g;

@@ -20,22 +20,22 @@ public class Knight extends Figure {
 
 		Graphics2D g2 = (Graphics2D)g;
 
-
+		//USI
 		setSide(g);
-
 		g.fillOval((int)(x + square_size / 3), (int)(y + (R - square_size / 1.5) / 3), (int)R / 8, (int)(R - square_size / 1.5));
 		g.fillOval((int)((x + square_size / 3)  + 2 * (R / 10)), (int)(y + (R - square_size / 1.5) / 3), (int)R / 8, (int)(R - square_size / 1.5));
 		g.setColor(Color.BLACK);
 		g.drawOval((int)(x + square_size / 3), (int)(y + (R - square_size / 1.5) / 3), (int)R / 8, (int)(R - square_size / 1.5));
 		g.drawOval((int)((x + square_size / 3)  + 2 * (R / 10)), (int)(y + (R - square_size / 1.5) / 3), (int)R / 8, (int)(R - square_size / 1.5));
 
+		//TELO
 		setSide(g);
 		g.fillOval((int)(x + square_size / 3), (int)(y + square_size / 4), (int)R / 3, (int)(R - square_size / 3));
 		g.setColor(Color.BLACK);
 		g.drawOval((int)(x + square_size / 3), (int)(y + square_size / 4), (int)R / 3, (int)(R - square_size / 3));
 
+		//HLAVA
 		g2.rotate(Math.toRadians(45), (int)(x + square_size / 2), (int)(y + square_size / 3));
-
 		setSide(g);
 		g.fillOval((int)(x + square_size / 3) , (int)(y + square_size / 4), (int)R / 4, (int)(R - square_size / 2));
 		g.setColor(Color.BLACK);
