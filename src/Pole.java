@@ -22,7 +22,6 @@ public class Pole extends JPanel{
 	private double shiftX;
 	private double shiftY;
 	private JFrame frame;
-	//private final SVGI\[][] images = new SVGIcon[2][6];
 	
 	public Pole(JFrame frame) {
 		this.frame = frame;
