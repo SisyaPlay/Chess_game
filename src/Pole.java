@@ -1,3 +1,8 @@
+import Figures.EFigure;
+import Figures.ESide;
+import Figures.Knight;
+import Figures.Pawns;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -33,7 +38,13 @@ public class Pole extends JPanel{
 		shiftY = (frame.getHeight() - (ROW_COUNT * square_size)) / 2;
 		
 		drawSquere(g);
-		
+		for (double i = 0; i < square_size * 8; i += square_size) {
+			Pawns pawnsB = new Pawns((int)((shiftX) + i), (int)shiftY, ESide.BLACK, square_size);
+			pawnsB.paint(g);
+		}
+
+		Knight knight = new Knight((int)(shiftX), (int)shiftY, ESide.BLACK, square_size);
+		knight.paint(g);
 	}
 	
 	public double calculateSize() {
@@ -56,10 +67,9 @@ public class Pole extends JPanel{
 					cell.paintComponent(g2);
                 	
                 }
-               // g.fillRect((int)(x1 + shiftX), (int)(y1 + shiftY), (int)square_size, (int)square_size);
 			}
-
 		}
+
 		for (row = 0; row < ROW_COUNT; row++) {
 			for (col = 0; col < ROW_COUNT; col++) {
 				x1 = col * square_size;
@@ -70,9 +80,7 @@ public class Pole extends JPanel{
 					Cell cell = new Cell(x1 + shiftX, y1 + shiftY, x2 + shiftX, y2 + shiftY, square_size, Color.WHITE);
 					cell.paintComponent(g2);
 				}
-				// g.fillRect((int)(x1 + shiftX), (int)(y1 + shiftY), (int)square_size, (int)square_size);
 			}
-
 		}
 	}
 }

@@ -1,14 +1,8 @@
 package Figures;
 
-enum ESide {
-	BLACK, WHITE;
-}
+import javax.swing.*;
 
-enum EFigure {
-	BISHOP, KING, KNIGHT, PAWNS, QUEEN, ROOK;
-}
-
-abstract public class Figure {
+abstract public class Figure extends JFrame {
 	protected int x;
 	protected int y;
 	protected ESide side;
