@@ -1,6 +1,7 @@
 package Figures;
 
 import java.awt.*;
+import java.awt.geom.Path2D;
 
 public class Rook extends Figure {
 	public static final EFigure figure = EFigure.ROOK;
@@ -13,26 +14,25 @@ public class Rook extends Figure {
 	public void paint(Graphics g) {
 		super.paint(g);
 
-		x = (int)(x + square_size / 4);
+		this.x = (int)(x + square_size / 6);
+		this.y = (int)(y + square_size / 2);
 
-		double R = square_size / 2;
 		Graphics2D g2 = (Graphics2D)g;
 
 		setSide(g);
-		g.fillArc(x, y, (int)R, (int)R, 0, 180);
+		Path2D rook = new Path2D.Double();
+		rook.moveTo(this.x, this.y + square_size / 3);
+		rook.lineTo(this.x + square_size - 2 * (square_size / 6), this.y + square_size / 3);
+		rook.lineTo(this.x + square_size - 2 * (square_size / 6),this.y + square_size / 5);
+		rook.lineTo(this.x + square_size / 2, this.y + square_size / 5);
+		rook.lineTo(this.x + square_size / 2, this.y);
+		rook.lineTo((this.x + square_size - 2 * (square_size / 6) + this.x + square_size / 2) / 2, this.y);
+		rook.lineTo((this.x + square_size - 2 * (square_size / 6) + this.x + square_size / 2) / 2, this.y - square_size / 2 + square_size / 3);
+		rook.lineTo(this.x + square_size - 2 * (square_size / 6),this.y - square_size / 2 + square_size / 3);
+		rook.lineTo(this.x + square_size - 2 * (square_size / 6), this.y - square_size / 2 + square_size / 6);
+		rook.lineTo(this.x + square_size / 2, this.y - square_size / 2 + square_size / 6);
 
-		g.setColor(Color.BLACK);
-		g.drawArc(x, y, (int)R, (int)R, 0, 180);
-		g.drawLine((int)x, (int)(y + R / 2), (int)(x + R), (int)(int)(y + R / 2));
-
-
-		double R2 = square_size / 4;
-
-		setSide(g);
-		g.fillOval((int)(x + R / 4), (int)(y - R2 + 2), (int)R2, (int)R2);
-
-		g.setColor(Color.BLACK);
-		g.drawOval((int)(x + R / 4), (int)(y - R2 + 2), (int)R2, (int)R2);
+		g2.draw(rook);
 	}
 
 	public void setSide(Graphics g) {

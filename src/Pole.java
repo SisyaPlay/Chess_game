@@ -1,7 +1,4 @@
-import Figures.EFigure;
-import Figures.ESide;
-import Figures.Knight;
-import Figures.Pawns;
+import Figures.*;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -25,7 +22,6 @@ public class Pole extends JPanel{
 	
 	public Pole(JFrame frame) {
 		this.frame = frame;
-		
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -38,7 +34,6 @@ public class Pole extends JPanel{
 		drawSquere(g);
 
 		drawFigures(g);
-
 	}
 	
 	public double calculateSize() {
@@ -100,5 +95,8 @@ public class Pole extends JPanel{
 
 		Knight knightw2 = new Knight((int) (shiftX + square_size * 6), (int)(shiftY + square_size * 7), ESide.WHITE, square_size);
 		knightw2.paint(g);
+
+		Rook rookb1 = new Rook((int) (shiftX), (int)(shiftY), ESide.BLACK, square_size);
+		rookb1.paint(g);
 	}
 }
