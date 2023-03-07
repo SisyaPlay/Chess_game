@@ -18,6 +18,7 @@ public class Pawns extends Figure {
 		super.paint(g);
 
 		this.x = (int)(x + square_size / 4);
+		this.y = (int)(y + square_size / 2);
 
 		double R = square_size / 2;
 		Graphics2D g2 = (Graphics2D)g;
