@@ -16,12 +16,27 @@ public class Bishop extends Figure {
 		super.paint(g);
 
 		setSide(g);
-		g.fillOval((int)(x + square_size / 4), (int)(y + square_size / 3), (int)(square_size / 2), (int)(square_size / 2));
-		g.fillRect((int)(x + square_size / 3), (int)(y + (square_size - square_size / 3.5)), (int)(square_size / 3), (int)(square_size / 6));
+		int[] xPoints = {(int)(x + square_size / 4), (int)(x + square_size / 2), (int)(x + square_size - square_size / 4)};
+		int[] yPoints = {(int)(y + square_size / 2), (int)(y + square_size / 6), (int)(y + square_size / 2)};
+		g.fillPolygon(xPoints, yPoints, 3);
+		g.setColor(Color.BLACK);
+		g.drawLine((int)(x + square_size / 4), (int)(y + square_size / 2), (int)(x + square_size / 2), (int)(y + square_size / 6));
+		g.drawLine((int)(x + square_size - square_size / 4), (int)(y + square_size / 2), (int)(x + square_size / 2), (int)(y + square_size / 6));
+		g.drawLine((int)(x + square_size / 4), (int)(y + square_size / 2), (int)(x + square_size - square_size / 4), (int)(y + square_size / 2));
 
+		setSide(g);
+		g.fillRect((int)(x + square_size / 3), (int)(y + (square_size - square_size / 3.5)), (int)(square_size / 3), (int)(square_size / 6));
+		g.setColor(Color.BLACK);
+		g.drawRect((int)(x + square_size / 3), (int)(y + (square_size - square_size / 3.5)), (int)(square_size / 3 ),(int)(square_size / 6));
+
+		setSide(g);
+		g.fillOval((int)(x + square_size / 4), (int)(y + square_size / 3), (int)(square_size / 2), (int)(square_size / 2));
 		g.setColor(Color.BLACK);
 		g.drawOval((int)(x + square_size / 4), (int)(y + square_size / 3), (int)(square_size / 2), (int)(square_size / 2));
-		g.drawRect((int)(x + square_size / 3), (int)(y + (square_size - square_size / 3.5)), (int)(square_size / 3), (int)(square_size / 6));
+
+
+
+
 	}
 
 	public void setSide(Graphics g) {

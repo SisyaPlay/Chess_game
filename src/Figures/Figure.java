@@ -1,5 +1,7 @@
 package Figures;
 
+import org.w3c.dom.Node;
+
 import javax.swing.*;
 
 abstract public class Figure extends JFrame {
@@ -14,5 +16,14 @@ abstract public class Figure extends JFrame {
 		this.side = side;
 		this.figure = figure;
 	}
+
+	public int getStartPositionX() {
+		return x;
+	}
+
+	public int getStartPositionY() {
+		return y;
+	}
+
 	
 }

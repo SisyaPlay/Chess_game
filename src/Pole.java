@@ -33,7 +33,7 @@ public class Pole extends JPanel{
 		
 		drawSquere(g);
 
-		drawFigures(g);
+		//drawFigures(g);
 	}
 	
 	public double calculateSize() {
@@ -73,6 +73,7 @@ public class Pole extends JPanel{
 		}
 	}
 
+	/*
 	public void drawFigures(Graphics g) {
 		for (double i = 0; i < square_size * 8; i += square_size) {
 			Pawns pawns = new Pawns((int)((shiftX) + i), (int)(shiftY + square_size), ESide.BLACK, square_size);
@@ -108,7 +109,7 @@ public class Pole extends JPanel{
 
 		Queen queenb = new Queen((int) (shiftX + square_size * 3), (int)(shiftY), ESide.BLACK, square_size);
 		queenb.paint(g);
-		Queen queenw = new Queen((int) (shiftX + square_size * 4), (int)(shiftY + square_size * 7), ESide.WHITE, square_size);
+		Queen queenw = new Queen((int) (shiftX + square_size * 3), (int)(shiftY + square_size * 7), ESide.WHITE, square_size);
 		queenw.paint(g);
 
 		Bishop bishopb1 = new Bishop((int) (shiftX + square_size * 2), (int)(shiftY), ESide.BLACK, square_size);
@@ -116,6 +117,15 @@ public class Pole extends JPanel{
 		Bishop bishopb2 = new Bishop((int) (shiftX + square_size * 5), (int)(shiftY), ESide.BLACK, square_size);
 		bishopb2.paint(g);
 
+		Bishop bishopw1 = new Bishop((int) (shiftX + square_size * 2), (int)(shiftY + square_size * 7), ESide.WHITE, square_size);
+		bishopw1.paint(g);
+		Bishop bishopw2 = new Bishop((int) (shiftX + square_size * 5), (int)(shiftY + square_size * 7), ESide.WHITE, square_size);
+		bishopw2.paint(g);
 
+		King kingb = new King((int) (shiftX + square_size * 4), (int)(shiftY), ESide.BLACK, square_size);
+		kingb.paint(g);
+		King kingw = new King((int) (shiftX + square_size * 4), (int)(shiftY + square_size * 7), ESide.WHITE, square_size);
+		kingw.paint(g);
 	}
+	*/
 }
