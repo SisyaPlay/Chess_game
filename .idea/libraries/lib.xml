@@ -1,0 +1,24 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$JavaFX19$/javafx-swt.jar!/" />
+      <root url="jar://$JavaFX19$/javafx.media.jar!/" />
+      <root url="jar://$JavaFX19$/javafx.swing.jar!/" />
+      <root url="jar://$JavaFX19$/javafx.fxml.jar!/" />
+      <root url="jar://$JavaFX19$/javafx.controls.jar!/" />
+      <root url="jar://$JavaFX19$/javafx.web.jar!/" />
+      <root url="jar://$JavaFX19$/javafx.graphics.jar!/" />
+      <root url="jar://$JavaFX19$/javafx.base.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$JavaFX19$/src/javafx.base" />
+      <root url="file://$JavaFX19$/src/javafx.controls" />
+      <root url="file://$JavaFX19$/src/javafx.fxml" />
+      <root url="file://$JavaFX19$/src/javafx.graphics" />
+      <root url="file://$JavaFX19$/src/javafx.media" />
+      <root url="file://$JavaFX19$/src/javafx.swing" />
+      <root url="file://$JavaFX19$/src/javafx.web" />
+    </SOURCES>
+  </library>
+</component>

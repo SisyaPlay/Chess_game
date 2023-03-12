@@ -5,12 +5,10 @@ import java.awt.geom.Arc2D;
 
 public class Pawns extends Figure {
 	public static final EFigure figure = EFigure.PAWNS;
-	private double square_size;
+
 
 	public Pawns(int x, int y, ESide side, double square_size) {
-		super(x, y, side, figure);
-		this.square_size = square_size;
-
+		super(x, y, side, figure, square_size);
 	}
 
 	@Override

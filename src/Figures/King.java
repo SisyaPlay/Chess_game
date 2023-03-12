@@ -4,10 +4,9 @@ import java.awt.*;
 
 public class King extends Figure {
 	public static final EFigure figure = EFigure.KING;
-	private double square_size;
+
 	public King(int x, int y, ESide side, double square_size) {
-		super(x, y, side, figure);
-		this.square_size = square_size;
+		super(x, y, side, figure, square_size);
 	}
 
 	@Override

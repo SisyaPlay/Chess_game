@@ -5,11 +5,10 @@ import java.awt.geom.Path2D;
 
 public class Queen extends Figure {
 	public static final EFigure figure = EFigure.QUEEN;
-	private double square_size;
+
 
 	public Queen(int x, int y, ESide side, double square_size) {
-		super(x, y, side, figure);
-		this.square_size = square_size;
+		super(x, y, side, figure, square_size);
 	}
 
 	@Override
