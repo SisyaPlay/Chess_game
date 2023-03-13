@@ -21,25 +21,24 @@ public class Pole extends JPanel {
 	private double shiftY;
 	private JFrame frame;
 
-	private JPanel panel;
-
 	private Figure[] figures;
 
 	public Pole(JFrame frame) {
 		this.frame = frame;
+
 	}
 
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		calculateSize();
+
 		shiftX = (frame.getWidth() - (ROW_COUNT * square_size)) / 2;
 		shiftY = (frame.getHeight() - (ROW_COUNT * square_size)) / 2;
-
-		calculateSize();
 
 		drawSquere(g);
 
 		//drawFigures(g);
-
 	}
 
 	public double calculateSize() {
@@ -60,7 +59,6 @@ public class Pole extends JPanel {
 				if ((row + col) % 2 != 0) {
 					Cell cell = new Cell(x1 + shiftX, y1 + shiftY, x2 + shiftX, y2 + shiftY, square_size, Color.lightGray);
 					cell.paintComponent(g2);
-
 				}
 			}
 		}
@@ -81,6 +79,7 @@ public class Pole extends JPanel {
 
 
 	public void drawFigures(Graphics g) {
+		JPanel panel = new JPanel();
 		figures = new Figure[]{new Pawns((int)((shiftX)), (int)(shiftY + square_size), ESide.BLACK, square_size),
 							   new Pawns((int)((shiftX) + square_size), (int)(shiftY + square_size), ESide.BLACK, square_size),
 							   new Pawns((int)((shiftX) + square_size * 2), (int)(shiftY + square_size), ESide.BLACK, square_size),
@@ -114,8 +113,14 @@ public class Pole extends JPanel {
 							   new King((int) (shiftX + square_size * 4), (int)(shiftY), ESide.BLACK, square_size),
 							   new King((int) (shiftX + square_size * 4), (int)(shiftY + square_size * 7), ESide.WHITE, square_size)
 		};
-		for(Figure f: figures) {
-			f.paint(g);
+		for(Figure f : figures) {
+			//this.add(f);
 		}
+
+		Rook rook = new Rook((int) (shiftX), (int)(shiftY), ESide.BLACK, square_size);
+		rook.setOpaque(false);
+		this.setLayout(new BorderLayout());
+		this.add(rook);
+
 	}
 }

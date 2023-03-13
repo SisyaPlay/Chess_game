@@ -35,6 +35,7 @@ public class Figure extends JPanel  implements MouseListener, MouseMotionListene
 		addMouseListener(this);
 		addMouseMotionListener(this);
 	}
+
 	public void mousePressed(MouseEvent e) {
 		int cx = (int) (x + square_size / 2);
 		int cy = (int) (y + square_size / 2);

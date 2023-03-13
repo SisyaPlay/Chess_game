@@ -2,23 +2,30 @@ package Figures;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 
 
 public class Knight extends Figure{
 	public static final EFigure figure = EFigure.KNIGHT;
 
+	Point image_corner;
+	Point previousPoint;
+
 	public Knight(int x, int y, ESide side, double square_size) {
 		super(x, y, side, figure, square_size);
+		setOpaque(false);
+		setBackground(null);
 	}
 
 
 	@Override
 	public void paint(Graphics g) {
-
 		super.paint(g);
 
 		double R = square_size;
-
 
 		Graphics2D g2 = (Graphics2D)g;
 

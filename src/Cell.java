@@ -26,7 +26,7 @@ public class Cell extends JPanel{
 			g.setColor(color);
 			g.fillRect((int)x1 , (int)y1, (int)square_size, (int)square_size);
 		}
-	
+		repaint();
 	}
 
 	private void drawHetch(Graphics g) {

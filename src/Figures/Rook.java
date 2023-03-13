@@ -10,6 +10,7 @@ public class Rook extends Figure {
 		super(x, y, side, figure, square_size);
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 
