@@ -10,20 +10,18 @@ import java.awt.event.MouseMotionListener;
 
 public class Knight extends Figure{
 	public static final EFigure figure = EFigure.KNIGHT;
+	private int x;
+	private int y;
 
-	Point image_corner;
-	Point previousPoint;
 
-	public Knight(int x, int y, ESide side, double square_size) {
-		super(x, y, side, figure, square_size);
-		setOpaque(false);
-		setBackground(null);
+	public Knight(ESide side, double square_size) {
+		super(side, square_size);
 	}
 
 
 	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 
 		double R = square_size;
 

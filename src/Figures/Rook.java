@@ -5,14 +5,17 @@ import java.awt.geom.Path2D;
 
 public class Rook extends Figure {
 	public static final EFigure figure = EFigure.ROOK;
+	private int x;
+	private int y;
 
-	public Rook(int x, int y, ESide side, double square_size) {
-		super(x, y, side, figure, square_size);
+
+	public Rook(ESide side, double square_size) {
+		super(side, square_size);
 	}
 
 	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 
 		setSide(g);
 

@@ -5,14 +5,16 @@ import java.awt.*;
 
 public class Bishop extends Figure {
 	public static final EFigure figure = EFigure.BISHOP;
+	private int x;
+	private int y;
 
 
-	public Bishop(int x, int y, ESide side, double square_size) {
-		super(x, y, side, figure, square_size);
+	public Bishop(ESide side, double square_size) {
+		super(side, square_size);
 	}
 	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 
 		setSide(g);
 		int[] xPoints = {(int)(x + square_size / 4), (int)(x + square_size / 2), (int)(x + square_size - square_size / 4)};

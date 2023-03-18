@@ -5,15 +5,17 @@ import java.awt.geom.Path2D;
 
 public class Queen extends Figure {
 	public static final EFigure figure = EFigure.QUEEN;
+	private int x;
+	private int y;
 
 
-	public Queen(int x, int y, ESide side, double square_size) {
-		super(x, y, side, figure, square_size);
+	public Queen(ESide side, double square_size) {
+		super(side, square_size);
 	}
 
 	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 
 		setSide(g);
 		g.fillOval((int)(x + square_size / 8), (int)(y + square_size / 2), (int)(square_size - square_size / 4), (int)(square_size / 4));

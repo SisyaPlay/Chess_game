@@ -4,14 +4,17 @@ import java.awt.*;
 
 public class King extends Figure {
 	public static final EFigure figure = EFigure.KING;
+	private int x;
+	private int y;
 
-	public King(int x, int y, ESide side, double square_size) {
-		super(x, y, side, figure, square_size);
+
+	public King(ESide side, double square_size) {
+		super(side, square_size);
 	}
 
 	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 
 		setSide(g);
 		g.fillRect((int) (x + square_size / 4), (int) (y + (square_size - square_size / 3.5)), (int) (square_size - square_size / 2), (int) (square_size / 6));
