@@ -19,6 +19,7 @@ public abstract class Figure extends JPanel{
 	public Figure(ESide side, double square_size) {
 		this.side = side;
 		this.square_size = square_size;
+		this.setOpaque(false);
 
 		this.addMouseListener(new MouseAdapter() {
 			@Override
@@ -32,13 +33,16 @@ public abstract class Figure extends JPanel{
 			public void mouseDragged(MouseEvent e) {
 				int x = e.getX() - mouseOffset.x;
 				int y = e.getY() - mouseOffset.y;
+				System.out.println(getX() + " " + getY());
 				setLocation(getX() + x, getY() + y);
 			}
 		});
 	}
+
 	@Override
-	protected void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		this.setPreferredSize(new Dimension((int)square_size, (int)square_size));
 	}
 }
 

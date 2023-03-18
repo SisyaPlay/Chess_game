@@ -1,14 +1,9 @@
 import Figures.*;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
-
-//import org.apache.batik.swing.svg.SVGIcon;
 import javax.swing.*;
 
 public class Pole extends JPanel {
@@ -21,26 +16,26 @@ public class Pole extends JPanel {
 
 	public Pole(JFrame frame) {
 		this.frame = frame;
-
+		frame.setSize(new Dimension(1280, 720));
+		drawFigures();
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		calculateSize();
+		square_size = calculateSize();
 
 		shiftX = (frame.getWidth() - (ROW_COUNT * square_size)) / 2;
 		shiftY = (frame.getHeight() - (ROW_COUNT * square_size)) / 2;
 
 		drawSquere(g);
-
-		//drawFigures(g);
 	}
 
 	public double calculateSize() {
 		square_size = frame.getHeight() / 9;
 		return square_size;
 	}
+
 
 	public void drawSquere(Graphics g) {
 		double row, col, x1, y1, x2, y2;
@@ -73,9 +68,9 @@ public class Pole extends JPanel {
 		}
 	}
 
-	public void drawFigures(Graphics g) {
-		//JPanel panel = new JPanel(new FlowLayout());
-		/*
+	public void drawFigures() {
+		square_size = calculateSize();
+
 		Pawns bpawn1 = new Pawns(ESide.BLACK, square_size);
 		Pawns bpawn2 = new Pawns(ESide.BLACK, square_size);
 		Pawns bpawn3 = new Pawns(ESide.BLACK, square_size);
@@ -92,62 +87,74 @@ public class Pole extends JPanel {
 		Pawns wpawn6 = new Pawns(ESide.WHITE, square_size);
 		Pawns wpawn7 = new Pawns(ESide.WHITE, square_size);
 		Pawns wpawn8 = new Pawns(ESide.WHITE, square_size);
-		Knight bknight1 = new Knight((int) (shiftX + square_size), (int) shiftY, ESide.BLACK, square_size);
-		Knight bknight2 = new Knight((int) (shiftX + square_size * 6), (int) shiftY, ESide.BLACK, square_size);
-		Knight wknight1 = new Knight((int) (shiftX + square_size), (int)(shiftY + square_size * 7), ESide.WHITE, square_size);
-		Knight wknight2 = new Knight((int) (shiftX + square_size * 6), (int)(shiftY + square_size * 7), ESide.WHITE, square_size);
-	    Rook brook1 = new Rook((int) (shiftX), (int)(shiftY), ESide.BLACK, square_size);
-		Rook brook2 = new Rook((int) (shiftX + square_size * 7), (int)(shiftY), ESide.BLACK, square_size);
-		Rook wrook1 = new Rook((int) (shiftX), (int)(shiftY + square_size * 7), ESide.WHITE, square_size);
-		Rook wrook2 = new Rook((int) (shiftX + square_size * 7), (int)(shiftY + square_size * 7), ESide.WHITE, square_size);
-	    Queen bqueen = new Queen((int) (shiftX + square_size * 3), (int)(shiftY), ESide.BLACK, square_size);
-		Queen wqueen = new Queen((int) (shiftX + square_size * 3), (int)(shiftY + square_size * 7), ESide.WHITE, square_size);
-	    Bishop bbishop1 = new Bishop((int) (shiftX + square_size * 2), (int)(shiftY), ESide.BLACK, square_size);
-		Bishop bbishop2 = new Bishop((int) (shiftX + square_size * 5), (int)(shiftY), ESide.BLACK, square_size);
-		Bishop wbishop1 = new Bishop((int) (shiftX + square_size * 2), (int)(shiftY + square_size * 7), ESide.WHITE, square_size);
-		Bishop wbishop2 = new Bishop((int) (shiftX + square_size * 5), (int)(shiftY + square_size * 7), ESide.WHITE, square_size);
-	    King bking = new King((int) (shiftX + square_size * 4), (int)(shiftY), ESide.BLACK, square_size);
-		King wking = new King((int) (shiftX + square_size * 4), (int)(shiftY + square_size * 7), ESide.WHITE, square_size);
 
-		 */
+		Knight bknight1 = new Knight(ESide.BLACK, square_size);
+		Knight bknight2 = new Knight(ESide.BLACK, square_size);
 
-		/*
-		bpawn1.paint(g);
-		bpawn2.paint(g);
-		bpawn3.paint(g);
-		bpawn4.paint(g);
-		bpawn5.paint(g);
-		bpawn6.paint(g);
-		bpawn7.paint(g);
-		bpawn8.paint(g);
-		wpawn1.paint(g);
-		wpawn2.paint(g);
-		wpawn3.paint(g);
-		wpawn4.paint(g);
-		wpawn5.paint(g);
-		wpawn6.paint(g);
-		wpawn7.paint(g);
-		wpawn8.paint(g);
-		bknight1.paint(g);
-		bknight2.paint(g);
-		wknight1.paint(g);
-		wknight2.paint(g);
-		brook1.paint(g);
-		brook2.paint(g);
-		wrook1.paint(g);
-		wrook2.paint(g);
-		bqueen.paint(g);
-		wqueen.paint(g);
-		bbishop1.paint(g);
-		bbishop2.paint(g);
-		wbishop1.paint(g);
-		wbishop2.paint(g);
-		bking.paint(g);
-		wking.paint(g);
+		Knight wknight1 = new Knight(ESide.WHITE, square_size);
+		Knight wknight2 = new Knight(ESide.WHITE, square_size);
 
-		bpawn1.setOpaque(false);
+	    Rook brook1 = new Rook(ESide.BLACK, square_size);
+		Rook brook2 = new Rook(ESide.BLACK, square_size);
+
+		Rook wrook1 = new Rook(ESide.WHITE, square_size);
+		Rook wrook2 = new Rook(ESide.WHITE, square_size);
+
+	    Queen bqueen = new Queen(ESide.BLACK, square_size);
+		Queen wqueen = new Queen(ESide.WHITE, square_size);
+
+	    Bishop bbishop1 = new Bishop(ESide.BLACK, square_size);
+		Bishop bbishop2 = new Bishop(ESide.BLACK, square_size);
+
+		Bishop wbishop1 = new Bishop(ESide.WHITE, square_size);
+		Bishop wbishop2 = new Bishop(ESide.WHITE, square_size);
+
+	    King bking = new King(ESide.BLACK, square_size);
+		King wking = new King(ESide.WHITE, square_size);
+
 		this.add(bpawn1);
-		*/
+		this.add(bpawn2);
+		this.add(bpawn3);
+		this.add(bpawn4);
+		this.add(bpawn5);
+		this.add(bpawn6);
+		this.add(bpawn7);
+		this.add(bpawn8);
+
+		this.add(wpawn1);
+		this.add(wpawn2);
+		this.add(wpawn3);
+		this.add(wpawn4);
+		this.add(wpawn5);
+		this.add(wpawn6);
+		this.add(wpawn7);
+		this.add(wpawn8);
+
+		this.add(bknight1);
+		this.add(bknight2);
+
+		this.add(wknight1);
+		this.add(wknight2);
+
+		this.add(brook1);
+		this.add(brook2);
+
+		this.add(wrook1);
+		this.add(wrook2);
+
+		this.add(bqueen);
+		this.add(wqueen);
+
+		this.add(bbishop1);
+		this.add(bbishop2);
+
+		this.add(wbishop1);
+		this.add(wbishop2);
+
+		this.add(bking);
+		this.add(wking);
+
+
 
 	}
 }

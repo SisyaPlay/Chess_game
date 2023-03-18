@@ -2,7 +2,7 @@ import java.awt.*;
 
 import javax.swing.JPanel;
 
-public class Cell extends JPanel{
+public class Cell{
 	double x1, y1, x2, y2, square_size;
 	Color color;
 	
@@ -14,8 +14,7 @@ public class Cell extends JPanel{
 		this.square_size = square_size;
 		this.color = color;
 	}
-	
-	@Override
+
 	public void paintComponent(Graphics g){
 		if(color == Color.lightGray) {
 			g.setColor(Color.WHITE);
@@ -26,7 +25,6 @@ public class Cell extends JPanel{
 			g.setColor(color);
 			g.fillRect((int)x1 , (int)y1, (int)square_size, (int)square_size);
 		}
-		repaint();
 	}
 
 	private void drawHetch(Graphics g) {
