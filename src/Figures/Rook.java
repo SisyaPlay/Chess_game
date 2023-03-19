@@ -5,8 +5,6 @@ import java.awt.geom.Path2D;
 
 public class Rook extends Figure {
 	public static final EFigure figure = EFigure.ROOK;
-	private int x;
-	private int y;
 
 
 	public Rook(ESide side, double square_size) {

@@ -5,8 +5,6 @@ import java.awt.geom.Arc2D;
 
 public class Pawns extends Figure {
 	public static final EFigure figure = EFigure.PAWNS;
-	private int x;
-	private int y;
 
 
 	public Pawns(ESide side, double square_size) {
@@ -45,10 +43,5 @@ public class Pawns extends Figure {
 		else {
 			g.setColor(Color.WHITE);
 		}
-	}
-
-	public void setPosition(int nX, int nY) {
-		this.x = nX;
-		this.y = nY;
 	}
 }

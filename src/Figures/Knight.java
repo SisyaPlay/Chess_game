@@ -10,9 +10,6 @@ import java.awt.event.MouseMotionListener;
 
 public class Knight extends Figure{
 	public static final EFigure figure = EFigure.KNIGHT;
-	private int x;
-	private int y;
-
 
 	public Knight(ESide side, double square_size) {
 		super(side, square_size);

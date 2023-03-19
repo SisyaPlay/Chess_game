@@ -5,8 +5,6 @@ import java.awt.*;
 
 public class Bishop extends Figure {
 	public static final EFigure figure = EFigure.BISHOP;
-	private int x;
-	private int y;
 
 
 	public Bishop(ESide side, double square_size) {

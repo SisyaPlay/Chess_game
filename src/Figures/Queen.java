@@ -5,8 +5,6 @@ import java.awt.geom.Path2D;
 
 public class Queen extends Figure {
 	public static final EFigure figure = EFigure.QUEEN;
-	private int x;
-	private int y;
 
 
 	public Queen(ESide side, double square_size) {
