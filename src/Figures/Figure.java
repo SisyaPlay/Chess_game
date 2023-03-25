@@ -12,20 +12,28 @@ public abstract class Figure extends JPanel{
 	protected int x;
 	protected int y;
 
-	private int currX;
-	private int currY;
 	protected ESide side;
 	protected double square_size;
 
-	private Point mousePressedLocation; // сохраняет начальное положение мыши при нажатии
-	private Point mouseReleasedLocation;
 
 	public Figure(ESide side, double square_size) {
 		this.side = side;
 		this.square_size = square_size;
 		this.setOpaque(false);
 		this.setPreferredSize(new Dimension((int)square_size, (int)square_size));
-		this.setLocation(currX, currY);
+	}
+
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+	}
+
+	public void setSize(double square_size) {
+		this.square_size = square_size;
+	}
+
+}
+
 
 /*
 		this.addMouseListener(new MouseAdapter() {
@@ -48,15 +56,4 @@ public abstract class Figure extends JPanel{
 			}
 
 		});
-
  */
-	}
-
-	public void setSize(double square_size) {
-		this.square_size = square_size;
-	}
-
-
-}
-
-

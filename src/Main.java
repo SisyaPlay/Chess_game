@@ -1,11 +1,5 @@
-import Figures.*;
-import javafx.application.Application;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.layout.Background;
-import javafx.stage.Stage;
 
 import java.awt.*;
-import java.awt.event.*;
 
 import javax.swing.*;
 
@@ -15,8 +9,6 @@ public class Main {
 	private static final int HEIGTH = 720;
 
 
-
-	
 public static void main(String[] args) {
 
         JFrame frame = new JFrame();

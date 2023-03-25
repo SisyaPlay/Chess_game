@@ -5,10 +5,14 @@ import java.awt.geom.Arc2D;
 
 public class Pawns extends Figure {
 	public static final EFigure figure = EFigure.PAWNS;
+	private int x;
+	private int y;
 
-
-	public Pawns(ESide side, double square_size) {
+	public Pawns(int x, int y, ESide side, double square_size) {
 		super(side, square_size);
+		this.x = x;
+		this.y = y;
+
 	}
 
 	@Override
@@ -43,5 +47,9 @@ public class Pawns extends Figure {
 		else {
 			g.setColor(Color.WHITE);
 		}
+	}
+
+	public boolean isPawnHit(Point point) {
+		return this.contains(point);
 	}
 }

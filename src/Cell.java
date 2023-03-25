@@ -15,6 +15,7 @@ public class Cell extends JPanel{
 		this.y1 = y1;
 		this.square_size = square_size;
 		this.shiftX = shiftX;
+		this.setOpaque(false);
 	}
 
 	public void paintComponent(Graphics g){
@@ -62,5 +63,9 @@ public class Cell extends JPanel{
 			g.drawLine((int)x1 + (int)square_size, (int)y1 + i, (int)x1 + i, (int)y1 + (int)square_size);
 		}
 		g.setColor(Color.WHITE);
+	}
+
+	public void setSize(double square_size) {
+		this.square_size = square_size;
 	}
 }
