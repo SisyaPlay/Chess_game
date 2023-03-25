@@ -7,10 +7,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="913933c6-3ac9-491f-b08e-28036316a50d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Figures/DragHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ChessBoard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Cell.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Figures/Bishop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Bishop.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Figures/Figure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Figure.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pole.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pole.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Figures/King.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/King.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Figures/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Knight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Figures/Pawns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Pawns.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Figures/Queen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Queen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Figures/Rook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Rook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pole.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,11 +52,11 @@
     "project.structure.last.edited": "Artifacts",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler"
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
   <component name="RunManager">
-    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="kiv-upg" />
       <method v="2">
@@ -77,16 +85,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Pole.java</url>
-          <line>122</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

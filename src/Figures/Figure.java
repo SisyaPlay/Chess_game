@@ -10,22 +10,17 @@ public abstract class Figure extends JPanel{
 
 	protected int x;
 	protected int y;
-	protected int rel_x;
-	protected int rel_y;
-	protected ESide side;
+	protected Color color;
 	protected double square_size;
 
 
-	public Figure(int x, int y, ESide side, double square_size) {
-		this.rel_x = x;
-		this.rel_y = y;
-		this.side = side;
+	public Figure(int x, int y, Color color, double square_size) {
+		this.x = x;
+		this.y = y;
+		this.color = color;
 		this.square_size = square_size;
 		this.setOpaque(false);
 		this.setPreferredSize(new Dimension((int)square_size, (int)square_size));
-		DragHandler dh = new DragHandler(this);
-		this.addMouseListener(dh);
-		this.addMouseMotionListener(dh);
 	}
 
 	@Override
@@ -36,33 +31,14 @@ public abstract class Figure extends JPanel{
 	public void setSize(double square_size) {
 		this.square_size = square_size;
 	}
-	public boolean isFigureHit(Point point) {
-		setBounds(x, y, (int)square_size, (int)square_size);
-		return this.contains(point);
-	}
 
+	public int getX() { return this.x; }
+	public int getY() { return this.y; }
+
+	public int getCol() { return this.x; }
+	public int getRow() { return this.y; }
+
+	public void setCol(int x) { this.x = x; }
+	public void setRow(int y) { this.y = y; }
 }
 
-
-/*
-		this.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				setBounds(getX(), getY(), (int)square_size, (int)square_size);
-				mousePressedLocation = e.getPoint();
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				setBounds(getX(), getY(), (int)square_size, (int)square_size);
-				mouseReleasedLocation = e.getPoint();
-				int deltaX = mouseReleasedLocation.x - mousePressedLocation.x;
-				int deltaY = mouseReleasedLocation.y - mousePressedLocation.y;
-				setLocation(getX() + deltaX, getY() + deltaY);
-				currX = getX() + deltaX;
-				currY = getY() + deltaY;
-				System.out.println(currX);
-			}
-
-		});
- */
