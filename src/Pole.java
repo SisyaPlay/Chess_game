@@ -20,19 +20,56 @@ public class Pole extends JPanel {
 	private Point mousePressedLocation;
 	private Point mouseReleasedLocation;
 
+	private ArrayList<Figure> whiteFigure;
+	private ArrayList<Figure> blackFigure;
+
 	private Figure[] figures;
 
 	public Pole() {
 		this.setLayout(null);
 		cellResize();
 
-		figureResize();
+		//figureResize();
+		initFigures();
+
+
+	}
+
+	private void figureResize() {
+		this.addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent evt) {
+				square_size = calculateSize();
+
+				for(Figure figure: figures) {
+					figure.setSize(square_size);
+					figure.validate();
+					figure.repaint();
+				}
+			}
+		});
+	}
+
+
+	private void cellResize() {
+		this.addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent evt) {
+				square_size = calculateSize();
+				shiftX = (getWidth() - (int)(ROW_COUNT * square_size)) / 2;
+				cell = new Cell(x1, y1, square_size, shiftX);
+				cell.setSize(square_size);
+				cell.revalidate();
+				cell.repaint();
+			}
+		});
+	}
+
+	private void initFigures() {
 		figures = new Figure[]{
-				new Pawns((int)chessX[0], (int)chessY[1], ESide.BLACK, square_size),
-				new Pawns((int)chessX[1], (int)chessY[1], ESide.BLACK, square_size),
-				new Pawns((int)chessX[2], (int)chessY[1], ESide.BLACK, square_size),
-				new Pawns((int)chessX[3], (int)chessY[1], ESide.BLACK, square_size),
-				new Pawns((int)chessX[4], (int)chessY[1], ESide.BLACK, square_size),
+				new Pawns(0, 0, ESide.BLACK, square_size),
+				new Pawns(1, 0, ESide.BLACK, square_size),
+				new Pawns(2, 0, ESide.BLACK, square_size),
+				new Pawns(3, 0, ESide.BLACK, square_size),
+				new Pawns(4, 0, ESide.BLACK, square_size),
 				new Pawns((int)chessX[5], (int)chessY[1], ESide.BLACK, square_size),
 				new Pawns((int)chessX[6], (int)chessY[1], ESide.BLACK, square_size),
 				new Pawns((int)chessX[7], (int)chessY[1], ESide.BLACK, square_size),
@@ -68,54 +105,6 @@ public class Pole extends JPanel {
 				new King((int)chessX[4], (int)chessY[0], ESide.BLACK, square_size),
 				new King((int)chessX[4], (int)chessY[7], ESide.WHITE, square_size)
 		};
-
-		for(Figure figure: figures) {
-			this.add(figure);
-		}
-		this.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				for (Figure fgr : figures){
-					if (fgr.isFigureHit(e.getPoint())) {
-						System.out.println("nazhal");
-
-					}
-				}
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-
-			}
-		});
-	}
-
-	private void figureResize() {
-		this.addComponentListener(new ComponentAdapter() {
-			public void componentResized(ComponentEvent evt) {
-				square_size = calculateSize();
-
-				for(Figure figure: figures) {
-					figure.setSize(square_size);
-					figure.validate();
-					figure.repaint();
-				}
-			}
-		});
-	}
-
-
-	private void cellResize() {
-		this.addComponentListener(new ComponentAdapter() {
-			public void componentResized(ComponentEvent evt) {
-				square_size = calculateSize();
-				shiftX = (getWidth() - (int)(ROW_COUNT * square_size)) / 2;
-				cell = new Cell(x1, y1, square_size, shiftX);
-				cell.setSize(square_size);
-				cell.revalidate();
-				cell.repaint();
-			}
-		});
 	}
 
 
@@ -128,6 +117,20 @@ public class Pole extends JPanel {
 		chessX = cell.getChessBoardX();
 		chessY = cell.getChessBoardY();
 
+		//initFigures();
+		//addListener();
+		for (Figure figure: figures) {
+			figure.paintComponent(g);
+		}
+
+	}
+
+	private void addListener() {
+		for (Figure figure: figures) {
+			DragHandler dh = new DragHandler(figure);
+			figure.addMouseListener(dh);
+			figure.addMouseMotionListener(dh);
+		}
 	}
 
 

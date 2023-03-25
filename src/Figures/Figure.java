@@ -10,17 +10,22 @@ public abstract class Figure extends JPanel{
 
 	protected int x;
 	protected int y;
+	protected int rel_x;
+	protected int rel_y;
 	protected ESide side;
 	protected double square_size;
 
 
 	public Figure(int x, int y, ESide side, double square_size) {
-		this.x = x;
-		this.y = y;
+		this.rel_x = x;
+		this.rel_y = y;
 		this.side = side;
 		this.square_size = square_size;
 		this.setOpaque(false);
 		this.setPreferredSize(new Dimension((int)square_size, (int)square_size));
+		DragHandler dh = new DragHandler(this);
+		this.addMouseListener(dh);
+		this.addMouseMotionListener(dh);
 	}
 
 	@Override
