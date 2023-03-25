@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="kiv-upg:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/kiv_upg_jar</output-path>
+    <root id="archive" name="kiv-upg.jar">
+      <element id="module-output" name="kiv-upg" />
+    </root>
+  </artifact>
+</component>

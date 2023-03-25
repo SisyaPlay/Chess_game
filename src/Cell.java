@@ -68,4 +68,12 @@ public class Cell extends JPanel{
 	public void setSize(double square_size) {
 		this.square_size = square_size;
 	}
+
+	public double[] getChessBoardX() {
+		return chessBoardX;
+	}
+
+	public double[] getChessBoardY() {
+		return chessBoardY;
+	}
 }

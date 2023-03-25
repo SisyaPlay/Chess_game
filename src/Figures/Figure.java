@@ -3,20 +3,20 @@ package Figures;
 import javax.swing.*;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
 
 
 public abstract class Figure extends JPanel{
 
 	protected int x;
 	protected int y;
-
 	protected ESide side;
 	protected double square_size;
 
 
-	public Figure(ESide side, double square_size) {
+	public Figure(int x, int y, ESide side, double square_size) {
+		this.x = x;
+		this.y = y;
 		this.side = side;
 		this.square_size = square_size;
 		this.setOpaque(false);
@@ -30,6 +30,10 @@ public abstract class Figure extends JPanel{
 
 	public void setSize(double square_size) {
 		this.square_size = square_size;
+	}
+	public boolean isFigureHit(Point point) {
+		setBounds(x, y, (int)square_size, (int)square_size);
+		return this.contains(point);
 	}
 
 }

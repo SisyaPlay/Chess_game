@@ -7,8 +7,8 @@ public class Rook extends Figure {
 	public static final EFigure figure = EFigure.ROOK;
 
 
-	public Rook(ESide side, double square_size) {
-		super(side, square_size);
+	public Rook(int x, int y, ESide side, double square_size) {
+		super(x, y, side, square_size);
 	}
 
 	@Override

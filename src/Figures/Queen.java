@@ -7,8 +7,8 @@ public class Queen extends Figure {
 	public static final EFigure figure = EFigure.QUEEN;
 
 
-	public Queen(ESide side, double square_size) {
-		super(side, square_size);
+	public Queen(int x, int y, ESide side, double square_size) {
+		super(x, y, side, square_size);
 	}
 
 	@Override

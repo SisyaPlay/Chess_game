@@ -5,8 +5,8 @@ import java.awt.*;
 public class King extends Figure {
 	public static final EFigure figure = EFigure.KING;
 
-	public King(ESide side, double square_size) {
-		super(side, square_size);
+	public King(int x, int y, ESide side, double square_size) {
+		super(x, y, side, square_size);
 	}
 
 	@Override

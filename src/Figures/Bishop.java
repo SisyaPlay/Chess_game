@@ -7,8 +7,8 @@ public class Bishop extends Figure {
 	public static final EFigure figure = EFigure.BISHOP;
 
 
-	public Bishop(ESide side, double square_size) {
-		super(side, square_size);
+	public Bishop(int x, int y, ESide side, double square_size) {
+		super(x, y, side, square_size);
 	}
 	@Override
 	public void paintComponent(Graphics g) {

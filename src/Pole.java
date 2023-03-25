@@ -2,49 +2,108 @@ import Figures.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
-public class Pole extends JPanel{
+public class Pole extends JPanel {
 	private final int ROW_COUNT = 8;
 	private double x1, y1;
 	private double square_size;
 	private int shiftX;
 
-	private Pawns bpawn1;
 
-	private Cell cell;
+	private Cell cell = new Cell(0,0,0,0);
 
-	private double[] chessBoardX = new double[ROW_COUNT];
-	private double[] chessBoardY = new double[ROW_COUNT];
+	private double[] chessX = cell.chessBoardX;
+	private double[] chessY = cell.chessBoardY;
+	private Point mousePressedLocation;
+	private Point mouseReleasedLocation;
+
+	private Figure[] figures;
 
 	public Pole() {
-		this.setSize(new Dimension(1280, 720));
-		this.setPreferredSize(new Dimension(1280, 720));
-		square_size = calculateSize();
-
+		this.setLayout(null);
 		cellResize();
-		cell = new Cell(x1, y1, square_size, shiftX);
-		chessBoardX = cell.chessBoardX;
-		chessBoardY = cell.chessBoardY;
 
 		figureResize();
-		bpawn1 = new Pawns((int)chessBoardX[0], (int)chessBoardY[0], ESide.BLACK, square_size);
+		figures = new Figure[]{
+				new Pawns((int)chessX[0], (int)chessY[1], ESide.BLACK, square_size),
+				new Pawns((int)chessX[1], (int)chessY[1], ESide.BLACK, square_size),
+				new Pawns((int)chessX[2], (int)chessY[1], ESide.BLACK, square_size),
+				new Pawns((int)chessX[3], (int)chessY[1], ESide.BLACK, square_size),
+				new Pawns((int)chessX[4], (int)chessY[1], ESide.BLACK, square_size),
+				new Pawns((int)chessX[5], (int)chessY[1], ESide.BLACK, square_size),
+				new Pawns((int)chessX[6], (int)chessY[1], ESide.BLACK, square_size),
+				new Pawns((int)chessX[7], (int)chessY[1], ESide.BLACK, square_size),
+				new Pawns((int)chessX[0], (int)chessY[6], ESide.WHITE, square_size),
+				new Pawns((int)chessX[1], (int)chessY[6], ESide.WHITE, square_size),
+				new Pawns((int)chessX[2], (int)chessY[6], ESide.WHITE, square_size),
+				new Pawns((int)chessX[3], (int)chessY[6], ESide.WHITE, square_size),
+				new Pawns((int)chessX[4], (int)chessY[6], ESide.WHITE, square_size),
+				new Pawns((int)chessX[5], (int)chessY[6], ESide.WHITE, square_size),
+				new Pawns((int)chessX[6], (int)chessY[6], ESide.WHITE, square_size),
+				new Pawns((int)chessX[7], (int)chessY[6], ESide.WHITE, square_size),
+
+				new Knight((int)chessX[1], (int)chessY[0], ESide.BLACK, square_size),
+				new Knight((int)chessX[6], (int)chessY[0], ESide.BLACK, square_size),
+				new Knight((int)chessX[1], (int)chessY[7], ESide.WHITE, square_size),
+				new Knight((int)chessX[6], (int)chessY[7], ESide.WHITE, square_size),
+
+				new Rook((int)chessX[0], (int)chessY[0], ESide.BLACK, square_size),
+				new Rook((int)chessX[7], (int)chessY[0], ESide.BLACK, square_size),
+
+				new Rook((int)chessX[0], (int)chessY[7], ESide.WHITE, square_size),
+				new Rook((int)chessX[7], (int)chessY[7], ESide.WHITE, square_size),
+
+				new Queen((int)chessX[3], (int)chessY[0], ESide.BLACK, square_size),
+				new Queen((int)chessX[3], (int)chessY[7], ESide.WHITE, square_size),
+
+				new Bishop((int)chessX[2], (int)chessY[0], ESide.BLACK, square_size),
+				new Bishop((int)chessX[5], (int)chessY[0], ESide.BLACK, square_size),
+
+				new Bishop((int)chessX[2], (int)chessY[7], ESide.WHITE, square_size),
+				new Bishop((int)chessX[5], (int)chessY[7], ESide.WHITE, square_size),
+
+				new King((int)chessX[4], (int)chessY[0], ESide.BLACK, square_size),
+				new King((int)chessX[4], (int)chessY[7], ESide.WHITE, square_size)
+		};
+
+		for(Figure figure: figures) {
+			this.add(figure);
+		}
+		this.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				for (Figure fgr : figures){
+					if (fgr.isFigureHit(e.getPoint())) {
+						System.out.println("nazhal");
+
+					}
+				}
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+
+			}
+		});
 	}
 
 	private void figureResize() {
 		this.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent evt) {
 				square_size = calculateSize();
-				chessBoardX = cell.chessBoardX;
-				chessBoardY = cell.chessBoardY;
-				bpawn1 = new Pawns((int)chessBoardX[0], (int)chessBoardY[0], ESide.BLACK, square_size);
-				bpawn1.setSize(square_size);
-				bpawn1.revalidate();
-				bpawn1.repaint();
+
+				for(Figure figure: figures) {
+					figure.setSize(square_size);
+					figure.validate();
+					figure.repaint();
+				}
 			}
 		});
 	}
+
 
 	private void cellResize() {
 		this.addComponentListener(new ComponentAdapter() {
@@ -52,8 +111,6 @@ public class Pole extends JPanel{
 				square_size = calculateSize();
 				shiftX = (getWidth() - (int)(ROW_COUNT * square_size)) / 2;
 				cell = new Cell(x1, y1, square_size, shiftX);
-				chessBoardX = cell.chessBoardX;
-				chessBoardY = cell.chessBoardY;
 				cell.setSize(square_size);
 				cell.revalidate();
 				cell.repaint();
@@ -68,7 +125,9 @@ public class Pole extends JPanel{
 
 		cell.paintComponent(g);
 
-		bpawn1.paintComponent(g);
+		chessX = cell.getChessBoardX();
+		chessY = cell.getChessBoardY();
+
 	}
 
 
@@ -76,50 +135,51 @@ public class Pole extends JPanel{
 		square_size = this.getHeight() / 8;
 		return square_size;
 	}
-
 }
 
 /*
-		new Pawns(ESide.BLACK, square_size),
-		new Pawns(ESide.BLACK, square_size),
-		new Pawns(ESide.BLACK, square_size),
-		new Pawns(ESide.BLACK, square_size),
-		new Pawns(ESide.BLACK, square_size),
-		new Pawns(ESide.BLACK, square_size),
-		new Pawns(ESide.BLACK, square_size),
-		new Pawns(ESide.BLACK, square_size),
-		new Pawns(ESide.WHITE, square_size),
-		new Pawns(ESide.WHITE, square_size),
-		new Pawns(ESide.WHITE, square_size),
-		new Pawns(ESide.WHITE, square_size),
-		new Pawns(ESide.WHITE, square_size),
-		new Pawns(ESide.WHITE, square_size),
-		new Pawns(ESide.WHITE, square_size),
-		new Pawns(ESide.WHITE, square_size),
 
-		new Knight(ESide.BLACK, square_size),
-		new Knight(ESide.BLACK, square_size),
-		new Knight(ESide.WHITE, square_size),
-		new Knight(ESide.WHITE, square_size),
+figures = new Figures[] {
+		new Pawns((int)chessX[0], (int)chessY[1], ESide.BLACK, square_size),
+		new Pawns((int)chessX[1], (int)chessY[1], ESide.BLACK, square_size),
+		new Pawns((int)chessX[2], (int)chessY[1], ESide.BLACK, square_size),
+		new Pawns((int)chessX[3], (int)chessY[1], ESide.BLACK, square_size),
+		new Pawns((int)chessX[4], (int)chessY[1], ESide.BLACK, square_size),
+		new Pawns((int)chessX[5], (int)chessY[1], ESide.BLACK, square_size),
+		new Pawns((int)chessX[6], (int)chessY[1], ESide.BLACK, square_size),
+		new Pawns((int)chessX[7], (int)chessY[1], ESide.BLACK, square_size),
+		new Pawns((int)chessX[0], (int)chessY[6], ESide.WHITE, square_size),
+		new Pawns((int)chessX[1], (int)chessY[6], ESide.WHITE, square_size),
+		new Pawns((int)chessX[2], (int)chessY[6], ESide.WHITE, square_size),
+		new Pawns((int)chessX[3], (int)chessY[6], ESide.WHITE, square_size),
+		new Pawns((int)chessX[4], (int)chessY[6], ESide.WHITE, square_size),
+		new Pawns((int)chessX[5], (int)chessY[6], ESide.WHITE, square_size),
+		new Pawns((int)chessX[6], (int)chessY[6], ESide.WHITE, square_size),
+		new Pawns((int)chessX[7], (int)chessY[6], ESide.WHITE, square_size),
 
-		new Rook(ESide.BLACK, square_size),
-		new Rook(ESide.BLACK, square_size),
+		new Knight((int)chessX[1], (int)chessY[0], ESide.BLACK, square_size),
+		new Knight((int)chessX[6], (int)chessY[0], ESide.BLACK, square_size),
+		new Knight((int)chessX[1], (int)chessY[7], ESide.WHITE, square_size),
+		new Knight((int)chessX[6], (int)chessY[7], ESide.WHITE, square_size),
 
-		new Rook(ESide.WHITE, square_size),
-		new Rook(ESide.WHITE, square_size),
+		new Rook((int)chessX[0], (int)chessY[0], ESide.BLACK, square_size),
+		new Rook((int)chessX[7], (int)chessY[0], ESide.BLACK, square_size),
 
-		new Queen(ESide.BLACK, square_size),
-		new Queen(ESide.WHITE, square_size),
+		new Rook((int)chessX[0], (int)chessY[7], ESide.WHITE, square_size),
+		new Rook((int)chessX[7], (int)chessY[7], ESide.WHITE, square_size),
 
-		new Bishop(ESide.BLACK, square_size),
-		new Bishop(ESide.BLACK, square_size),
+		new Queen((int)chessX[3], (int)chessY[0], ESide.BLACK, square_size),
+		new Queen((int)chessX[3], (int)chessY[7], ESide.WHITE, square_size),
 
-		new Bishop(ESide.WHITE, square_size),
-		new Bishop(ESide.WHITE, square_size),
+		new Bishop((int)chessX[2], (int)chessY[0], ESide.BLACK, square_size),
+		new Bishop((int)chessX[5], (int)chessY[0], ESide.BLACK, square_size),
 
-		new King(ESide.BLACK, square_size),
-		new King(ESide.WHITE, square_size)
+		new Bishop((int)chessX[2], (int)chessY[7], ESide.WHITE, square_size),
+		new Bishop((int)chessX[5], (int)chessY[7], ESide.WHITE, square_size),
 
+		new King((int)chessX[4], (int)chessY[0], ESide.BLACK, square_size),
+		new King((int)chessX[4], (int)chessY[7], ESide.WHITE, square_size)
+};
 
 		this.add(bpawn1);
 
@@ -163,5 +223,7 @@ public class Pole extends JPanel{
 
 		this.add(bking);
 		this.add(wking);
+
+
 
 		 */
