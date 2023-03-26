@@ -10,13 +10,12 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
         private int square_size;
 
         private Figure[][] board = new Figure[8][8];
-        private Figure selectedPiece;
-        private int selectedPieceX;
-        private int selectedPieceY;
+        private Figure selectedFigure;
+        private int selectedFigureX;
+        private int selectedFigureY;
 
-        public int shiftX;
+        private int shiftX;
 
-        public int boardWidth;
 
         public ChessBoard() {
                 addComponentListener(new ComponentAdapter() {
@@ -24,7 +23,6 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
                         public void componentResized(ComponentEvent e) {
                                 super.componentResized(e);
                                 square_size = getHeight() / ROW_COUNT;
-                                boardWidth = square_size * ROW_COUNT;
                                 shiftX = (getWidth() - (ROW_COUNT * square_size)) / 2;
 
                                 for (int row = 0; row < ROW_COUNT; row++) {
@@ -76,12 +74,14 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
 
         public void paintComponent(Graphics g) {
                 super.paintComponent(g);
-/*
-                shiftX = (getWidth() - (ROW_COUNT * square_size)) / 2;
+
+
+                //shiftX = (getWidth() - (ROW_COUNT * square_size)) / 2;
                 //System.out.println(shiftX);
                 Graphics2D g2 = (Graphics2D) g;
                 g2.translate(shiftX, 0);
-*/
+
+
 
                 // Draw the board
                 for (int row = 0; row < 8; row++) {
@@ -127,14 +127,16 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
         }
 
         public void mousePressed(MouseEvent e) {
-                int x = e.getX();
+                int x = e.getX() - shiftX;
                 int y = e.getY();
                 int row = y / square_size;
                 int col = x / square_size;
-                selectedPiece = board[row][col];
-                if (selectedPiece != null) {
-                        selectedPieceX = x - col * square_size;
-                        selectedPieceY = y - row * square_size;
+
+                selectedFigure = board[row][col];
+
+                if (selectedFigure != null) {
+                        selectedFigureX = x - col * square_size;
+                        selectedFigureY = y - row * square_size;
                 }
         }
 
@@ -142,18 +144,18 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
         }
 
         public void mouseReleased(MouseEvent e) {
-                if (selectedPiece != null) {
-                        int x = e.getX();
+                if (selectedFigure != null) {
+                        int x = e.getX() - shiftX;
                         int y = e.getY();
                         int row = y / square_size;
                         int col = x / square_size;
 
-                        board[selectedPiece.getRow()][selectedPiece.getCol()] = null;
-                        board[row][col] = selectedPiece;
-                        selectedPiece.setRow(row);
-                        selectedPiece.setCol(col);
+                        board[selectedFigure.getRow()][selectedFigure.getCol()] = null;
+                        board[row][col] = selectedFigure;
+                        selectedFigure.setRow(row);
+                        selectedFigure.setCol(col);
 
-                        selectedPiece = null;
+                        selectedFigure = null;
                         repaint();
                 }
         }
