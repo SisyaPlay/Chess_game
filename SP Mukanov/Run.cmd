@@ -1,1 +1,1 @@
-java -jar kiv-upg.jar
+java -cp .\bin Main %*

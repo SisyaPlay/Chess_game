@@ -5,22 +5,23 @@
       <artifact name="kiv-upg:jar" />
     </artifacts-to-build>
   </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="913933c6-3ac9-491f-b08e-28036316a50d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/bishop-b.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/bishop-w.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/king-b.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/king-w.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/knight-b.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/knight-w.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/pawns-b.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/pawns-w.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/queen-b.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/queen-w.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/rook-b.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/rook-w.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SP Mukanov/Alimzhan Dokumentace.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SP Mukanov/Run.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/Run.cmd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ChessBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ChessBoard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Figures/Bishop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Bishop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Figures/DragHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Figures/Figure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Figure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Figures/King.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/King.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Figures/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Knight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Figures/Pawns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Pawns.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Figures/Queen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Queen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Figures/Rook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Rook.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -51,11 +52,17 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/kekus/OneDrive/Рабочий стол/JFrame + GridLayout + JButton&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/kekus/OneDrive/Документы/repository/uurcv3&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RunManager">
@@ -75,8 +82,20 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1678376283914</updated>
+      <workItem from="1679856612426" duration="29000" />
+      <workItem from="1679856863007" duration="838000" />
+      <workItem from="1679858445842" duration="890000" />
+      <workItem from="1679894283297" duration="930000" />
+      <workItem from="1679896820153" duration="1235000" />
+      <workItem from="1679905241100" duration="78000" />
+      <workItem from="1679917580027" duration="1532000" />
+      <workItem from="1679937258330" duration="135000" />
+      <workItem from="1679937417625" duration="13000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
