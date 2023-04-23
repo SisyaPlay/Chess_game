@@ -72,6 +72,14 @@ public abstract class Figure extends JPanel{
 	public void setCol(int x) { this.x = x; }
 	public void setRow(int y) { this.y = y; }
 
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
 	public EFigure getType() {
 		return type;
 	}

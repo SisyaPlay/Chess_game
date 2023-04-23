@@ -1,10 +1,10 @@
-package ChessView;
+package View;
 
+import Controllers.BoardController;
 import Figures.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
 /**
  * Trida View.ChessBoard dedi od JPanelu a implementuje MouseListener, MouseMotionListener.
@@ -12,9 +12,9 @@ import java.awt.event.*;
  * Jeste tady implementovano drag and drop.
  */
 
-public class ChessBoard extends JPanel implements MouseListener, MouseMotionListener {
+public class ChessBoardView extends JPanel {
 
-        private static final int ROW_COUNT = 8; // Pocet ctvercu
+        public static final int ROW_COUNT = 8; // Pocet ctvercu
         private int square_size; // Velikost ctverce
 
         private Figure[][] board = new Figure[8][8]; // Pole, kde jsou figury
@@ -26,17 +26,21 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
         private int shiftY;
         private Color currentPlayer = Color.WHITE;
 
+        private BoardController boardController;
+
         /**
          * Konstruktor sachonvnice.
          * Zde je ComponentListener, kdery zmemi rozmer figur a sachovnice podle velikosti okna.
          * Nastavi preferovanou velikost sachovnice a inicializuje figury do dvojite pole board.
          * A zavola posluchac mysi.
          */
-        public ChessBoard() {
+        public ChessBoardView() {
+
+                this.boardController = new BoardController(this);
 
                 setPreferredSize(new Dimension(square_size * ROW_COUNT, square_size * ROW_COUNT));
-                addMouseListener(this);
-                addMouseMotionListener(this);
+                addMouseListener(boardController);
+                addMouseMotionListener(boardController);
 
                 for (int i = 0; i < 8; i++) {
                         board[1][i] = new Pawns( i, 1, Color.BLACK, square_size);
@@ -122,6 +126,7 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
                         }
                 }
 
+                /*
                 if(selectedFigure != null) {
                         switch(selectedFigure.getType()) {
                                 case PAWNS:
@@ -144,6 +149,8 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
                                         break;
                         }
                 }
+
+                 */
         }
 
         private void showAvailableMoveToRook(Graphics2D g2) {
@@ -327,70 +334,47 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
                 }
         }
 
-        /**
-         * Posluchac mysi reaguje na kliknuti mysi.
-         * @param e the event to be processed
-         */
-        public void mousePressed(MouseEvent e) {
-                int x = e.getX() - shiftX;
-                int y = e.getY() - shiftY;
-                int row = y / square_size;
-                int col = x / square_size;
-
-                if(col > ROW_COUNT - 1) {
-                        col = ROW_COUNT - 1;
-                }
-                if(col < 0) {
-                        col = 0;
-                }
-
-                if(row > ROW_COUNT - 1) {
-                        row = ROW_COUNT - 1;
-                }
-                if(row < 0) {
-                        row = 0;
-                }
-
-                selectedFigure = board[row][col]; // Zapishe do selectedFigure figuru z pole
-                if (selectedFigure != null) {
-                        selectedFigureX = col;
-                        selectedFigureY = row;
-                }
-                repaint();
+        public int getSquare_size() {
+                return square_size;
         }
 
-
-        public void mouseDragged(MouseEvent e) {
+        public Figure[][] getBoard() {
+                return board;
         }
 
-        /**
-         * Posluchac mysi reaguje na odklinuti mysi
-         * @param e the event to be processed
-         */
-        public void mouseReleased(MouseEvent e) {
-                if (selectedFigure != null) {
-                        int x = e.getX() - shiftX;
-                        int y = e.getY() - shiftY;
-                        int row = y / square_size;
-                        int col = x / square_size;
-                        if (selectedFigure.moveTo(selectedFigureX, selectedFigureY, col, row, board)) {
-                                if (col > ROW_COUNT - 1 || row > ROW_COUNT - 1 || col < 0 || row < 0 || x < 0 || y < 0) {
-                                        board[selectedFigureY][selectedFigureX] = selectedFigure;
-                                } else {
-                                        board[selectedFigure.getRow()][selectedFigure.getCol()] = null;
-                                        board[row][col] = selectedFigure; // Zapise do pole figuru
-                                        selectedFigure.setRow(row);
-                                        selectedFigure.setCol(col);
-                                }
-                                selectedFigure = null;
-                                repaint();
-                        }
-
-                }
+        public Figure getSelectedFigure() {
+                return selectedFigure;
         }
 
-        public void mouseMoved(MouseEvent e) {}
-        public void mouseEntered(MouseEvent e) {}
-        public void mouseExited(MouseEvent e) {}
-        public void mouseClicked(MouseEvent e) {}
+        public int getSelectedFigureX() {
+                return selectedFigureX;
+        }
+
+        public int getSelectedFigureY() {
+                return selectedFigureY;
+        }
+
+        public int getShiftX() {
+                return shiftX;
+        }
+
+        public int getShiftY() {
+                return shiftY;
+        }
+
+        public Color getCurrentPlayer() {
+                return currentPlayer;
+        }
+
+        public void setSelectedFigure(Figure selectedFigure) {
+                this.selectedFigure = selectedFigure;
+        }
+
+        public void setSelectedFigureX(int selectedFigureX) {
+                this.selectedFigureX = selectedFigureX;
+        }
+
+        public void setSelectedFigureY(int selectedFigureY) {
+                this.selectedFigureY = selectedFigureY;
+        }
 }

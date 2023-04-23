@@ -1,16 +1,18 @@
 package Controllers;
 
-import ChessView.ChessBoard;
+import View.ChessBoardView;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import static View.ChessBoardView.ROW_COUNT;
+
 public class BoardController implements MouseListener, MouseMotionListener {
 
-    private ChessBoard chessBoard;
+    private ChessBoardView chessBoardView;
 
-    public BoardController(ChessBoard chessBoard) {
-        this.chessBoard = chessBoard;
+    public BoardController(ChessBoardView chessBoardView) {
+        this.chessBoardView = chessBoardView;
     }
 
     /**
@@ -18,10 +20,10 @@ public class BoardController implements MouseListener, MouseMotionListener {
      * @param e the event to be processed
      */
     public void mousePressed(MouseEvent e) {
-        int x = e.getX() - shiftX;
-        int y = e.getY() - shiftY;
-        int row = y / square_size;
-        int col = x / square_size;
+        int x = e.getX() - chessBoardView.getShiftX();
+        int y = e.getY() - chessBoardView.getShiftY();
+        int row = y / chessBoardView.getSquare_size();
+        int col = x / chessBoardView.getSquare_size();
 
         if(col > ROW_COUNT - 1) {
             col = ROW_COUNT - 1;
@@ -37,16 +39,27 @@ public class BoardController implements MouseListener, MouseMotionListener {
             row = 0;
         }
 
-        selectedFigure = board[row][col]; // Zapishe do selectedFigure figuru z pole
-        if (selectedFigure != null) {
-            selectedFigureX = col;
-            selectedFigureY = row;
+        // Zapishe do chessBoard.getSelectedFigure() figuru z pole
+        chessBoardView.setSelectedFigure(chessBoardView.getBoard()[row][col]);
+        if (chessBoardView.getSelectedFigure() != null) {
+            chessBoardView.setSelectedFigureX(col);
+            chessBoardView.setSelectedFigureY(row);
         }
-        repaint();
+        chessBoardView.repaint();
     }
 
 
     public void mouseDragged(MouseEvent e) {
+        int x = e.getX() - chessBoardView.getShiftX();
+        int y = e.getY() - chessBoardView.getShiftY();
+        int row = y / chessBoardView.getSquare_size();
+        int col = x / chessBoardView.getSquare_size();
+        if (chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard())
+                && chessBoardView.getSelectedFigure() != null) {
+            chessBoardView.getSelectedFigure().setX(col);
+            chessBoardView.getSelectedFigure().setY(row);
+            chessBoardView.repaint();
+        }
     }
 
     /**
@@ -54,25 +67,25 @@ public class BoardController implements MouseListener, MouseMotionListener {
      * @param e the event to be processed
      */
     public void mouseReleased(MouseEvent e) {
-        if (selectedFigure != null) {
-            int x = e.getX() - shiftX;
-            int y = e.getY() - shiftY;
-            int row = y / square_size;
-            int col = x / square_size;
-            if (selectedFigure.moveTo(selectedFigureX, selectedFigureY, col, row, board)) {
+        if (chessBoardView.getSelectedFigure() != null) {
+            int x = e.getX() - chessBoardView.getShiftX();
+            int y = e.getY() - chessBoardView.getShiftY();
+            int row = y / chessBoardView.getSquare_size();
+            int col = x / chessBoardView.getSquare_size();
+            if (chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard())) {
                 if (col > ROW_COUNT - 1 || row > ROW_COUNT - 1 || col < 0 || row < 0 || x < 0 || y < 0) {
-                    board[selectedFigureY][selectedFigureX] = selectedFigure;
+                    chessBoardView.getBoard()[chessBoardView.getSelectedFigureY()][chessBoardView.getSelectedFigureX()] = chessBoardView.getSelectedFigure();
                 } else {
-                    board[selectedFigure.getRow()][selectedFigure.getCol()] = null;
-                    board[row][col] = selectedFigure; // Zapise do pole figuru
-                    selectedFigure.setRow(row);
-                    selectedFigure.setCol(col);
+                    chessBoardView.getBoard()[chessBoardView.getSelectedFigure().getRow()][chessBoardView.getSelectedFigure().getCol()] = null;
+                    chessBoardView.getBoard()[row][col] = chessBoardView.getSelectedFigure(); // Zapise do pole figuru
+                    chessBoardView.getSelectedFigure().setRow(row);
+                    chessBoardView.getSelectedFigure().setCol(col);
                 }
-                selectedFigure = null;
-                repaint();
+                chessBoardView.setSelectedFigure(null);
+                chessBoardView.repaint();
             }
-
         }
+
     }
 
     public void mouseMoved(MouseEvent e) {}

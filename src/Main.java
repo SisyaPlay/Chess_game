@@ -1,4 +1,4 @@
-import ChessView.ChessBoard;
+import View.ChessBoardView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +14,7 @@ public class Main {
     private static final int WIDTH = 800; // Sirka onka
     private static final int HEIGHT = 600; // Vyska okna
     public static void main(String[] args) {
-        ChessBoard board = new ChessBoard();
+        ChessBoardView board = new ChessBoardView();
         JFrame frame = new JFrame("UPG Sachy Mukanov - A22B0388P");
 
         //frame.setLocationRelativeTo(null);
