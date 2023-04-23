@@ -1,12 +1,13 @@
+package ChessView;
+
 import Figures.*;
-import Figures.EFigure;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Trida ChessBoard dedi od JPanelu a implementuje MouseListener, MouseMotionListener.
+ * Trida View.ChessBoard dedi od JPanelu a implementuje MouseListener, MouseMotionListener.
  * Zde vykresli sachovnice 8x8 s bilimi a zasrafovanymi sedymi pruhy ctvercu.
  * Jeste tady implementovano drag and drop.
  */
@@ -23,6 +24,7 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
 
         private int shiftX; // Posun
         private int shiftY;
+        private Color currentPlayer = Color.WHITE;
 
         /**
          * Konstruktor sachonvnice.

@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Trida ChessBoard dedi od JPanelu a implementuje MouseListener, MouseMotionListener.
+ * Trida View.ChessBoard dedi od JPanelu a implementuje MouseListener, MouseMotionListener.
  * Zde vykresli sachovnice 8x8 s bilimi a zasrafovanymi sedymi pruhy ctvercu.
  * Jeste tady implementovano drag and drop.
  */

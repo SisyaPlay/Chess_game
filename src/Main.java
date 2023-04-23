@@ -1,3 +1,5 @@
+import ChessView.ChessBoard;
+
 import javax.swing.*;
 import java.awt.*;
 
