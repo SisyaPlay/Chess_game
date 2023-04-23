@@ -1,4 +1,5 @@
 import Figures.*;
+import Figures.EFigure;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,27 +31,6 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
          * A zavola posluchac mysi.
          */
         public ChessBoard() {
-                addComponentListener(new ComponentAdapter() {
-                        @Override
-                        public void componentResized(ComponentEvent e) {
-                                super.componentResized(e);
-                                square_size = Math.min(getHeight(), getWidth()) / ROW_COUNT;
-                                shiftX = (getWidth() - (ROW_COUNT * square_size)) / 2;
-                                shiftY = (getHeight() - (ROW_COUNT * square_size)) / 2;
-
-                                for (int row = 0; row < ROW_COUNT; row++) {
-                                        for (int col = 0; col < ROW_COUNT; col++) {
-                                                Figure fgr = board[row][col];
-                                                if (fgr != null) {
-                                                        fgr.setSize(square_size);
-                                                }
-                                        }
-                                }
-
-                                setPreferredSize(new Dimension(square_size * ROW_COUNT, square_size * ROW_COUNT));
-                                revalidate();
-                        }
-                });
 
                 setPreferredSize(new Dimension(square_size * ROW_COUNT, square_size * ROW_COUNT));
                 addMouseListener(this);
@@ -91,9 +71,19 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
         public void paintComponent(Graphics g) {
                 super.paintComponent(g);
 
+                square_size = Math.min(getHeight(), getWidth()) / ROW_COUNT;
+                shiftX = (getWidth() - (ROW_COUNT * square_size)) / 2;
+                shiftY = (getHeight() - (ROW_COUNT * square_size)) / 2;
 
-                //shiftX = (getWidth() - (ROW_COUNT * square_size)) / 2;
-                //System.out.println(shiftX);
+                for (int row = 0; row < ROW_COUNT; row++) {
+                        for (int col = 0; col < ROW_COUNT; col++) {
+                                Figure fgr = board[row][col];
+                                if (fgr != null) {
+                                        fgr.setSize(square_size);
+                                }
+                        }
+                }
+
                 Graphics2D g2 = (Graphics2D) g;
                 g2.translate(shiftX, shiftY);
 
@@ -129,6 +119,192 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
                                 }
                         }
                 }
+
+                if(selectedFigure != null) {
+                        switch(selectedFigure.getType()) {
+                                case PAWNS:
+                                        showAvailableMoveToPawn(g2);
+                                        break;
+                                case KNIGHT:
+                                        showAvailableMoveToKnight(g2);
+                                        break;
+                                case BISHOP:
+                                        showAvailableMoveToBishop(g2);
+                                        break;
+                                case KING:
+                                        showAvailableMoveToKing(g2);
+                                        break;
+                                case QUEEN:
+                                        showAvailableMoveToQueen(g2);
+                                        break;
+                                case ROOK:
+                                        showAvailableMoveToRook(g2);
+                                        break;
+                        }
+                }
+        }
+
+        private void showAvailableMoveToRook(Graphics2D g2) {
+                int x = selectedFigure.getCol() * square_size;
+                int y = selectedFigure.getRow() * square_size;
+                g2.setColor(Color.BLUE);
+                g2.drawRect(x, y, square_size, square_size);
+
+                for (int i = 0; i < ROW_COUNT; i++) {
+                        if (i != selectedFigure.getCol()) {
+                                g2.drawRect(i * square_size, y, square_size, square_size);
+                        }
+                }
+
+                for (int j = 0; j < ROW_COUNT; j++) {
+                        if (j != selectedFigure.getRow()) {
+                                g2.drawRect(x, j * square_size, square_size, square_size);
+                        }
+                }
+        }
+
+        private void showAvailableMoveToQueen(Graphics2D g2) {
+                int x = selectedFigure.getCol() * square_size;
+                int y = selectedFigure.getRow() * square_size;
+                g2.setColor(Color.BLUE);
+                g2.drawRect(x, y, square_size, square_size);
+
+                int[] rowOffsets = {-1, -1, 1, 1};
+                int[] colOffsets = {1, -1, 1, -1};
+                g2.drawRect(x, y, square_size, square_size);
+
+                for (int i = 0; i < ROW_COUNT; i++) {
+                        if (i != selectedFigure.getCol()) {
+                                g2.drawRect(i * square_size, y, square_size, square_size);
+                        }
+                }
+
+                for (int j = 0; j < ROW_COUNT; j++) {
+                        if (j != selectedFigure.getRow()) {
+                                g2.drawRect(x, j * square_size, square_size, square_size);
+                        }
+                }
+
+                for (int i = 0; i < rowOffsets.length; i++) {
+                        int newRow = selectedFigure.getRow() + rowOffsets[i];
+                        int newCol = selectedFigure.getCol() + colOffsets[i];
+
+                        // Пока можем продолжать двигаться по диагонали
+                        while (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
+                                int newX = newCol * square_size;
+                                int newY = newRow * square_size;
+
+                                g2.drawRect(newX, newY, square_size, square_size);
+
+                                // Перемещаемся к следующей клетке по диагонали
+                                newRow += rowOffsets[i];
+                                newCol += colOffsets[i];
+                        }
+                }
+        }
+
+        private void showAvailableMoveToKing(Graphics2D g2) {
+                int x = selectedFigure.getCol() * square_size;
+                int y = selectedFigure.getRow() * square_size;
+                g2.setColor(Color.BLUE);
+
+                // Check and draw available moves to top row
+                if (y - square_size >= 0) {
+                        g2.drawRect(x, y - square_size, square_size, square_size);
+                        if (x - square_size >= 0) g2.drawRect(x - square_size, y - square_size, square_size, square_size);
+                        if (x + square_size < ROW_COUNT * square_size) g2.drawRect(x + square_size, y - square_size, square_size, square_size);
+                }
+
+                // Check and draw available moves to bottom row
+                if (y + square_size < ROW_COUNT * square_size) {
+                        g2.drawRect(x, y + square_size, square_size, square_size);
+                        if (x - square_size >= 0) g2.drawRect(x - square_size, y + square_size, square_size, square_size);
+                        if (x + square_size < ROW_COUNT * square_size) g2.drawRect(x + square_size, y + square_size, square_size, square_size);
+                }
+
+                // Check and draw available moves to left and right columns
+                if (x - square_size >= 0) g2.drawRect(x - square_size, y, square_size, square_size);
+                if (x + square_size < ROW_COUNT * square_size) g2.drawRect(x + square_size, y, square_size, square_size);
+        }
+
+        private void showAvailableMoveToBishop(Graphics2D g2) {
+                int x = selectedFigure.getCol() * square_size;
+                int y = selectedFigure.getRow() * square_size;
+                g2.setColor(Color.BLUE);
+
+                // Проверяем возможные ходы по диагоналям
+                int[] rowOffsets = {-1, -1, 1, 1};
+                int[] colOffsets = {1, -1, 1, -1};
+                g2.drawRect(x, y, square_size, square_size);
+
+                for (int i = 0; i < rowOffsets.length; i++) {
+                        int newRow = selectedFigure.getRow() + rowOffsets[i];
+                        int newCol = selectedFigure.getCol() + colOffsets[i];
+
+                        // Пока можем продолжать двигаться по диагонали
+                        while (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
+                                int newX = newCol * square_size;
+                                int newY = newRow * square_size;
+
+                                g2.drawRect(newX, newY, square_size, square_size);
+
+                                // Перемещаемся к следующей клетке по диагонали
+                                newRow += rowOffsets[i];
+                                newCol += colOffsets[i];
+                        }
+                }
+        }
+
+        private void showAvailableMoveToKnight(Graphics2D g2) {
+                int[] rowOffsets = {-2, -1, 1, 2, 2, 1, -1, -2};
+                int[] colOffsets = {1, 2, 2, 1, -1, -2, -2, -1};
+
+                g2.setColor(Color.BLUE);
+                for (int i = 0; i < rowOffsets.length; i++) {
+                        int newRow = selectedFigure.getRow() + rowOffsets[i];
+                        int newCol = selectedFigure.getCol() + colOffsets[i];
+                        if (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
+                                int x = newCol * square_size;
+                                int y = newRow * square_size;
+                                g2.drawRect(x, y, square_size, square_size);
+                        }
+                }
+        }
+
+        private void showAvailableMoveToPawn(Graphics2D g2) {
+                int x = selectedFigure.getCol() * square_size;
+                int y = selectedFigure.getRow() * square_size;
+                g2.setColor(Color.BLUE);
+                g2.drawRect(x, y, square_size, square_size);
+                if (selectedFigure.getColor().equals(Color.WHITE)) {
+                        // Проверяем возможный ход на одну клетку вверх
+                        if (selectedFigure.getRow() > 0 && board[selectedFigure.getRow() - 1][selectedFigure.getCol()] == null) {
+                                g2.drawRect(x, y - square_size, square_size, square_size);
+                        }
+
+                        // Проверяем возможный ход на две клетки вверх из начальной позиции
+                        if (selectedFigure.getRow() == 6) {
+                                if (board[selectedFigure.getRow() - 1][selectedFigure.getCol()] == null &&
+                                        board[selectedFigure.getRow() - 2][selectedFigure.getCol()] == null) {
+                                        g2.drawRect(x, y - square_size, square_size, square_size);
+                                        g2.drawRect(x, y - 2 * square_size, square_size, square_size);
+                                }
+                        }
+                } else if (selectedFigure.getColor().equals(Color.BLACK)) {
+                        // Проверяем возможный ход на одну клетку вниз
+                        if (selectedFigure.getRow() < ROW_COUNT - 1 && board[selectedFigure.getRow() + 1][selectedFigure.getCol()] == null) {
+                                g2.drawRect(x, y + square_size, square_size, square_size);
+                        }
+
+                        // Проверяем возможный ход на две клетки вниз из начальной позиции
+                        if (selectedFigure.getRow() == 1) {
+                                if (board[selectedFigure.getRow() + 1][selectedFigure.getCol()] == null &&
+                                        board[selectedFigure.getRow() + 2][selectedFigure.getCol()] == null) {
+                                        g2.drawRect(x, y + square_size, square_size, square_size);
+                                        g2.drawRect(x, y + 2 * square_size, square_size, square_size);
+                                }
+                        }
+                }
         }
 
         /**
@@ -159,7 +335,6 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
                 int row = y / square_size;
                 int col = x / square_size;
 
-
                 if(col > ROW_COUNT - 1) {
                         col = ROW_COUNT - 1;
                 }
@@ -175,12 +350,13 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
                 }
 
                 selectedFigure = board[row][col]; // Zapishe do selectedFigure figuru z pole
-
                 if (selectedFigure != null) {
                         selectedFigureX = col;
                         selectedFigureY = row;
                 }
+                repaint();
         }
+
 
         public void mouseDragged(MouseEvent e) {
         }
@@ -195,17 +371,18 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
                         int y = e.getY() - shiftY;
                         int row = y / square_size;
                         int col = x / square_size;
-                        if(col > ROW_COUNT - 1 || row > ROW_COUNT - 1 || col < 0 || row < 0 || x < 0 || y < 0) {
-                                board[selectedFigureY][selectedFigureX] = selectedFigure;
+                        if (selectedFigure.moveTo(selectedFigureX, selectedFigureY, col, row, board)) {
+                                if (col > ROW_COUNT - 1 || row > ROW_COUNT - 1 || col < 0 || row < 0 || x < 0 || y < 0) {
+                                        board[selectedFigureY][selectedFigureX] = selectedFigure;
+                                } else {
+                                        board[selectedFigure.getRow()][selectedFigure.getCol()] = null;
+                                        board[row][col] = selectedFigure; // Zapise do pole figuru
+                                        selectedFigure.setRow(row);
+                                        selectedFigure.setCol(col);
+                                }
+                                selectedFigure = null;
+                                repaint();
                         }
-                        else {
-                                board[selectedFigure.getRow()][selectedFigure.getCol()] = null;
-                                board[row][col] = selectedFigure; // Zapise do pole figuru
-                                selectedFigure.setRow(row);
-                                selectedFigure.setCol(col);
-                        }
-                        selectedFigure = null;
-                        repaint();
 
                 }
         }

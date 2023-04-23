@@ -11,6 +11,7 @@ public class King extends Figure {
 
 	public King(int x, int y, Color color, double square_size) {
 		super(x, y, color, square_size);
+		this.type = EFigure.KING;
 	}
 
 	@Override
@@ -37,9 +38,22 @@ public class King extends Figure {
 		g.fillOval((int)(x + square_size / 3), (int)(y + square_size /4), (int)(square_size / 3), (int)(square_size / 2));
 		g.setColor(Color.BLACK);
 		g.drawOval((int)(x + square_size / 3), (int)(y + square_size /4), (int)(square_size / 3), (int)(square_size / 2));
+	}
+	@Override
+	public boolean moveTo(int cX, int cY, int x, int y, Figure[][] board) {
+		int deltaX = Math.abs(getCol() - x);
+		int deltaY = Math.abs(getRow() - y);
 
+		if (deltaX > 1 || deltaY > 1) {
+			return false;
+		}
 
+// Проверяем, что на клетке, на которую собирается перейти король, нет фигур своего цвета
+		if (board[y][x] != null && board[y][x].getColor().equals(getColor())) {
+			return false;
+		}
 
+		return true;
 	}
 
 }

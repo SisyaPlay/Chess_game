@@ -14,6 +14,7 @@ public abstract class Figure extends JPanel{
 	protected int y; // Osa Y
 	protected Color color; // Barva figury
 	protected double square_size; // Velikost ctverce
+	protected EFigure type;
 
 	/**
 	 * Konstruktor, odstrani pozadi, nastavi preferovanou velikost figury
@@ -29,6 +30,7 @@ public abstract class Figure extends JPanel{
 		this.square_size = square_size;
 		this.setOpaque(false); // Odstaneni pozadi
 		this.setPreferredSize(new Dimension((int)square_size, (int)square_size));
+		this.type = null;
 	}
 
 	/**
@@ -69,5 +71,17 @@ public abstract class Figure extends JPanel{
 	 */
 	public void setCol(int x) { this.x = x; }
 	public void setRow(int y) { this.y = y; }
+
+	public EFigure getType() {
+		return type;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public boolean moveTo(int cX, int cY, int x, int y, Figure[][] board) {
+		return true;
+	}
 }
 
