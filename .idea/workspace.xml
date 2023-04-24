@@ -11,20 +11,9 @@
   <component name="ChangeListManager">
     <list default="true" id="913933c6-3ac9-491f-b08e-28036316a50d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/ChessBoard.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/ChessBoard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/allclasses-index.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/allclasses-index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/allclasses.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/allclasses.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/index-all.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/index-all.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/overview-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/overview-tree.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/package-summary.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/package-tree.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/serialized-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/serialized-form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/kiv-upg/META-INF/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ChessView/ChessBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ChessBoardView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controllers/BoardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/BoardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Figures/Figure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Figure.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/ChessBoardView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ChessBoardView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +49,7 @@
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
@@ -106,7 +96,10 @@
       <workItem from="1682016244126" duration="51000" />
       <workItem from="1682068026860" duration="419000" />
       <workItem from="1682145582300" duration="44000" />
-      <workItem from="1682246792162" duration="9246000" />
+      <workItem from="1682246792162" duration="12693000" />
+      <workItem from="1682263031376" duration="2438000" />
+      <workItem from="1682278256589" duration="944000" />
+      <workItem from="1682346047695" duration="2188000" />
     </task>
     <servers />
   </component>

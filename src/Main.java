@@ -1,4 +1,5 @@
 import View.ChessBoardView;
+import View.GameView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,24 +12,10 @@ import java.awt.*;
  * @version 26.03.2023
  */
 public class Main {
-    private static final int WIDTH = 800; // Sirka onka
-    private static final int HEIGHT = 600; // Vyska okna
+
     public static void main(String[] args) {
-        ChessBoardView board = new ChessBoardView();
-        JFrame frame = new JFrame("UPG Sachy Mukanov - A22B0388P");
-
-        //frame.setLocationRelativeTo(null);
-
-        frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        //frame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
-
-
-        frame.add(board);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        frame.pack();
-
-        frame.setVisible(true);
+        GameView gameView = new GameView();
+        gameView.createWindow();
 
     }
 }

@@ -1,18 +1,25 @@
 package Controllers;
 
 import View.ChessBoardView;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
 import static View.ChessBoardView.ROW_COUNT;
 
-public class BoardController implements MouseListener, MouseMotionListener {
+public class BoardController implements MouseListener, MouseMotionListener, ActionListener {
 
     private ChessBoardView chessBoardView;
+    public static Color currentPlayer = Color.WHITE;
+    private static final int DELAY = 100;
+    private Timer timer;
 
     public BoardController(ChessBoardView chessBoardView) {
         this.chessBoardView = chessBoardView;
+
+        timer = new Timer(DELAY, this);
+        timer.start();
     }
 
     /**
@@ -45,21 +52,13 @@ public class BoardController implements MouseListener, MouseMotionListener {
             chessBoardView.setSelectedFigureX(col);
             chessBoardView.setSelectedFigureY(row);
         }
-        chessBoardView.repaint();
+        if(chessBoardView.getSelectedFigure() != null && chessBoardView.getSelectedFigure().getColor() == currentPlayer) {
+            chessBoardView.repaint();
+        }
     }
 
 
     public void mouseDragged(MouseEvent e) {
-        int x = e.getX() - chessBoardView.getShiftX();
-        int y = e.getY() - chessBoardView.getShiftY();
-        int row = y / chessBoardView.getSquare_size();
-        int col = x / chessBoardView.getSquare_size();
-        if (chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard())
-                && chessBoardView.getSelectedFigure() != null) {
-            chessBoardView.getSelectedFigure().setX(col);
-            chessBoardView.getSelectedFigure().setY(row);
-            chessBoardView.repaint();
-        }
     }
 
     /**
@@ -72,7 +71,8 @@ public class BoardController implements MouseListener, MouseMotionListener {
             int y = e.getY() - chessBoardView.getShiftY();
             int row = y / chessBoardView.getSquare_size();
             int col = x / chessBoardView.getSquare_size();
-            if (chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard())) {
+            if (chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard())
+                                && currentPlayerMove(row, col)) {
                 if (col > ROW_COUNT - 1 || row > ROW_COUNT - 1 || col < 0 || row < 0 || x < 0 || y < 0) {
                     chessBoardView.getBoard()[chessBoardView.getSelectedFigureY()][chessBoardView.getSelectedFigureX()] = chessBoardView.getSelectedFigure();
                 } else {
@@ -84,12 +84,34 @@ public class BoardController implements MouseListener, MouseMotionListener {
                 chessBoardView.setSelectedFigure(null);
                 chessBoardView.repaint();
             }
-        }
 
+        }
     }
 
     public void mouseMoved(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}
     public void mouseClicked(MouseEvent e) {}
+
+    private boolean currentPlayerMove(int row, int col) {
+        if(chessBoardView.getSelectedFigureX() == col) {
+            if(chessBoardView.getSelectedFigureY() == row){
+                return false;
+            }
+        }
+        if (chessBoardView.getSelectedFigure().getColor().equals(currentPlayer)) {
+            if (currentPlayer == Color.WHITE) {
+                currentPlayer = Color.BLACK;
+            } else {
+                currentPlayer = Color.WHITE;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
 }

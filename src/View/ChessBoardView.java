@@ -16,16 +16,12 @@ public class ChessBoardView extends JPanel {
 
         public static final int ROW_COUNT = 8; // Pocet ctvercu
         private int square_size; // Velikost ctverce
-
         private Figure[][] board = new Figure[8][8]; // Pole, kde jsou figury
         private Figure selectedFigure; // Vybrana figura
         private int selectedFigureX; // Pozice vybranou figury podle osy X
         private int selectedFigureY = 0; // Pozice vybranou figury podle osy Y
-
         private int shiftX; // Posun
         private int shiftY;
-        private Color currentPlayer = Color.WHITE;
-
         private BoardController boardController;
 
         /**
@@ -35,7 +31,6 @@ public class ChessBoardView extends JPanel {
          * A zavola posluchac mysi.
          */
         public ChessBoardView() {
-
                 this.boardController = new BoardController(this);
 
                 setPreferredSize(new Dimension(square_size * ROW_COUNT, square_size * ROW_COUNT));
@@ -126,7 +121,7 @@ public class ChessBoardView extends JPanel {
                         }
                 }
 
-                /*
+
                 if(selectedFigure != null) {
                         switch(selectedFigure.getType()) {
                                 case PAWNS:
@@ -149,8 +144,6 @@ public class ChessBoardView extends JPanel {
                                         break;
                         }
                 }
-
-                 */
         }
 
         private void showAvailableMoveToRook(Graphics2D g2) {
@@ -211,7 +204,6 @@ public class ChessBoardView extends JPanel {
                         }
                 }
         }
-
         private void showAvailableMoveToKing(Graphics2D g2) {
                 int x = selectedFigure.getCol() * square_size;
                 int y = selectedFigure.getRow() * square_size;
@@ -235,7 +227,6 @@ public class ChessBoardView extends JPanel {
                 if (x - square_size >= 0) g2.drawRect(x - square_size, y, square_size, square_size);
                 if (x + square_size < ROW_COUNT * square_size) g2.drawRect(x + square_size, y, square_size, square_size);
         }
-
         private void showAvailableMoveToBishop(Graphics2D g2) {
                 int x = selectedFigure.getCol() * square_size;
                 int y = selectedFigure.getRow() * square_size;
@@ -255,6 +246,11 @@ public class ChessBoardView extends JPanel {
                                 int newX = newCol * square_size;
                                 int newY = newRow * square_size;
 
+                                // Если на пути по диагонали есть фигура, то останавливаемся
+                                if (board[newRow][newCol] != null) {
+                                        break;
+                                }
+
                                 g2.drawRect(newX, newY, square_size, square_size);
 
                                 // Перемещаемся к следующей клетке по диагонали
@@ -273,9 +269,12 @@ public class ChessBoardView extends JPanel {
                         int newRow = selectedFigure.getRow() + rowOffsets[i];
                         int newCol = selectedFigure.getCol() + colOffsets[i];
                         if (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
-                                int x = newCol * square_size;
-                                int y = newRow * square_size;
-                                g2.drawRect(x, y, square_size, square_size);
+                                if (board[newRow][newCol] == null || board[newRow][newCol].getColor() != selectedFigure.getColor()) {
+                                        // клетка пустая или на ней стоит фигура противника
+                                        int x = newCol * square_size;
+                                        int y = newRow * square_size;
+                                        g2.drawRect(x, y, square_size, square_size);
+                                }
                         }
                 }
         }
@@ -362,10 +361,6 @@ public class ChessBoardView extends JPanel {
                 return shiftY;
         }
 
-        public Color getCurrentPlayer() {
-                return currentPlayer;
-        }
-
         public void setSelectedFigure(Figure selectedFigure) {
                 this.selectedFigure = selectedFigure;
         }
@@ -376,5 +371,38 @@ public class ChessBoardView extends JPanel {
 
         public void setSelectedFigureY(int selectedFigureY) {
                 this.selectedFigureY = selectedFigureY;
+        }
+
+        public void restart() {
+                board = new Figure[8][8];
+
+                for (int i = 0; i < 8; i++) {
+                        board[1][i] = new Pawns( i, 1, Color.BLACK, square_size);
+                        board[6][i] = new Pawns( i, 6, Color.WHITE, square_size);
+                }
+                board[0][0] = new Rook( 0, 0, Color.BLACK, square_size);
+                board[0][7] = new Rook( 7, 0, Color.BLACK, square_size);
+                board[7][0] = new Rook( 0, 7, Color.WHITE, square_size);
+                board[7][7] = new Rook( 7, 7, Color.WHITE, square_size);
+
+                board[0][4] = new King(4, 0, Color.BLACK, square_size);
+                board[7][4] = new King(4, 7, Color.WHITE, square_size);
+
+                board[0][3] = new Queen(3, 0, Color.BLACK, square_size);
+                board[7][3] = new Queen(3, 7, Color.WHITE, square_size);
+
+                board[0][1] = new Knight( 1, 0, Color.BLACK, square_size);
+                board[0][6] = new Knight( 6, 0, Color.BLACK, square_size);
+                board[7][1] = new Knight( 1, 7, Color.WHITE, square_size);
+                board[7][6] = new Knight( 6, 7, Color.WHITE, square_size);
+
+                board[0][2] = new Bishop( 2, 0, Color.BLACK, square_size);
+                board[0][5] = new Bishop( 5, 0, Color.BLACK, square_size);
+                board[7][2] = new Bishop( 2, 7, Color.WHITE, square_size);
+                board[7][5] = new Bishop( 5, 7, Color.WHITE, square_size);
+
+                BoardController.currentPlayer = Color.WHITE;
+                repaint();
+
         }
 }
