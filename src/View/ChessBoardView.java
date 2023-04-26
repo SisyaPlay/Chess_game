@@ -3,8 +3,15 @@ package View;
 import Controllers.BoardController;
 import Figures.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Trida View.ChessBoard dedi od JPanelu a implementuje MouseListener, MouseMotionListener.
@@ -24,6 +31,7 @@ public class ChessBoardView extends JPanel {
         private int shiftY;
         private BoardController boardController;
 
+
         /**
          * Konstruktor sachonvnice.
          * Zde je ComponentListener, kdery zmemi rozmer figur a sachovnice podle velikosti okna.
@@ -35,7 +43,6 @@ public class ChessBoardView extends JPanel {
 
                 setPreferredSize(new Dimension(square_size * ROW_COUNT, square_size * ROW_COUNT));
                 addMouseListener(boardController);
-                addMouseMotionListener(boardController);
 
                 for (int i = 0; i < 8; i++) {
                         board[1][i] = new Pawns( i, 1, Color.BLACK, square_size);
@@ -149,21 +156,39 @@ public class ChessBoardView extends JPanel {
         private void showAvailableMoveToRook(Graphics2D g2) {
                 int x = selectedFigure.getCol() * square_size;
                 int y = selectedFigure.getRow() * square_size;
+                int[] colOffsets = {1, 0, -1, 0};
+                int[] rowOffsets = {0, 1, 0, -1};
                 g2.setColor(Color.BLUE);
                 g2.drawRect(x, y, square_size, square_size);
 
-                for (int i = 0; i < ROW_COUNT; i++) {
-                        if (i != selectedFigure.getCol()) {
-                                g2.drawRect(i * square_size, y, square_size, square_size);
-                        }
-                }
+                for (int i = 0; i < rowOffsets.length; i++) {
+                        int newRow = selectedFigure.getRow() + rowOffsets[i];
+                        int newCol = selectedFigure.getCol() + colOffsets[i];
 
-                for (int j = 0; j < ROW_COUNT; j++) {
-                        if (j != selectedFigure.getRow()) {
-                                g2.drawRect(x, j * square_size, square_size, square_size);
+                        // Пока можем продолжать двигаться по диагонали
+                        while (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
+                                int newX = newCol * square_size;
+                                int newY = newRow * square_size;
+
+                                if(board[newRow][newCol] != null && !board[newRow][newCol].getColor().equals(selectedFigure.getColor())) {
+                                        g2.setColor(Color.RED);
+                                        g2.drawRect(newX, newY, square_size, square_size);
+                                        g2.setColor(Color.BLUE);
+                                }
+                                // Если на пути по диагонали есть фигура, то останавливаемся
+                                if (board[newRow][newCol] != null) {
+                                        break;
+                                }
+
+                                g2.drawRect(newX, newY, square_size, square_size);
+
+                                // Перемещаемся к следующей клетке по диагонали
+                                newRow += rowOffsets[i];
+                                newCol += colOffsets[i];
                         }
                 }
         }
+
 
         private void showAvailableMoveToQueen(Graphics2D g2) {
                 int x = selectedFigure.getCol() * square_size;
@@ -175,18 +200,6 @@ public class ChessBoardView extends JPanel {
                 int[] colOffsets = {1, -1, 1, -1};
                 g2.drawRect(x, y, square_size, square_size);
 
-                for (int i = 0; i < ROW_COUNT; i++) {
-                        if (i != selectedFigure.getCol()) {
-                                g2.drawRect(i * square_size, y, square_size, square_size);
-                        }
-                }
-
-                for (int j = 0; j < ROW_COUNT; j++) {
-                        if (j != selectedFigure.getRow()) {
-                                g2.drawRect(x, j * square_size, square_size, square_size);
-                        }
-                }
-
                 for (int i = 0; i < rowOffsets.length; i++) {
                         int newRow = selectedFigure.getRow() + rowOffsets[i];
                         int newCol = selectedFigure.getCol() + colOffsets[i];
@@ -196,6 +209,16 @@ public class ChessBoardView extends JPanel {
                                 int newX = newCol * square_size;
                                 int newY = newRow * square_size;
 
+                                if(board[newRow][newCol] != null && !board[newRow][newCol].getColor().equals(selectedFigure.getColor())) {
+                                        g2.setColor(Color.RED);
+                                        g2.drawRect(newX, newY, square_size, square_size);
+                                        g2.setColor(Color.BLUE);
+                                }
+                                // Если на пути по диагонали есть фигура, то останавливаемся
+                                if (board[newRow][newCol] != null) {
+                                        break;
+                                }
+
                                 g2.drawRect(newX, newY, square_size, square_size);
 
                                 // Перемещаемся к следующей клетке по диагонали
@@ -203,29 +226,97 @@ public class ChessBoardView extends JPanel {
                                 newCol += colOffsets[i];
                         }
                 }
+
+                int[] colOffsetsGor = {1, 0, -1, 0};
+                int[] rowOffsetsGor = {0, 1, 0, -1};
+                g2.setColor(Color.BLUE);
+                g2.drawRect(x, y, square_size, square_size);
+
+                for (int i = 0; i < rowOffsetsGor.length; i++) {
+                        int newRow = selectedFigure.getRow() + rowOffsetsGor[i];
+                        int newCol = selectedFigure.getCol() + colOffsetsGor[i];
+
+                        // Пока можем продолжать двигаться по диагонали
+                        while (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
+                                int newX = newCol * square_size;
+                                int newY = newRow * square_size;
+
+                                if(board[newRow][newCol] != null && !board[newRow][newCol].getColor().equals(selectedFigure.getColor())) {
+                                        g2.setColor(Color.RED);
+                                        g2.drawRect(newX, newY, square_size, square_size);
+                                        g2.setColor(Color.BLUE);
+                                }
+                                // Если на пути по диагонали есть фигура, то останавливаемся
+                                if (board[newRow][newCol] != null) {
+                                        break;
+                                }
+
+                                g2.drawRect(newX, newY, square_size, square_size);
+
+                                // Перемещаемся к следующей клетке по диагонали
+                                newRow += rowOffsetsGor[i];
+                                newCol += colOffsetsGor[i];
+                        }
+                }
         }
         private void showAvailableMoveToKing(Graphics2D g2) {
                 int x = selectedFigure.getCol() * square_size;
                 int y = selectedFigure.getRow() * square_size;
                 g2.setColor(Color.BLUE);
-
+                g2.drawRect(x, y, square_size, square_size);
                 // Check and draw available moves to top row
                 if (y - square_size >= 0) {
-                        g2.drawRect(x, y - square_size, square_size, square_size);
-                        if (x - square_size >= 0) g2.drawRect(x - square_size, y - square_size, square_size, square_size);
-                        if (x + square_size < ROW_COUNT * square_size) g2.drawRect(x + square_size, y - square_size, square_size, square_size);
+                        if (board[selectedFigure.getRow() - 1][selectedFigure.getCol()] == null ||
+                                board[selectedFigure.getRow() - 1][selectedFigure.getCol()].getColor() != selectedFigure.getColor()) {
+                                g2.drawRect(x, y - square_size, square_size, square_size);
+                                if (x - square_size >= 0) {
+                                        if (board[selectedFigure.getRow() - 1][selectedFigure.getCol() - 1] == null ||
+                                                board[selectedFigure.getRow() - 1][selectedFigure.getCol() - 1].getColor() != selectedFigure.getColor()) {
+                                                g2.drawRect(x - square_size, y - square_size, square_size, square_size);
+                                        }
+                                }
+                                if (x + square_size < ROW_COUNT * square_size) {
+                                        if (board[selectedFigure.getRow() - 1][selectedFigure.getCol() + 1] == null ||
+                                                board[selectedFigure.getRow() - 1][selectedFigure.getCol() + 1].getColor() != selectedFigure.getColor()) {
+                                                g2.drawRect(x + square_size, y - square_size, square_size, square_size);
+                                        }
+                                }
+                        }
                 }
 
-                // Check and draw available moves to bottom row
+// Check and draw available moves to bottom row
                 if (y + square_size < ROW_COUNT * square_size) {
-                        g2.drawRect(x, y + square_size, square_size, square_size);
-                        if (x - square_size >= 0) g2.drawRect(x - square_size, y + square_size, square_size, square_size);
-                        if (x + square_size < ROW_COUNT * square_size) g2.drawRect(x + square_size, y + square_size, square_size, square_size);
+                        if (board[selectedFigure.getRow() + 1][selectedFigure.getCol()] == null ||
+                                board[selectedFigure.getRow() + 1][selectedFigure.getCol()].getColor() != selectedFigure.getColor()) {
+                                g2.drawRect(x, y + square_size, square_size, square_size);
+                                if (x - square_size >= 0) {
+                                        if (board[selectedFigure.getRow() + 1][selectedFigure.getCol() - 1] == null ||
+                                                board[selectedFigure.getRow() + 1][selectedFigure.getCol() - 1].getColor() != selectedFigure.getColor()) {
+                                                g2.drawRect(x - square_size, y + square_size, square_size, square_size);
+                                        }
+                                }
+                                if (x + square_size < ROW_COUNT * square_size) {
+                                        if (board[selectedFigure.getRow() + 1][selectedFigure.getCol() + 1] == null ||
+                                                board[selectedFigure.getRow() + 1][selectedFigure.getCol() + 1].getColor() != selectedFigure.getColor()) {
+                                                g2.drawRect(x + square_size, y + square_size, square_size, square_size);
+                                        }
+                                }
+                        }
                 }
 
-                // Check and draw available moves to left and right columns
-                if (x - square_size >= 0) g2.drawRect(x - square_size, y, square_size, square_size);
-                if (x + square_size < ROW_COUNT * square_size) g2.drawRect(x + square_size, y, square_size, square_size);
+// Check and draw available moves to left and right columns
+                if (x - square_size >= 0) {
+                        if (board[selectedFigure.getRow()][selectedFigure.getCol() - 1] == null ||
+                                board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getColor() != selectedFigure.getColor()) {
+                                g2.drawRect(x - square_size, y, square_size, square_size);
+                        }
+                }
+                if (x + square_size < ROW_COUNT * square_size) {
+                        if (board[selectedFigure.getRow()][selectedFigure.getCol() + 1] == null ||
+                                board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getColor() != selectedFigure.getColor()) {
+                                g2.drawRect(x + square_size, y, square_size, square_size);
+                        }
+                }
         }
         private void showAvailableMoveToBishop(Graphics2D g2) {
                 int x = selectedFigure.getCol() * square_size;
@@ -246,6 +337,11 @@ public class ChessBoardView extends JPanel {
                                 int newX = newCol * square_size;
                                 int newY = newRow * square_size;
 
+                                if(board[newRow][newCol] != null && !board[newRow][newCol].getColor().equals(selectedFigure.getColor())) {
+                                    g2.setColor(Color.RED);
+                                    g2.drawRect(newX, newY, square_size, square_size);
+                                    g2.setColor(Color.BLUE);
+                                }
                                 // Если на пути по диагонали есть фигура, то останавливаемся
                                 if (board[newRow][newCol] != null) {
                                         break;
@@ -269,15 +365,23 @@ public class ChessBoardView extends JPanel {
                         int newRow = selectedFigure.getRow() + rowOffsets[i];
                         int newCol = selectedFigure.getCol() + colOffsets[i];
                         if (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
-                                if (board[newRow][newCol] == null || board[newRow][newCol].getColor() != selectedFigure.getColor()) {
-                                        // клетка пустая или на ней стоит фигура противника
+                                if (board[newRow][newCol] == null) {
+                                        // клетка пустая
                                         int x = newCol * square_size;
                                         int y = newRow * square_size;
                                         g2.drawRect(x, y, square_size, square_size);
+                                } else if (board[newRow][newCol].getColor() != selectedFigure.getColor()) {
+                                        // на клетке стоит конь противника
+                                        int x = newCol * square_size;
+                                        int y = newRow * square_size;
+                                        g2.setColor(Color.RED);
+                                        g2.drawRect(x, y, square_size, square_size);
+                                        g2.setColor(Color.BLUE);
                                 }
                         }
                 }
         }
+
 
         private void showAvailableMoveToPawn(Graphics2D g2) {
                 int x = selectedFigure.getCol() * square_size;
@@ -298,6 +402,18 @@ public class ChessBoardView extends JPanel {
                                         g2.drawRect(x, y - 2 * square_size, square_size, square_size);
                                 }
                         }
+                        if (selectedFigure.getRow() > 0 && selectedFigure.getCol() > 0 &&
+                                board[selectedFigure.getRow() - 1][selectedFigure.getCol() - 1] != null &&
+                                !selectedFigure.getColor().equals(board[selectedFigure.getRow() - 1][selectedFigure.getCol() - 1].getColor())) {
+                                g2.setColor(Color.RED);
+                                g2.drawRect(x - square_size, y - square_size, square_size, square_size);
+                        }
+                        if (selectedFigure.getRow() > 0 && selectedFigure.getCol() < 7 &&
+                                board[selectedFigure.getRow() - 1][selectedFigure.getCol() + 1] != null &&
+                                !selectedFigure.getColor().equals(board[selectedFigure.getRow() - 1][selectedFigure.getCol() + 1].getColor())) {
+                                g2.setColor(Color.RED);
+                                g2.drawRect(x + square_size, y - square_size, square_size, square_size);
+                        }
                 } else if (selectedFigure.getColor().equals(Color.BLACK)) {
                         // Проверяем возможный ход на одну клетку вниз
                         if (selectedFigure.getRow() < ROW_COUNT - 1 && board[selectedFigure.getRow() + 1][selectedFigure.getCol()] == null) {
@@ -311,6 +427,20 @@ public class ChessBoardView extends JPanel {
                                         g2.drawRect(x, y + square_size, square_size, square_size);
                                         g2.drawRect(x, y + 2 * square_size, square_size, square_size);
                                 }
+                        }
+                        if (selectedFigure.getRow() < 7 && selectedFigure.getCol() > 0 &&
+                                board[selectedFigure.getRow() + 1][selectedFigure.getCol() - 1] != null &&
+                                !selectedFigure.getColor().equals(board[selectedFigure.getRow() + 1][selectedFigure.getCol() - 1].getColor())) {
+                                g2.setColor(Color.RED);
+                                g2.drawRect(x - square_size, y + square_size, square_size, square_size);
+                        }
+
+                        // Проверяем возможный ход по диагонали вправо-вверх, если там есть фигура противоположного цвета
+                        if (selectedFigure.getRow() < 7 && selectedFigure.getCol() < 7 &&
+                                board[selectedFigure.getRow() + 1][selectedFigure.getCol() + 1] != null &&
+                                !selectedFigure.getColor().equals(board[selectedFigure.getRow() + 1][selectedFigure.getCol() + 1].getColor())) {
+                                g2.setColor(Color.RED);
+                                g2.drawRect(x + square_size, y + square_size, square_size, square_size);
                         }
                 }
         }
@@ -404,5 +534,22 @@ public class ChessBoardView extends JPanel {
                 BoardController.currentPlayer = Color.WHITE;
                 repaint();
 
+        }
+
+        public void createPNGImage(String fileName) {
+                // Создаем изображение с размерами компонента
+                BufferedImage image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+                // Рисуем компонент на изображении
+                Graphics2D g2 = image.createGraphics();
+                paintComponent(g2);
+                //g2.dispose();
+
+                // Сохраняем изображение в файл
+                try {
+                        ImageIO.write(image, "png", new File(fileName));
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
         }
 }

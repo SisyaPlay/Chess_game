@@ -55,26 +55,27 @@ public class Rook extends Figure {
 		if (getCol() == x || getRow() == y) {
 			int start, end;
 			if (getCol() == x) { // движение по вертикали
-				start = Math.min(getRow(), y);
-				end = Math.max(getRow(), y);
+				start = (int) Math.min(getRow(), y);
+				end = (int) Math.max(getRow(), y);
 			} else { // движение по горизонтали
-				start = Math.min(getCol(), x);
-				end = Math.max(getCol(), x);
+				start = (int) Math.min(getCol(), x);
+				end = (int) Math.max(getCol(), x);
 			}
 
 			for (int i = start + 1; i < end; i++) { // проверяем все клетки на пути
 				if (getCol() == x) { // движение по вертикали
-					if (board[i][getCol()] != null) { // есть фигура на пути
+					if (board[i][(int)getCol()] != null) { // есть фигура на пути
 						return false;
 					}
 				} else { // движение по горизонтали
-					if (board[getRow()][i] != null) { // есть фигура на пути
+					if (board[(int)getRow()][i] != null) { // есть фигура на пути
 						return false;
 					}
 				}
 			}
 			// проверяем цвет фигуры на конечной позиции
 			if (board[y][x] == null || board[y][x].getColor() != getColor()) {
+				addCountOfMove();
 				return true;
 			}
 		}

@@ -52,7 +52,7 @@ public class King extends Figure {
 		if (board[y][x] != null && board[y][x].getColor().equals(getColor())) {
 			return false;
 		}
-
+		addCountOfMove();
 		return true;
 	}
 

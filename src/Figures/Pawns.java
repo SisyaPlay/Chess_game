@@ -9,8 +9,6 @@ import java.awt.geom.Arc2D;
  */
 public class Pawns extends Figure {
 
-	private int pocetChoduBil = 0;
-	private int pocetChoduCer = 0;
 	public Pawns(int x, int y, Color color, double square_size) {
 		super(x, y, color, square_size);
 		this.type = EFigure.PAWNS;
@@ -38,40 +36,63 @@ public class Pawns extends Figure {
 		g.setColor(Color.BLACK);
 		g.drawOval((int)((x + square_size / 4) + R / 4), (int)((y + square_size / 2) - R2 + 2), (int)R2, (int)R2);
 	}
+
 	@Override
 	public boolean moveTo(int cX, int cY, int x, int y, Figure[][] board) {
-		if(this.color.equals(Color.WHITE)) {
-			if(board[cY - 1][x] != null || board[y][x] != null) {
-				return false;
-			}
-			if(cY == 6) {
+		if (this.color.equals(Color.WHITE)) {
+			if (cY == 6) {
 				if (x != getCol()) {
-					return false;
+					if ((getRow() - y == 1) && ((cX - x == 1) || (x - cX == 1))
+							&& (board[y][x] != null) && (board[y][x].getColor() != this.color)) {
+						addCountOfMove();
+						return true;
+					} else {
+						return false;
+					}
 				} else if (getRow() - y == 1 || getRow() - y == 2) {
+					addCountOfMove();
 					return true;
 				}
 			} else {
 				if (x != getCol()) {
-					return false;
-				} else if (getRow() - y == 1) {
+					if ((getRow() - y == 1) && ((cX - x == 1) || (x - cX == 1))
+							&& (board[y][x] != null) && (board[y][x].getColor() != this.color)) {
+						addCountOfMove();
+						return true;
+					} else {
+						return false;
+					}
+				} else if (getRow() - y == 1 && board[cY - 1][x] == null) {
+					addCountOfMove();
 					return true;
 				}
 			}
 			return false;
-		} else if(this.color.equals(Color.BLACK)) {
-			if(board[cY + 1][x] != null || board[y][x] != null) {
-				return false;
-			}
-			if(cY == 1) {
+		} else if (this.color.equals(Color.BLACK)) {
+			if (cY == 1) {
 				if (x != getCol()) {
-					return false;
+					if ((getRow() - y == -1) && ((cX - x == -1) || (x - cX == -1))
+							&& (board[y][x] != null) && (board[y][x].getColor() != this.color)) {
+						addCountOfMove();
+						return true;
+					} else {
+						return false;
+					}
 				} else if (getRow() - y == -1 || getRow() - y == -2) {
+					addCountOfMove();
 					return true;
 				}
 			} else {
 				if (x != getCol()) {
-					return false;
-				} else if (getRow() - y == -1) {
+					if ((getRow() - y == -1) && ((cX - x == -1) || (x - cX == -1))
+							&& (board[y][x] != null) && (board[y][x].getColor() != this.color)) {
+						addCountOfMove();
+						return true;
+					} else {
+						return false;
+					}
+				} else if (getRow() - y == -1 && board[cY + 1][x] == null) {
+					addCountOfMove();
 					return true;
 				}
 			}

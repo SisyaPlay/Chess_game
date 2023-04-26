@@ -4,6 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameView extends JFrame{
 
@@ -46,6 +51,12 @@ public class GameView extends JFrame{
                 board.restart();
             }
         });
+        item3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                board.createPNGImage("output.png");
+            }
+        });
         // Menu
         menuBar.add(menuGame);
         menuBar.add(menuHelp);
@@ -75,5 +86,6 @@ public class GameView extends JFrame{
         this.pack();
 
         this.setVisible(true);
+
     }
 }

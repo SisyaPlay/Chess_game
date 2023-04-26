@@ -15,6 +15,7 @@ public abstract class Figure extends JPanel{
 	protected Color color; // Barva figury
 	protected double square_size; // Velikost ctverce
 	protected EFigure type;
+	protected int countOfMove;
 
 	/**
 	 * Konstruktor, odstrani pozadi, nastavi preferovanou velikost figury
@@ -91,5 +92,14 @@ public abstract class Figure extends JPanel{
 	public boolean moveTo(int cX, int cY, int x, int y, Figure[][] board) {
 		return true;
 	}
+	public void addCountOfMove() {
+		countOfMove++;
+	}
+
+	public int getCountOfMove() {
+		return countOfMove;
+	}
+
+
 }
 
