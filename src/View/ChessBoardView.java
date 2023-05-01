@@ -264,7 +264,6 @@ public class ChessBoardView extends JPanel {
                 int y = selectedFigure.getRow() * square_size;
                 g2.setColor(Color.BLUE);
                 g2.drawRect(x, y, square_size, square_size);
-                // Check and draw available moves to top row
                 if (y - square_size >= 0) {
                         if (board[selectedFigure.getRow() - 1][selectedFigure.getCol()] == null ||
                                 board[selectedFigure.getRow() - 1][selectedFigure.getCol()].getColor() != selectedFigure.getColor()) {
@@ -284,7 +283,6 @@ public class ChessBoardView extends JPanel {
                         }
                 }
 
-// Check and draw available moves to bottom row
                 if (y + square_size < ROW_COUNT * square_size) {
                         if (board[selectedFigure.getRow() + 1][selectedFigure.getCol()] == null ||
                                 board[selectedFigure.getRow() + 1][selectedFigure.getCol()].getColor() != selectedFigure.getColor()) {
@@ -304,7 +302,6 @@ public class ChessBoardView extends JPanel {
                         }
                 }
 
-// Check and draw available moves to left and right columns
                 if (x - square_size >= 0) {
                         if (board[selectedFigure.getRow()][selectedFigure.getCol() - 1] == null ||
                                 board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getColor() != selectedFigure.getColor()) {
@@ -414,6 +411,28 @@ public class ChessBoardView extends JPanel {
                                 g2.setColor(Color.RED);
                                 g2.drawRect(x + square_size, y - square_size, square_size, square_size);
                         }
+                        if(selectedFigure.getCol() != 7) {
+                                if (board[selectedFigure.getRow()][selectedFigure.getCol() + 1] != null &&
+                                        board[selectedFigure.getRow()][selectedFigure.getCol() + 1] instanceof Pawns &&
+                                        board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getCountOfMove() == 1 &&
+                                        board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getColor() != selectedFigure.getColor()) {
+                                        g2.setColor(Color.RED);
+                                        g2.drawRect(x + square_size, y, square_size, square_size);
+                                        g2.setColor(Color.GREEN);
+                                        g2.drawRect(x + square_size, y - square_size, square_size, square_size);
+                                }
+                        }
+                        if(selectedFigure.getCol() != 0) {
+                                if (board[selectedFigure.getRow()][selectedFigure.getCol() - 1] != null &&
+                                        board[selectedFigure.getRow()][selectedFigure.getCol() - 1] instanceof Pawns &&
+                                        board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getCountOfMove() == 1 &&
+                                        board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getColor() != selectedFigure.getColor()) {
+                                        g2.setColor(Color.RED);
+                                        g2.drawRect(x - square_size, y, square_size, square_size);
+                                        g2.setColor(Color.GREEN);
+                                        g2.drawRect(x - square_size, y - square_size, square_size, square_size);
+                                }
+                        }
                 } else if (selectedFigure.getColor().equals(Color.BLACK)) {
                         // Проверяем возможный ход на одну клетку вниз
                         if (selectedFigure.getRow() < ROW_COUNT - 1 && board[selectedFigure.getRow() + 1][selectedFigure.getCol()] == null) {
@@ -441,6 +460,28 @@ public class ChessBoardView extends JPanel {
                                 !selectedFigure.getColor().equals(board[selectedFigure.getRow() + 1][selectedFigure.getCol() + 1].getColor())) {
                                 g2.setColor(Color.RED);
                                 g2.drawRect(x + square_size, y + square_size, square_size, square_size);
+                        }
+                        if(selectedFigure.getCol() != 7) {
+                                if (board[selectedFigure.getRow()][selectedFigure.getCol() + 1] != null &&
+                                        board[selectedFigure.getRow()][selectedFigure.getCol() + 1] instanceof Pawns &&
+                                        board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getCountOfMove() == 1 &&
+                                        board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getColor() != selectedFigure.getColor()) {
+                                        g2.setColor(Color.RED);
+                                        g2.drawRect(x + square_size, y, square_size, square_size);
+                                        g2.setColor(Color.GREEN);
+                                        g2.drawRect(x + square_size, y + square_size, square_size, square_size);
+                                }
+                        }
+                        if(selectedFigure.getCol() != 0) {
+                                if (board[selectedFigure.getRow()][selectedFigure.getCol() - 1] != null &&
+                                        board[selectedFigure.getRow()][selectedFigure.getCol() - 1] instanceof Pawns &&
+                                        board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getCountOfMove() == 1 &&
+                                        board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getColor() != selectedFigure.getColor()) {
+                                        g2.setColor(Color.RED);
+                                        g2.drawRect(x - square_size, y, square_size, square_size);
+                                        g2.setColor(Color.GREEN);
+                                        g2.drawRect(x - square_size, y + square_size, square_size, square_size);
+                                }
                         }
                 }
         }

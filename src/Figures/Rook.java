@@ -1,6 +1,7 @@
 package Figures;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 /**
  * Trida Rook, vykresli vez
@@ -55,20 +56,20 @@ public class Rook extends Figure {
 		if (getCol() == x || getRow() == y) {
 			int start, end;
 			if (getCol() == x) { // движение по вертикали
-				start = (int) Math.min(getRow(), y);
-				end = (int) Math.max(getRow(), y);
+				start = Math.min(getRow(), y);
+				end = Math.max(getRow(), y);
 			} else { // движение по горизонтали
-				start = (int) Math.min(getCol(), x);
-				end = (int) Math.max(getCol(), x);
+				start = Math.min(getCol(), x);
+				end = Math.max(getCol(), x);
 			}
 
 			for (int i = start + 1; i < end; i++) { // проверяем все клетки на пути
 				if (getCol() == x) { // движение по вертикали
-					if (board[i][(int)getCol()] != null) { // есть фигура на пути
+					if (board[i][getCol()] != null) { // есть фигура на пути
 						return false;
 					}
 				} else { // движение по горизонтали
-					if (board[(int)getRow()][i] != null) { // есть фигура на пути
+					if (board[getRow()][i] != null) { // есть фигура на пути
 						return false;
 					}
 				}
@@ -76,10 +77,103 @@ public class Rook extends Figure {
 			// проверяем цвет фигуры на конечной позиции
 			if (board[y][x] == null || board[y][x].getColor() != getColor()) {
 				addCountOfMove();
+				addHistory(cX, cY, x, y);
 				return true;
 			}
 		}
 		return false;
 	}
 
+	public void addHistory(int cX, int cY, int x, int y) {
+		Point2D[] points = new Point2D[2];
+		points[0] = new Point2D.Double(cX, cY);
+		points[1] = new Point2D.Double(x, y);
+
+		this.history.add(points);
+	}
+
+	public boolean canEatKing(int cX, int cY, int x, int y, Figure[][] board) {
+// проверяем, что башня двигается по вертикали или горизонтали
+		if (getCol() == x || getRow() == y) {
+			int start, end;
+			if (getCol() == x) { // движение по вертикали
+				start = Math.min(getRow(), y);
+				end = Math.max(getRow(), y);
+			} else { // движение по горизонтали
+				start = Math.min(getCol(), x);
+				end = Math.max(getCol(), x);
+			}
+
+			for (int i = start + 1; i < end; i++) { // проверяем все клетки на пути
+				if (getCol() == x) { // движение по вертикали
+					if (board[i][getCol()] != null) { // есть фигура на пути
+						return false;
+					}
+				} else { // движение по горизонтали
+					if (board[getRow()][i] != null) { // есть фигура на пути
+						return false;
+					}
+				}
+			}
+			// проверяем цвет фигуры на конечной позиции
+			if (board[y][x] == null || (board[y][x].getColor() != getColor() && board[y][x] instanceof King)) {
+				addCountOfMove();
+				addHistory(cX, cY, x, y);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean hasMoves(int x, int y, Figure[][] board) {
+		// Check horizontal moves to the right
+		for (int col = x + 1; col < 8; col++) {
+			Figure figure = board[y][col];
+			if (figure == null) {
+				continue;
+			}
+			if (figure.getColor() != getColor()) {
+				return true;
+			}
+			break;
+		}
+
+		// Check horizontal moves to the left
+		for (int col = x - 1; col >= 0; col--) {
+			Figure figure = board[y][col];
+			if (figure == null) {
+				continue;
+			}
+			if (figure.getColor() != getColor()) {
+				return true;
+			}
+			break;
+		}
+
+		// Check vertical moves up
+		for (int row = y - 1; row >= 0; row--) {
+			Figure figure = board[row][x];
+			if (figure == null) {
+				continue;
+			}
+			if (figure.getColor() != getColor()) {
+				return true;
+			}
+			break;
+		}
+
+		// Check vertical moves down
+		for (int row = y + 1; row < 8; row++) {
+			Figure figure = board[row][x];
+			if (figure == null) {
+				continue;
+			}
+			if (figure.getColor() != getColor()) {
+				return true;
+			}
+			break;
+		}
+
+		return false;
+	}
 }

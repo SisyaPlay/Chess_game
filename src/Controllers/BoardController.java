@@ -2,12 +2,13 @@ package Controllers;
 
 import Figures.Figure;
 import Figures.King;
+import Figures.Pawns;
+import Figures.Queen;
 import View.ChessBoardView;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Timer;
 import java.util.TimerTask;
 
 import static View.ChessBoardView.ROW_COUNT;
@@ -17,6 +18,10 @@ public class BoardController implements MouseListener {
     private ChessBoardView chessBoardView;
     public static Color currentPlayer = Color.WHITE;
     private static final int DELAY = 100;
+    public int countOfCheckWhite = 0;
+    public int countOfCheckBlack = 0;
+    public int countOfStWhite = 0;
+    public int countOfStBlack = 0;
     private Timer timer;
 
     public BoardController(ChessBoardView chessBoardView) {
@@ -79,8 +84,32 @@ public class BoardController implements MouseListener {
                     chessBoardView.getSelectedFigure().setRow(row);
                     chessBoardView.getSelectedFigure().setCol(col);
                 }
+                changePawnToQueen();
                 chessBoardView.setSelectedFigure(null);
                 chessBoardView.repaint();
+                if(isCheckmate()) {
+                    chessBoardView.restart();
+                    countOfCheckWhite = 0;
+                    countOfCheckBlack = 0;
+                }
+                if(isStalemate()) {
+                    chessBoardView.restart();
+                    countOfCheckWhite = 0;
+                    countOfCheckBlack = 0;
+                }
+            }
+        }
+        System.out.println(countOfStWhite);
+    }
+
+    private void changePawnToQueen() {
+        if(chessBoardView.getSelectedFigure() instanceof Pawns) {
+            if(chessBoardView.getSelectedFigure().getColor().equals(Color.WHITE) && chessBoardView.getSelectedFigure().getRow() == 0) {
+                //chessBoardView.getSelectedFigure(new Queen(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(),
+                        //Color.WHITE, chessBoardView.getSquare_size()));
+            }else if(chessBoardView.getSelectedFigure().getColor().equals(Color.BLACK) && chessBoardView.getSelectedFigure().getRow() == 7) {
+                chessBoardView.setSelectedFigure(new Queen(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(),
+                        Color.BLACK, chessBoardView.getSquare_size()));
             }
         }
     }
@@ -111,91 +140,74 @@ public class BoardController implements MouseListener {
         return false;
     }
 
-    /*
-    public boolean isCheck() {
-        Figure king = null;
-        // Находим короля текущего игрока
+    private boolean isCheckmate() {
+        Figure whiteKing = null;
+        Figure blackKing = null;
         for (int row = 0; row < ROW_COUNT; row++) {
             for (int col = 0; col < ROW_COUNT; col++) {
                 Figure figure = chessBoardView.getBoard()[row][col];
-                if (figure instanceof King && figure.getColor() == currentPlayer) {
+                if (figure instanceof King && figure.getColor().equals(Color.WHITE)) {
+                    whiteKing = figure;
+                } else if (figure instanceof King && figure.getColor().equals(Color.BLACK)) {
+                    blackKing = figure;
+                }
+            }
+        }
+        if(whiteKing.isUnderAttack(whiteKing.getCol(), whiteKing.getRow(), chessBoardView.getBoard())) {
+            countOfCheckWhite++;
+        } else {
+            countOfCheckWhite = 0;
+        }
+        if(blackKing.isUnderAttack(blackKing.getCol(), blackKing.getRow(), chessBoardView.getBoard())) {
+            countOfCheckBlack++;
+        } else {
+            countOfCheckBlack = 0;
+        }
+        if(countOfCheckWhite == 2) {
+            JOptionPane.showMessageDialog(null, "Black wins!");
+            return true;
+        }
+        if(countOfCheckBlack == 2) {
+            JOptionPane.showMessageDialog(null, "White wins!");
+            return true;
+        }
+        return false;
+    }
+
+
+    public boolean isStalemate() {
+        Figure king = null;
+
+        // Находим короля текущего игрока на доске
+        for (int row = 0; row < ROW_COUNT; row++) {
+            for (int col = 0; col < ROW_COUNT; col++) {
+                Figure figure = chessBoardView.getBoard()[row][col];
+                if (figure instanceof King && figure.getColor().equals(currentPlayer)) {
                     king = figure;
                     break;
                 }
             }
         }
-        // Проверяем, есть ли у противника фигуры, которые могут ударить короля
-        for (int row = 0; row < ROW_COUNT; row++) {
-            for (int col = 0; col < ROW_COUNT; col++) {
-                Figure figure = chessBoardView.getBoard()[row][col];
-                if (figure != null && figure.getColor() != currentPlayer) {
-                    if (figure.moveTo(king.getCol(), king.getRow(), col, row, chessBoardView.getBoard())) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
 
-    public boolean isCheckmate() {
-        // Проверяем, есть ли возможность убрать короля из-под шаха
+        // Проверяем, находится ли король под атакой
+        if (king.isUnderAttack(king.getCol(), king.getRow(), chessBoardView.getBoard())) {
+            return false;
+        }
+
+        // Перебираем все фигуры текущего игрока и проверяем, есть ли у них допустимый ход
         for (int row = 0; row < ROW_COUNT; row++) {
             for (int col = 0; col < ROW_COUNT; col++) {
                 Figure figure = chessBoardView.getBoard()[row][col];
-                if (figure != null && figure.getColor() == currentPlayer) {
-                    for (int i = 0; i < ROW_COUNT; i++) {
-                        for (int j = 0; j < ROW_COUNT; j++) {
-                            if (figure.moveTo(col, row, j, i, chessBoardView.getBoard())
-                                    && !isCheckAfterMove(col, row, j, i)) {
-                                return false;
-                            }
-                        }
+                if (figure != null && figure.getColor().equals(currentPlayer)) {
+                    if (figure.hasMoves(col, row, chessBoardView.getBoard())) {
+                        return false;
                     }
                 }
             }
         }
-        // Если нет возможности убрать короля из-под шаха, то это мат
+
+        // Если ни один ход не найден, то это пат
+        JOptionPane.showMessageDialog(null, "Stalemate!");
         return true;
     }
-
-    public boolean isStalemate() {
-        // Проверяем, есть ли возможность сделать ход
-        for (int row = 0; row < ROW_COUNT; row++) {
-            for (int col = 0; col < ROW_COUNT; col++) {
-                Figure figure = chessBoardView.getBoard()[row][col];
-                if (figure != null && figure.getColor() == currentPlayer) {
-                    for (int i = 0; i < ROW_COUNT; i++) {
-                        for (int j = 0; j < ROW_COUNT; j++) {
-                            if (figure.moveTo(col, row, j, i, chessBoardView.getBoard())
-                                    && !isCheckAfterMove(col, row, j, i)) {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    public boolean isCheckAfterMove(int fromX, int fromY, int toX, int toY, Figure[][] board, Color currentPlayer) {
-        // Сделать ход на доске.
-        Figure movedFigure = board[toY][toX];
-        board[toY][toX] = board[fromY][fromX];
-        board[fromY][fromX] = null;
-        board[toY][toX].setCol(toX);
-        board[toY][toX].setRow(toY);
-        // Проверить, находится ли король текущего игрока под шахом.
-        boolean isCheck = isCheck();
-        // Вернуть доску в исходное состояние.
-        board[fromY][fromX] = board[toY][toX];
-        board[fromY][fromX].setCol(fromX);
-        board[fromY][fromX].setRow(fromY);
-        board[toY][toX] = movedFigure;
-        return isCheck;
-    }
-
-     */
-
 }

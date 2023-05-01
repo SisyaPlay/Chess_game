@@ -71,4 +71,40 @@ public class Knight extends Figure{
 
 		return false;
 	}
+
+	@Override
+	public boolean canEatKing(int cX, int cY, int x, int y, Figure[][] board) {
+		int deltaX = Math.abs(getCol() - x);
+		int deltaY = Math.abs(getRow() - y);
+
+		// Проверяем, что конь двигается в форме буквы "L"
+		if ((deltaX == 2 && deltaY == 1) || (deltaX == 1 && deltaY == 2)) {
+
+			// Проверяем, что на клетке, на которую собирается перейти конь, нет фигур своего цвета
+			if (board[y][x] == null && (board[y][x].getColor() != getColor() && board[y][x] instanceof King)) {
+				return true;
+			}
+
+			return false;
+		}
+
+		return false;
+	}
+
+	public boolean hasMoves(int x, int y, Figure[][] board) {
+		// Check all possible knight moves
+		int[] dx = {-2, -1, 1, 2, 2, 1, -1, -2};
+		int[] dy = {1, 2, 2, 1, -1, -2, -2, -1};
+		for (int i = 0; i < 8; i++) {
+			int nx = x + dx[i];
+			int ny = y + dy[i];
+			if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8) {
+				Figure figure = board[ny][nx];
+				if (figure == null || figure.getColor() != getColor()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

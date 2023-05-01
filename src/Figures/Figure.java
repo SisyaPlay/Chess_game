@@ -3,6 +3,8 @@ package Figures;
 import javax.swing.*;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 
 /**
@@ -15,6 +17,7 @@ public abstract class Figure extends JPanel{
 	protected Color color; // Barva figury
 	protected double square_size; // Velikost ctverce
 	protected EFigure type;
+	protected ArrayList<Point2D[]> history = new ArrayList<>();
 	protected int countOfMove;
 
 	/**
@@ -101,5 +104,15 @@ public abstract class Figure extends JPanel{
 	}
 
 
+	protected boolean canEatKing(int i, int j, int col, int row, Figure[][] board) {
+		return false;
+	}
+
+	public boolean isUnderAttack(int cX, int cY, Figure[][] board) {
+		return false;
+	}
+	public boolean hasMoves(int cX, int cY, Figure[][] board) {
+		return false;
+	}
 }
 
