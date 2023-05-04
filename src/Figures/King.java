@@ -120,7 +120,7 @@ public class King extends Figure {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				Figure figure = board[j][i];
-				if (figure != null && !figure.getColor().equals(this.color)) {
+				if (figure != null && figure.getColor() != getColor()) {
 					if (figure.canEatKing(i, j, king.getCol(), king.getRow(), board)) {
 						return true;
 					}

@@ -44,6 +44,7 @@ public class ChessBoardView extends JPanel {
                 setPreferredSize(new Dimension(square_size * ROW_COUNT, square_size * ROW_COUNT));
                 addMouseListener(boardController);
 
+                /*
                 for (int i = 0; i < 8; i++) {
                         board[1][i] = new Pawns( i, 1, Color.BLACK, square_size);
                         board[6][i] = new Pawns( i, 6, Color.WHITE, square_size);
@@ -68,6 +69,11 @@ public class ChessBoardView extends JPanel {
                 board[0][5] = new Bishop( 5, 0, Color.BLACK, square_size);
                 board[7][2] = new Bishop( 2, 7, Color.WHITE, square_size);
                 board[7][5] = new Bishop( 5, 7, Color.WHITE, square_size);
+                 */
+
+                board[0][7] = new King(7, 0, Color.BLACK, square_size);
+                board[2][5] = new Queen(5, 2, Color.WHITE, square_size);
+                board[2][1] = new King(1, 2, Color.WHITE, square_size);
 
         }
 

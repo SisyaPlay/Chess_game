@@ -79,7 +79,7 @@ public class BoardController implements MouseListener {
                     chessBoardView.getBoard()[chessBoardView.getSelectedFigureY()][chessBoardView.getSelectedFigureX()] = chessBoardView.getSelectedFigure();
                 } else {
                     animation(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row);
-                    chessBoardView.getBoard()[(int)chessBoardView.getSelectedFigure().getRow()][(int)chessBoardView.getSelectedFigure().getCol()] = null;
+                    chessBoardView.getBoard()[chessBoardView.getSelectedFigure().getRow()][chessBoardView.getSelectedFigure().getCol()] = null;
                     chessBoardView.getBoard()[row][col] = chessBoardView.getSelectedFigure(); // Zapise do pole figuru
                     chessBoardView.getSelectedFigure().setRow(row);
                     chessBoardView.getSelectedFigure().setCol(col);
@@ -99,17 +99,16 @@ public class BoardController implements MouseListener {
                 }
             }
         }
-        System.out.println(countOfStWhite);
     }
 
     private void changePawnToQueen() {
         if(chessBoardView.getSelectedFigure() instanceof Pawns) {
             if(chessBoardView.getSelectedFigure().getColor().equals(Color.WHITE) && chessBoardView.getSelectedFigure().getRow() == 0) {
-                //chessBoardView.getSelectedFigure(new Queen(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(),
-                        //Color.WHITE, chessBoardView.getSquare_size()));
+                chessBoardView.getBoard()[chessBoardView.getSelectedFigure().getRow()][chessBoardView.getSelectedFigure().getCol()] =
+                        new Queen(chessBoardView.getSelectedFigure().getCol(), chessBoardView.getSelectedFigure().getRow(), Color.WHITE, chessBoardView.getSquare_size());
             }else if(chessBoardView.getSelectedFigure().getColor().equals(Color.BLACK) && chessBoardView.getSelectedFigure().getRow() == 7) {
-                chessBoardView.setSelectedFigure(new Queen(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(),
-                        Color.BLACK, chessBoardView.getSquare_size()));
+                chessBoardView.getBoard()[chessBoardView.getSelectedFigure().getRow()][chessBoardView.getSelectedFigure().getCol()] =
+                        new Queen(chessBoardView.getSelectedFigure().getCol(), chessBoardView.getSelectedFigure().getRow(), Color.BLACK, chessBoardView.getSquare_size());
             }
         }
     }

@@ -81,7 +81,7 @@ public class Knight extends Figure{
 		if ((deltaX == 2 && deltaY == 1) || (deltaX == 1 && deltaY == 2)) {
 
 			// Проверяем, что на клетке, на которую собирается перейти конь, нет фигур своего цвета
-			if (board[y][x] == null && (board[y][x].getColor() != getColor() && board[y][x] instanceof King)) {
+			if (board[y][x] != null && (board[y][x].getColor() != getColor() && board[y][x] instanceof King)) {
 				return true;
 			}
 
