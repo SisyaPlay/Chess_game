@@ -12,8 +12,8 @@ import java.util.ArrayList;
  */
 public abstract class Figure extends JPanel{
 
-	protected int x; // Osa x
-	protected int y; // Osa Y
+	protected double x; // Osa x
+	protected double y; // Osa Y
 	protected Color color; // Barva figury
 	protected double square_size; // Velikost ctverce
 	protected EFigure type;
@@ -27,7 +27,7 @@ public abstract class Figure extends JPanel{
 	 * @param color
 	 * @param square_size
 	 */
-	public Figure(int x, int y, Color color, double square_size) {
+	public Figure(double x, double y, Color color, double square_size) {
 		this.x = x;
 		this.y = y;
 		this.color = color;
@@ -59,16 +59,16 @@ public abstract class Figure extends JPanel{
 	 * @return x
 	 * @return x
 	 */
-	public int getX() { return this.x; }
-	public int getY() { return this.y; }
+	public double getFigureX() { return this.x; }
+	public double getFigureY() { return this.y; }
 
 	/**
 	 * Getter radu a sloupcu. Vraty x a y.
 	 * @return x
 	 * @return x
 	 */
-	public int getCol() { return this.x; }
-	public int getRow() { return this.y; }
+	public int getCol() { return (int)this.x; }
+	public int getRow() { return (int)this.y; }
 
 	/**
 	 * Setter radu a sloupcu. Nastavi x a y.
@@ -76,11 +76,11 @@ public abstract class Figure extends JPanel{
 	public void setCol(int x) { this.x = x; }
 	public void setRow(int y) { this.y = y; }
 
-	public void setX(int x) {
+	public void setX(double x) {
 		this.x = x;
 	}
 
-	public void setY(int y) {
+	public void setY(double y) {
 		this.y = y;
 	}
 
@@ -92,7 +92,7 @@ public abstract class Figure extends JPanel{
 		return color;
 	}
 
-	public boolean moveTo(int cX, int cY, int x, int y, Figure[][] board) {
+	public boolean moveTo(double cX, double cY, double x, double y, Figure[][] board) {
 		return true;
 	}
 	public void addCountOfMove() {
@@ -104,14 +104,14 @@ public abstract class Figure extends JPanel{
 	}
 
 
-	protected boolean canEatKing(int i, int j, int col, int row, Figure[][] board) {
+	protected boolean canEatKing(double i, double j, double col, double row, Figure[][] board) {
 		return false;
 	}
 
-	public boolean isUnderAttack(int cX, int cY, Figure[][] board) {
+	public boolean isUnderAttack(double cX, double cY, Figure[][] board) {
 		return false;
 	}
-	public boolean hasMoves(int cX, int cY, Figure[][] board) {
+	public boolean hasMoves(double cX, double cY, Figure[][] board) {
 		return false;
 	}
 }

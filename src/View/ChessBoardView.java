@@ -6,6 +6,8 @@ import Figures.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -30,6 +32,7 @@ public class ChessBoardView extends JPanel {
         private int shiftX; // Posun
         private int shiftY;
         private BoardController boardController;
+        private boolean doAnimate = false;
 
 
         /**
@@ -44,7 +47,7 @@ public class ChessBoardView extends JPanel {
                 setPreferredSize(new Dimension(square_size * ROW_COUNT, square_size * ROW_COUNT));
                 addMouseListener(boardController);
 
-                /*
+
                 for (int i = 0; i < 8; i++) {
                         board[1][i] = new Pawns( i, 1, Color.BLACK, square_size);
                         board[6][i] = new Pawns( i, 6, Color.WHITE, square_size);
@@ -69,11 +72,13 @@ public class ChessBoardView extends JPanel {
                 board[0][5] = new Bishop( 5, 0, Color.BLACK, square_size);
                 board[7][2] = new Bishop( 2, 7, Color.WHITE, square_size);
                 board[7][5] = new Bishop( 5, 7, Color.WHITE, square_size);
-                 */
 
+
+                /*
                 board[0][7] = new King(7, 0, Color.BLACK, square_size);
                 board[2][5] = new Queen(5, 2, Color.WHITE, square_size);
                 board[2][1] = new King(1, 2, Color.WHITE, square_size);
+                 */
 
         }
 
@@ -135,7 +140,7 @@ public class ChessBoardView extends JPanel {
                 }
 
 
-                if(selectedFigure != null) {
+                if(!doAnimate && selectedFigure != null) {
                         switch(selectedFigure.getType()) {
                                 case PAWNS:
                                         showAvailableMoveToPawn(g2);
@@ -598,5 +603,40 @@ public class ChessBoardView extends JPanel {
                 } catch (IOException e) {
                         e.printStackTrace();
                 }
+        }
+        
+        public void animate(int endX, int endY) {
+                final double startX = selectedFigureX;
+                final double startY = selectedFigureY;
+                final double distanceX = Math.abs(endX - startX);
+                final double distanceY = Math.abs(endY - startY);
+                final double totalDistance = Math.max(distanceX, distanceY);
+                final double xStep = distanceX / totalDistance;
+                final double yStep = distanceY / totalDistance;
+                final int directionX = endX > startX ? 1 : -1;
+                final int directionY = endY > startY ? 1 : -1;
+                doAnimate = true;
+                Timer timer = new Timer(1000, new ActionListener() {
+                        double x = startX;
+                        double y = startY;
+                        int steps = 0;
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                x += xStep * directionX;
+                                y += yStep * directionY;
+                                selectedFigure.setX(x);
+                                selectedFigure.setY(y);
+                                repaint();
+                                steps++;
+                                if (steps >= totalDistance) {
+                                        doAnimate = false;
+                                        selectedFigure.setCol(endX);
+                                        selectedFigure.setRow(endY);
+                                        selectedFigure = null;
+                                        ((Timer)e.getSource()).stop();
+                                }
+                        }
+                });
+                timer.start();
         }
 }

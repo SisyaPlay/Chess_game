@@ -1,7 +1,6 @@
 package Figures;
 
 import java.awt.*;
-import java.awt.geom.Arc2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -11,7 +10,7 @@ import java.util.ArrayList;
  */
 public class Pawns extends Figure {
 
-	public Pawns(int x, int y, Color color, double square_size) {
+	public Pawns(double x, double y, Color color, double square_size) {
 		super(x, y, color, square_size);
 		this.type = EFigure.PAWNS;
 	}
@@ -22,8 +21,8 @@ public class Pawns extends Figure {
 
 		double R = square_size / 2;
 		double R2 = square_size / 4;
-		double x = square_size * this.getX();
-		double y = square_size * this.getY();
+		double x = square_size * this.getFigureX();
+		double y = square_size * this.getFigureY();
 
 		// Telo
 		g.setColor(color);
@@ -40,38 +39,38 @@ public class Pawns extends Figure {
 	}
 
 	@Override
-	public boolean moveTo(int cX, int cY, int x, int y, Figure[][] board) {
+	public boolean moveTo(double cX, double cY, double x, double y, Figure[][] board) {
 		if (enPassant(cX, cY, x, y, board)) {
 			return true;
 		} else if (getColor().equals(Color.WHITE)) {
 			if (cY == 6) {
 				if (x != getCol()) {
-					if ((getRow() - y == 1) && ((cX - x == 1) || (x - cX == 1))
-							&& (board[y][x] != null) && (board[y][x].getColor() != getColor())) {
+					if ((getRow() - (int)y == 1) && (((int)cX - (int)x == 1) || ((int)x - (int)cX == 1))
+							&& (board[(int)y][(int)x] != null) && (board[(int)y][(int)x].getColor() != getColor())) {
 						addCountOfMove();
-						addHistory(cX, cY, x, y);
+						addHistory((int)cX, (int)cY, (int)x, (int)y);
 						return true;
 					} else {
 						return false;
 					}
-				} else if (getRow() - y == 1 || getRow() - y == 2) {
+				} else if (getRow() - (int)y == 1 || getRow() - (int)y == 2) {
 					addCountOfMove();
-					addHistory(cX, cY, x, y);
+					addHistory((int)cX, (int)cY, (int)x, (int)y);
 					return true;
 				}
 			} else {
 				if (x != getCol()) {
-					if ((getRow() - y == 1) && ((cX - x == 1) || (x - cX == 1))
-							&& (board[y][x] != null) && (board[y][x].getColor() != getColor())) {
+					if ((getRow() - (int)y == 1) && (((int)cX - (int)x == 1) || ((int)x - (int)cX == 1))
+							&& (board[(int)y][(int)x] != null) && (board[(int)y][(int)x].getColor() != getColor())) {
 						addCountOfMove();
-						addHistory(cX, cY, x, y);
+						addHistory((int)cX, (int)cY, (int)x, (int)y);
 						return true;
 					} else {
 						return false;
 					}
-				} else if (getRow() - y == 1 && board[cY - 1][x] == null) {
+				} else if (getRow() - (int)y == 1 && board[(int)cY - 1][(int)x] == null) {
 					addCountOfMove();
-					addHistory(cX, cY, x, y);
+					addHistory((int)cX, (int)cY, (int)x, (int)y);
 					return true;
 				}
 			}
@@ -79,32 +78,32 @@ public class Pawns extends Figure {
 		} else if (getColor().equals(Color.BLACK)) {
 			if (cY == 1) {
 				if (x != getCol()) {
-					if ((getRow() - y == -1) && ((cX - x == -1) || (x - cX == -1))
-							&& (board[y][x] != null) && (board[y][x].getColor() != getColor())) {
+					if ((getRow() - (int)y == -1) && (((int)cX - (int)x == -1) || ((int)x - (int)cX == -1))
+							&& (board[(int)y][(int)x] != null) && (board[(int)y][(int)x].getColor() != getColor())) {
 						addCountOfMove();
-						addHistory(cX, cY, x, y);
+						addHistory((int)cX, (int)cY, (int)x, (int)y);
 						return true;
 					} else {
 						return false;
 					}
-				} else if (getRow() - y == -1 || getRow() - y == -2) {
+				} else if (getRow() - (int)y == -1 || getRow() - (int)y == -2) {
 					addCountOfMove();
-					addHistory(cX, cY, x, y);
+					addHistory((int)cX, (int)cY, (int)x, (int)y);
 					return true;
 				}
 			} else {
 				if (x != getCol()) {
-					if ((getRow() - y == -1) && ((cX - x == -1) || (x - cX == -1))
-							&& (board[y][x] != null) && (board[y][x].getColor() != getColor())) {
+					if ((getRow() - (int)y == -1) && ((cX - (int)x == -1) || ((int)x - (int)cX == -1))
+							&& (board[(int)y][(int)x] != null) && (board[(int)y][(int)x].getColor() != getColor())) {
 						addCountOfMove();
-						addHistory(cX, cY, x, y);
+						addHistory((int)cX, (int)cY, (int)x, (int)y);
 						return true;
 					} else {
 						return false;
 					}
-				} else if (getRow() - y == -1 && board[cY + 1][x] == null) {
+				} else if (getRow() - (int)y == -1 && board[(int)cY + 1][(int)x] == null) {
 					addCountOfMove();
-					addHistory(cX, cY, x, y);
+					addHistory((int)cX, (int)cY, (int)x, (int)y);
 					return true;
 				}
 			}
@@ -113,56 +112,56 @@ public class Pawns extends Figure {
 		return false;
 	}
 
-	private boolean enPassant(int cX, int cY, int x, int y, Figure[][] board) {
-		if (Math.abs(cY - y) != 1 || Math.abs(cX - x) != 1) {
+	private boolean enPassant(double cX, double cY, double x, double y, Figure[][] board) {
+		if (Math.abs((int)cY - (int)y) != 1 || Math.abs((int)cX - (int)x) != 1) {
 			return false;
 		}else if (getColor().equals(Color.WHITE)) {
-			if (y >= cY) {
+			if ((int)y >= (int)cY) {
 				return false;
-			}else if ((cX - 1 >= 0 && board[cY][cX - 1] != null && board[cY][cX - 1].countOfMove == 1) &&
-					board[cY][cX - 1] instanceof Pawns && ((Pawns)board[cY][cX - 1]).firstStep(board[cY][cX - 1].history) &&
-					board[cY][cX - 1].getColor() != getColor()) {
-				if (board[y][x] == null && board[y + 1][x] != null) {
-					board[y + 1][x] = null;
+			}else if (((int)cX - 1 >= 0 && board[(int)cY][(int)cX - 1] != null && board[(int)cY][(int)cX - 1].countOfMove == 1) &&
+					board[(int)cY][(int)cX - 1] instanceof Pawns && ((Pawns)board[(int)cY][(int)cX - 1]).firstStep(board[(int)cY][(int)cX - 1].history) &&
+					board[(int)cY][(int)cX - 1].getColor() != getColor()) {
+				if (board[(int)y][(int)x] == null && board[(int)y + 1][(int)x] != null) {
+					board[(int)y + 1][(int)x] = null;
 					repaint();
 					addCountOfMove();
-					addHistory(cX, cY, x, y);
+					addHistory((int)cX, (int)cY, (int)x, (int)y);
 					return true;
 				}
 			}
-			else if((cX + 1 < 8 && board[cY][cX + 1] != null && board[cY][cX + 1].countOfMove == 1) &&
-					board[cY][cX + 1] instanceof Pawns && ((Pawns)board[cY][cX + 1]).firstStep(board[cY][cX + 1].history) &&
-					board[cY][cX + 1].getColor() != getColor()) {
-				if (board[y][x] == null && board[y + 1][x] != null) {
-					board[y + 1][x] = null;
+			else if(((int)cX + 1 < 8 && board[(int)cY][(int)cX + 1] != null && board[(int)cY][(int)cX + 1].countOfMove == 1) &&
+					board[(int)cY][(int)cX + 1] instanceof Pawns && ((Pawns)board[(int)cY][(int)cX + 1]).firstStep(board[(int)cY][(int)cX + 1].history) &&
+					board[(int)cY][(int)cX + 1].getColor() != getColor()) {
+				if (board[(int)y][(int)x] == null && board[(int)y + 1][(int)x] != null) {
+					board[(int)y + 1][(int)x] = null;
 					repaint();
 					addCountOfMove();
-					addHistory(cX, cY, x, y);
+					addHistory((int)cX, (int)cY, (int)x, (int)y);
 					return true;
 				}
 			}
 		} else if (getColor().equals(Color.BLACK)) {
-			if (y <= cY) {
+			if ((int)y <= (int)cY) {
 				return false;
-			}else if ((cX - 1 >= 0 && board[cY][cX - 1] != null && board[cY][cX - 1].countOfMove == 1) &&
-					board[cY][cX - 1] instanceof Pawns && ((Pawns)board[cY][cX - 1]).firstStep(board[cY][cX - 1].history) &&
-					board[cY][cX - 1].getColor() != getColor()) {
-				if (board[y][x] == null && board[y - 1][x] != null) {
-					board[y - 1][x] = null;
+			}else if (((int)cX - 1 >= 0 && board[(int)cY][(int)cX - 1] != null && board[(int)cY][(int)cX - 1].countOfMove == 1) &&
+					board[(int)cY][(int)cX - 1] instanceof Pawns && ((Pawns)board[(int)cY][(int)cX - 1]).firstStep(board[(int)cY][(int)cX - 1].history) &&
+					board[(int)cY][(int)cX - 1].getColor() != getColor()) {
+				if (board[(int)y][(int)x] == null && board[(int)y - 1][(int)x] != null) {
+					board[(int)y - 1][(int)x] = null;
 					repaint();
 					addCountOfMove();
-					addHistory(cX, cY, x, y);
+					addHistory((int)cX, (int)cY, (int)x, (int)y);
 					return true;
 				}
 			}
-			else if((cX + 1 < 8 && board[cY][cX + 1] != null && board[cY][cX + 1].countOfMove == 1) &&
-					board[cY][cX + 1] instanceof Pawns && ((Pawns)board[cY][cX + 1]).firstStep(board[cY][cX + 1].history) &&
-					board[cY][cX + 1].getColor() != getColor()) {
-				if (board[y][x] == null && board[y - 1][x] != null) {
-					board[y - 1][x] = null;
+			else if(((int)cX + 1 < 8 && board[(int)cY][(int)cX + 1] != null && board[(int)cY][(int)cX + 1].countOfMove == 1) &&
+					board[(int)cY][(int)cX + 1] instanceof Pawns && ((Pawns)board[(int)cY][(int)cX + 1]).firstStep(board[(int)cY][(int)cX + 1].history) &&
+					board[(int)cY][(int)cX + 1].getColor() != getColor()) {
+				if (board[(int)y][(int)x] == null && board[(int)y - 1][(int)x] != null) {
+					board[(int)y - 1][(int)x] = null;
 					repaint();
 					addCountOfMove();
-					addHistory(cX, cY, x, y);
+					addHistory((int)cX, (int)cY, (int)x, (int)y);
 					return true;
 				}
 			}
@@ -189,21 +188,21 @@ public class Pawns extends Figure {
 	}
 
 	@Override
-	public boolean canEatKing(int cX, int cY, int x, int y, Figure[][] board) {
+	public boolean canEatKing(double cX, double cY, double x, double y, Figure[][] board) {
 		if (getColor().equals(Color.WHITE)) {
-			if (cY == 6) {
-				if (x != getCol()) {
-					if ((getRow() - y == 1) && ((cX - x == 1) || (x - cX == 1))
-							&& (board[y][x] != null) && (board[y][x].getColor() != getColor() && board[y][x] instanceof King)) {
+			if ((int)cY == 6) {
+				if ((int)x != getCol()) {
+					if ((getRow() - (int)y == 1) && (((int)cX - (int)x == 1) || ((int)x - (int)cX == 1))
+							&& (board[(int)y][(int)x] != null) && (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
 						return true;
 					} else {
 						return false;
 					}
 				}
 			} else {
-				if (x != getCol()) {
-					if ((getRow() - y == 1) && ((cX - x == 1) || (x - cX == 1))
-							&& (board[y][x] != null) && (board[y][x].getColor() != getColor() && board[y][x] instanceof King)) {
+				if ((int)x != getCol()) {
+					if ((getRow() - (int)y == 1) && ((cX - (int)x == 1) || ((int)x - (int)cX == 1))
+							&& (board[(int)y][(int)x] != null) && (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
 						return true;
 					} else {
 						return false;
@@ -212,19 +211,19 @@ public class Pawns extends Figure {
 			}
 			return false;
 		} else if (getColor().equals(Color.BLACK)) {
-			if (cY == 1) {
-				if (x != getCol()) {
-					if ((getRow() - y == -1) && ((cX - x == -1) || (x - cX == -1))
-							&& (board[y][x] != null) && (board[y][x].getColor() != getColor() && board[y][x] instanceof King)) {
+			if ((int)cY == 1) {
+				if ((int)x != getCol()) {
+					if ((getRow() - (int)y == -1) && (((int)cX - (int)x == -1) || ((int)x - (int)cX == -1))
+							&& (board[(int)y][(int)x] != null) && (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
 						return true;
 					} else {
 						return false;
 					}
 				}
 			} else {
-				if (x != getCol()) {
-					if ((getRow() - y == -1) && ((cX - x == -1) || (x - cX == -1))
-							&& (board[y][x] != null) && (board[y][x].getColor() != getColor() && board[y][x] instanceof King)) {
+				if ((int)x != getCol()) {
+					if ((getRow() - (int)y == -1) && (((int)cX - (int)x == -1) || ((int)x - (int)cX == -1))
+							&& (board[(int)y][(int)x] != null) && (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
 						return true;
 					} else {
 						return false;
@@ -236,29 +235,29 @@ public class Pawns extends Figure {
 		return false;
 	}
 
-	public boolean hasMoves(int x, int y, Figure[][] board) {
+	public boolean hasMoves(double x, double y, Figure[][] board) {
 		if (getColor() == Color.WHITE) {
 			// Check if there is a pawn that can capture to the top-right or top-left
-			if (x < 7 && y > 0 && board[y - 1][x + 1] != null && board[y - 1][x + 1].getColor() == Color.BLACK) {
+			if ((int)x < 7 && (int)y > 0 && board[(int)y - 1][(int)x + 1] != null && board[(int)y - 1][(int)x + 1].getColor() == Color.BLACK) {
 				return true;
 			}
-			if (x > 0 && y > 0 && board[y - 1][x - 1] != null && board[y - 1][x - 1].getColor() == Color.BLACK) {
+			if ((int)x > 0 && (int)y > 0 && board[(int)y - 1][(int)x - 1] != null && board[(int)y - 1][(int)x - 1].getColor() == Color.BLACK) {
 				return true;
 			}
 			// Check if there is an empty square directly in front of the pawn
-			if (y > 0 && board[y - 1][x] == null) {
+			if (y > 0 && board[(int)y - 1][(int)x] == null) {
 				return true;
 			}
 		} else {
 			// Check if there is a pawn that can capture to the bottom-right or bottom-left
-			if (x < 7 && y < 7 && board[y + 1][x + 1] != null && board[y + 1][x + 1].getColor() == Color.WHITE) {
+			if ((int)x < 7 && (int)y < 7 && board[(int)y + 1][(int)x + 1] != null && board[(int)y + 1][(int)x + 1].getColor() == Color.WHITE) {
 				return true;
 			}
-			if (x > 0 && y < 7 && board[y + 1][x - 1] != null && board[y + 1][x - 1].getColor() == Color.WHITE) {
+			if ((int)x > 0 && (int)y < 7 && board[(int)y + 1][(int)x - 1] != null && board[(int)y + 1][(int)x - 1].getColor() == Color.WHITE) {
 				return true;
 			}
 			// Check if there is an empty square directly in front of the pawn
-			if (y < 7 && board[y + 1][x] == null) {
+			if (y < 7 && board[(int)y + 1][(int)x] == null) {
 				return true;
 			}
 		}

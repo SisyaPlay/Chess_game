@@ -20,8 +20,6 @@ public class BoardController implements MouseListener {
     private static final int DELAY = 100;
     public int countOfCheckWhite = 0;
     public int countOfCheckBlack = 0;
-    public int countOfStWhite = 0;
-    public int countOfStBlack = 0;
     private Timer timer;
 
     public BoardController(ChessBoardView chessBoardView) {
@@ -78,14 +76,14 @@ public class BoardController implements MouseListener {
                 if (col > ROW_COUNT - 1 || row > ROW_COUNT - 1 || col < 0 || row < 0 || x < 0 || y < 0) {
                     chessBoardView.getBoard()[chessBoardView.getSelectedFigureY()][chessBoardView.getSelectedFigureX()] = chessBoardView.getSelectedFigure();
                 } else {
-                    animation(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row);
+                    chessBoardView.animate(col, row);
                     chessBoardView.getBoard()[chessBoardView.getSelectedFigure().getRow()][chessBoardView.getSelectedFigure().getCol()] = null;
                     chessBoardView.getBoard()[row][col] = chessBoardView.getSelectedFigure(); // Zapise do pole figuru
-                    chessBoardView.getSelectedFigure().setRow(row);
-                    chessBoardView.getSelectedFigure().setCol(col);
+                    //chessBoardView.getSelectedFigure().setRow(row);
+                    //chessBoardView.getSelectedFigure().setCol(col);
                 }
                 changePawnToQueen();
-                chessBoardView.setSelectedFigure(null);
+                //chessBoardView.setSelectedFigure(null);
                 chessBoardView.repaint();
                 if(isCheckmate()) {
                     chessBoardView.restart();
@@ -111,10 +109,6 @@ public class BoardController implements MouseListener {
                         new Queen(chessBoardView.getSelectedFigure().getCol(), chessBoardView.getSelectedFigure().getRow(), Color.BLACK, chessBoardView.getSquare_size());
             }
         }
-    }
-
-    private void animation(int selectedFigureX, int selectedFigureY, int col, int row) {
-
     }
 
 

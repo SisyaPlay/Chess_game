@@ -8,7 +8,7 @@ import java.awt.*;
  */
 public class Bishop extends Figure {
 
-	public Bishop(int x, int y, Color color, double square_size) {
+	public Bishop(double x, double y, Color color, double square_size) {
 		super(x, y, color, square_size);
 		this.type = EFigure.BISHOP;
 	}
@@ -16,8 +16,8 @@ public class Bishop extends Figure {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		double x = square_size * this.getX();
-		double y = square_size * this.getY();
+		double x = square_size * this.getFigureX();
+		double y = square_size * this.getFigureY();
 
 
 		g.setColor(color);
@@ -41,10 +41,10 @@ public class Bishop extends Figure {
 	}
 
 	@Override
-	public boolean moveTo(int cX, int cY, int x, int y, Figure[][] board) {
+	public boolean moveTo(double cX, double cY, double x, double y, Figure[][] board) {
 		// проверяем, что слон двигается по диагонали
-		int deltaX = Math.abs(getCol() - x);
-		int deltaY = Math.abs(getRow() - y);
+		int deltaX = (int)Math.abs(getCol() - x);
+		int deltaY = (int)Math.abs(getRow() - y);
 
 		if (deltaX != deltaY) {
 			// слон не двигается по диагонали
@@ -67,7 +67,7 @@ public class Bishop extends Figure {
 		}
 
 		// проверяем, что конечная клетка пуста или занята фигурой другого цвета
-		if (board[y][x] == null || board[y][x].getColor() != getColor()) {
+		if (board[(int)y][(int)x] == null || board[(int)y][(int)x].getColor() != getColor()) {
 			return true;
 		}
 
@@ -75,10 +75,10 @@ public class Bishop extends Figure {
 	}
 
 	@Override
-	public boolean canEatKing(int cX, int cY, int x, int y, Figure[][] board) {
+	public boolean canEatKing(double cX, double cY, double x, double y, Figure[][] board) {
 		// проверяем, что слон двигается по диагонали
-		int deltaX = Math.abs(getCol() - x);
-		int deltaY = Math.abs(getRow() - y);
+		int deltaX = (int)Math.abs(getCol() - x);
+		int deltaY = (int)Math.abs(getRow() - y);
 
 		if (deltaX != deltaY) {
 			// слон не двигается по диагонали
@@ -86,8 +86,8 @@ public class Bishop extends Figure {
 		}
 
 		// определяем направление движения слона
-		int stepX = (x - getCol()) > 0 ? 1 : -1;
-		int stepY = (y - getRow()) > 0 ? 1 : -1;
+		int stepX = ((int)x - getCol()) > 0 ? 1 : -1;
+		int stepY = ((int)y - getRow()) > 0 ? 1 : -1;
 
 		// проверяем клетки на пути движения слона
 		for (int i = 1; i < deltaX; i++) {
@@ -101,18 +101,18 @@ public class Bishop extends Figure {
 		}
 
 		// проверяем, что конечная клетка пуста или занята фигурой другого цвета
-		if (board[y][x] == null || (board[y][x].getColor() != getColor() && board[y][x] instanceof King)) {
+		if (board[(int)y][(int)x] == null || (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
 			return true;
 		}
 
 		return false;
 	}
 
-	public boolean hasMoves(int x, int y, Figure[][] board) {
+	public boolean hasMoves(double x, double y, Figure[][] board) {
 		for (int i = -1; i <= 1; i += 2) {
 			for (int j = -1; j <= 1; j += 2) {
-				int row = y + i;
-				int col = x + j;
+				int row = (int)y + i;
+				int col = (int)x + j;
 
 				while (row >= 0 && row < 8 && col >= 0 && col < 8) {
 					Figure figure = board[row][col];

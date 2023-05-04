@@ -1,14 +1,13 @@
 package Figures;
 
 import java.awt.*;
-import java.awt.geom.Path2D;
 
 /**
  * Trida Queen, vykresli damu
  * Dedi od spolecni a abtraktni tridy Figure
  */
 public class Queen extends Figure {
-	public Queen(int x, int y, Color color, double square_size) {
+	public Queen(double x, double y, Color color, double square_size) {
 		super(x, y, color, square_size);
 		this.type = EFigure.QUEEN;
 	}
@@ -16,8 +15,8 @@ public class Queen extends Figure {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		double x = square_size * this.getX();
-		double y = square_size * this.getY();
+		double x = square_size * this.getFigureX();
+		double y = square_size * this.getFigureY();
 
 		g.setColor(color);
 		g.fillOval((int)(x + square_size / 8), (int)(y + square_size / 2), (int)(square_size - square_size / 4), (int)(square_size / 4));
@@ -59,18 +58,18 @@ public class Queen extends Figure {
 		g.drawLine((int)(x + square_size - square_size / 3), (int)(y + square_size / 2), (int)(x + square_size / 3), (int)(y + square_size / 2));
 	}
 	@Override
-	public boolean moveTo(int cX, int cY, int x, int y, Figure[][] board) {
-		int deltaX = Math.abs(getCol() - x);
-		int deltaY = Math.abs(getRow() - y);
+	public boolean moveTo(double cX, double cY, double x, double y, Figure[][] board) {
+		int deltaX = (int)Math.abs(getCol() - x);
+		int deltaY = (int)Math.abs(getRow() - y);
 
 		if (getCol() == x || getRow() == y) {
 			int start, end;
 			if (getCol() == x) { // движение по вертикали
-				start = Math.min(getRow(), y);
-				end = Math.max(getRow(), y);
+				start = (int)Math.min(getRow(), y);
+				end = (int)Math.max(getRow(), y);
 			} else { // движение по горизонтали
-				start = Math.min(getCol(), x);
-				end = Math.max(getCol(), x);
+				start = (int)Math.min(getCol(), x);
+				end = (int)Math.max(getCol(), x);
 			}
 
 			for (int i = start + 1; i < end; i++) { // проверяем все клетки на пути
@@ -85,7 +84,7 @@ public class Queen extends Figure {
 				}
 			}
 			// проверяем цвет фигуры на конечной позиции
-			if (board[y][x] == null || board[y][x].getColor() != getColor()) {
+			if (board[(int)y][(int)x] == null || board[(int)y][(int)x].getColor() != getColor()) {
 				return true;
 			}
 		}
@@ -110,7 +109,7 @@ public class Queen extends Figure {
 		}
 
 		// проверяем, что конечная клетка пуста или занята фигурой другого цвета
-		if (board[y][x] == null || board[y][x].getColor() != getColor()) {
+		if (board[(int)y][(int)x] == null || board[(int)y][(int)x].getColor() != getColor()) {
 			return true;
 		}
 
@@ -118,22 +117,22 @@ public class Queen extends Figure {
 	}
 
 
-	public boolean canEatKing(int cX, int cY, int x, int y, Figure[][] board) {
-		int deltaX = Math.abs(getCol() - x);
-		int deltaY = Math.abs(getRow() - y);
+	public boolean canEatKing(double cX, double cY, double x, double y, Figure[][] board) {
+		int deltaX = (int)Math.abs(getCol() - x);
+		int deltaY = (int)Math.abs(getRow() - y);
 
-		if (getCol() == x || getRow() == y) {
+		if (getCol() == (int)x || getRow() == (int)y) {
 			int start, end;
 			if (getCol() == x) { // движение по вертикали
-				start = Math.min(getRow(), y);
-				end = Math.max(getRow(), y);
+				start = (int)Math.min(getRow(), y);
+				end = (int)Math.max(getRow(), y);
 			} else { // движение по горизонтали
-				start = Math.min(getCol(), x);
-				end = Math.max(getCol(), x);
+				start = (int)Math.min(getCol(), x);
+				end = (int)Math.max(getCol(), x);
 			}
 
 			for (int i = start + 1; i < end; i++) { // проверяем все клетки на пути
-				if (getCol() == x) { // движение по вертикали
+				if (getCol() == (int)x) { // движение по вертикали
 					if (board[i][getCol()] != null) { // есть фигура на пути
 						return false;
 					}
@@ -144,7 +143,7 @@ public class Queen extends Figure {
 				}
 			}
 			// проверяем цвет фигуры на конечной позиции
-			if (board[y][x] == null || (board[y][x].getColor() != getColor() && board[y][x] instanceof King)) {
+			if (board[(int)y][(int)x] != null && (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
 				return true;
 			}
 		}
@@ -154,8 +153,8 @@ public class Queen extends Figure {
 		}
 
 		// определяем направление движения слона
-		int stepX = (x - getCol()) > 0 ? 1 : -1;
-		int stepY = (y - getRow()) > 0 ? 1 : -1;
+		int stepX = ((int)x - getCol()) > 0 ? 1 : -1;
+		int stepY = ((int)y - getRow()) > 0 ? 1 : -1;
 
 		// проверяем клетки на пути движения слона
 		for (int i = 1; i < deltaX; i++) {
@@ -169,20 +168,20 @@ public class Queen extends Figure {
 		}
 
 		// проверяем, что конечная клетка пуста или занята фигурой другого цвета
-		if (board[y][x] == null || (board[y][x].getColor() != getColor() && board[y][x] instanceof King)) {
+		if (board[(int)y][(int)x] != null && (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
 			return true;
 		}
 
 		return false;
 	}
 
-	public boolean hasMoves(int x, int y, Figure[][] board) {
+	public boolean hasMoves(double x, double y, Figure[][] board) {
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if (i == 0 && j == 0) continue; // skip checking the same position as the king
 
-				int row = y + i;
-				int col = x + j;
+				int row = (int)y + i;
+				int col = (int)x + j;
 
 				while (row >= 0 && row < 8 && col >= 0 && col < 8) {
 					Figure figure = board[row][col];
