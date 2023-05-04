@@ -9,7 +9,6 @@ import View.ChessBoardView;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.TimerTask;
 
 import static View.ChessBoardView.ROW_COUNT;
 
@@ -20,7 +19,7 @@ public class BoardController implements MouseListener {
     private static final int DELAY = 100;
     public int countOfCheckWhite = 0;
     public int countOfCheckBlack = 0;
-    private Timer timer;
+    public boolean animationIsOn = false;
 
     public BoardController(ChessBoardView chessBoardView) {
         this.chessBoardView = chessBoardView;
@@ -31,33 +30,37 @@ public class BoardController implements MouseListener {
      * @param e the event to be processed
      */
     public void mousePressed(MouseEvent e) {
-        int x = e.getX() - chessBoardView.getShiftX();
-        int y = e.getY() - chessBoardView.getShiftY();
-        int row = y / chessBoardView.getSquare_size();
-        int col = x / chessBoardView.getSquare_size();
+        if(animationIsOn) {
+            return;
+        } else {
+            int x = e.getX() - chessBoardView.getShiftX();
+            int y = e.getY() - chessBoardView.getShiftY();
+            int row = y / chessBoardView.getSquare_size();
+            int col = x / chessBoardView.getSquare_size();
 
-        if(col > ROW_COUNT - 1) {
-            col = ROW_COUNT - 1;
-        }
-        if(col < 0) {
-            col = 0;
-        }
+            if (col > ROW_COUNT - 1) {
+                col = ROW_COUNT - 1;
+            }
+            if (col < 0) {
+                col = 0;
+            }
 
-        if(row > ROW_COUNT - 1) {
-            row = ROW_COUNT - 1;
-        }
-        if(row < 0) {
-            row = 0;
-        }
+            if (row > ROW_COUNT - 1) {
+                row = ROW_COUNT - 1;
+            }
+            if (row < 0) {
+                row = 0;
+            }
 
-        // Zapishe do chessBoard.getSelectedFigure() figuru z pole
-        chessBoardView.setSelectedFigure(chessBoardView.getBoard()[row][col]);
-        if (chessBoardView.getSelectedFigure() != null) {
-            chessBoardView.setSelectedFigureX(col);
-            chessBoardView.setSelectedFigureY(row);
-        }
-        if(chessBoardView.getSelectedFigure() != null && chessBoardView.getSelectedFigure().getColor() == currentPlayer) {
-            chessBoardView.repaint();
+            // Zapishe do chessBoard.getSelectedFigure() figuru z pole
+            chessBoardView.setSelectedFigure(chessBoardView.getBoard()[row][col]);
+            if (chessBoardView.getSelectedFigure() != null) {
+                chessBoardView.setSelectedFigureX(col);
+                chessBoardView.setSelectedFigureY(row);
+            }
+            if (chessBoardView.getSelectedFigure() != null && chessBoardView.getSelectedFigure().getColor() == currentPlayer) {
+                chessBoardView.repaint();
+            }
         }
     }
 
@@ -79,12 +82,14 @@ public class BoardController implements MouseListener {
                     chessBoardView.animate(col, row);
                     chessBoardView.getBoard()[chessBoardView.getSelectedFigure().getRow()][chessBoardView.getSelectedFigure().getCol()] = null;
                     chessBoardView.getBoard()[row][col] = chessBoardView.getSelectedFigure(); // Zapise do pole figuru
-                    //chessBoardView.getSelectedFigure().setRow(row);
-                    //chessBoardView.getSelectedFigure().setCol(col);
+                    chessBoardView.getSelectedFigure().setRow(row);
+                    chessBoardView.getSelectedFigure().setCol(col);
+                    chessBoardView.setLastSelectedFigureX(col);
+                    chessBoardView.setLastSelectedFigureY(row);
+                    chessBoardView.setStartSelectedFigureX(chessBoardView.getSelectedFigureX());
+                    chessBoardView.setStartSelectedFigureY(chessBoardView.getSelectedFigureY());
                 }
                 changePawnToQueen();
-                //chessBoardView.setSelectedFigure(null);
-                chessBoardView.repaint();
                 if(isCheckmate()) {
                     chessBoardView.restart();
                     countOfCheckWhite = 0;
@@ -202,5 +207,9 @@ public class BoardController implements MouseListener {
         // Если ни один ход не найден, то это пат
         JOptionPane.showMessageDialog(null, "Stalemate!");
         return true;
+    }
+
+    public void setAnimationIsOn(boolean animationIsOn) {
+        this.animationIsOn = animationIsOn;
     }
 }

@@ -47,9 +47,15 @@ public class King extends Figure {
 		if(doCastling(cX, cY, x, y, board)) {
 			if(x == 6) {
 				board[(int)cY][7].setCol(5);
+				board[(int)cY][5] = board[(int)cY][7];
+				board[(int)cY][7] = null;
+				addCountOfMove();
 				return true;
 			} else if(x == 2) {
 				board[(int)cY][0].setCol(3);
+				board[(int)cY][3] = board[(int)cY][0];
+				board[(int)cY][0] = null;
+				addCountOfMove();
 				return true;
 			}
 		}
@@ -97,9 +103,13 @@ public class King extends Figure {
 			return false;
 		} else if(isUnderAttack(cX, cY, board)) {
 			return false;
-		} else if(board[(int)cY][7] != null && !(board[(int)cY][7] instanceof Rook) && board[(int)cY][7].countOfMove != 0) {
+		} else if(!(board[(int)cY][7] instanceof Rook)) {
 			return false;
-		} else if(board[(int)cY][0] != null && !(board[(int)cY][0] instanceof Rook) && board[(int)cY][0].countOfMove != 0) {
+		} else if(!(board[(int)cY][0] instanceof Rook)) {
+			return false;
+		} else if(board[(int)cY][7] != null && board[(int)cY][7].countOfMove != 0) {
+			return false;
+		} else if(board[(int)cY][0] != null && board[(int)cY][0].countOfMove != 0) {
 			return false;
 		} else if((int)x == 6) {
 			if (board[(int)cY][(int)cX + 1] != null || board[(int)cY][(int)cX + 2] != null) {

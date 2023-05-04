@@ -85,6 +85,7 @@ public class Queen extends Figure {
 			}
 			// проверяем цвет фигуры на конечной позиции
 			if (board[(int)y][(int)x] == null || board[(int)y][(int)x].getColor() != getColor()) {
+				addCountOfMove();
 				return true;
 			}
 		}
@@ -110,6 +111,7 @@ public class Queen extends Figure {
 
 		// проверяем, что конечная клетка пуста или занята фигурой другого цвета
 		if (board[(int)y][(int)x] == null || board[(int)y][(int)x].getColor() != getColor()) {
+			addCountOfMove();
 			return true;
 		}
 

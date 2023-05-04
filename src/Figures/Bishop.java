@@ -68,6 +68,7 @@ public class Bishop extends Figure {
 
 		// проверяем, что конечная клетка пуста или занята фигурой другого цвета
 		if (board[(int)y][(int)x] == null || board[(int)y][(int)x].getColor() != getColor()) {
+			addCountOfMove();
 			return true;
 		}
 

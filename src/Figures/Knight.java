@@ -60,7 +60,7 @@ public class Knight extends Figure{
 			if (board[(int)y][(int)x] != null && board[(int)y][(int)x].getColor().equals(getColor())) {
 				return false;
 			}
-
+			addCountOfMove();
 			return true;
 		}
 

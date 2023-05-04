@@ -9,9 +9,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.awt.print.PageFormat;
-import java.awt.print.Printable;
-import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
 
@@ -28,11 +25,16 @@ public class ChessBoardView extends JPanel {
         private Figure[][] board = new Figure[8][8]; // Pole, kde jsou figury
         private Figure selectedFigure; // Vybrana figura
         private int selectedFigureX; // Pozice vybranou figury podle osy X
-        private int selectedFigureY = 0; // Pozice vybranou figury podle osy Y
+        private int selectedFigureY; // Pozice vybranou figury podle osy Y
+        private int startSelectedFigureX;
+        private int startSelectedFigureY;
+        private int lastSelectedFigureX;
+        private int lastSelectedFigureY;
         private int shiftX; // Posun
         private int shiftY;
         private BoardController boardController;
         private boolean doAnimate = false;
+        private final int DELAY = 15;
 
 
         /**
@@ -139,7 +141,7 @@ public class ChessBoardView extends JPanel {
                         }
                 }
 
-
+                drawLastStep(g2);
                 if(!doAnimate && selectedFigure != null) {
                         switch(selectedFigure.getType()) {
                                 case PAWNS:
@@ -162,6 +164,12 @@ public class ChessBoardView extends JPanel {
                                         break;
                         }
                 }
+        }
+
+        private void drawLastStep(Graphics2D g2) {
+                g2.setColor(Color.ORANGE);
+                g2.drawRect(startSelectedFigureX * square_size, startSelectedFigureY * square_size, square_size, square_size);
+                g2.drawRect(lastSelectedFigureX * square_size, lastSelectedFigureY * square_size, square_size, square_size);
         }
 
         private void showAvailableMoveToRook(Graphics2D g2) {
@@ -323,6 +331,21 @@ public class ChessBoardView extends JPanel {
                         if (board[selectedFigure.getRow()][selectedFigure.getCol() + 1] == null ||
                                 board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getColor() != selectedFigure.getColor()) {
                                 g2.drawRect(x + square_size, y, square_size, square_size);
+                        }
+                }
+                if(selectedFigure.getCountOfMove() == 0) {
+                        if (board[selectedFigure.getRow()][selectedFigure.getCol() + 1] == null && board[selectedFigure.getRow()][selectedFigure.getCol() + 2] == null &&
+                                board[selectedFigure.getRow()][selectedFigure.getCol() + 3] instanceof Rook &&
+                                board[selectedFigure.getRow()][selectedFigure.getCol() + 3].getCountOfMove() == 0) {
+                                g2.setColor(Color.GREEN);
+                                g2.drawRect(x + 2 * square_size, y, square_size, square_size);
+                        }
+                        if (board[selectedFigure.getRow()][selectedFigure.getCol() - 1] == null && board[selectedFigure.getRow()][selectedFigure.getCol() - 2] == null &&
+                                board[selectedFigure.getRow()][selectedFigure.getCol() - 3] == null &&
+                                board[selectedFigure.getRow()][selectedFigure.getCol() - 4] instanceof Rook &&
+                                board[selectedFigure.getRow()][selectedFigure.getCol() - 4].getCountOfMove() == 0) {
+                                g2.setColor(Color.GREEN);
+                                g2.drawRect(x - 2 * square_size, y, square_size, square_size);
                         }
                 }
         }
@@ -555,6 +578,22 @@ public class ChessBoardView extends JPanel {
                 this.selectedFigureY = selectedFigureY;
         }
 
+        public void setStartSelectedFigureX(int startSelectedFigureX) {
+                this.startSelectedFigureX = startSelectedFigureX;
+        }
+
+        public void setStartSelectedFigureY(int startSelectedFigureY) {
+                this.startSelectedFigureY = startSelectedFigureY;
+        }
+
+        public void setLastSelectedFigureX(int lastSelectedFigureX) {
+                this.lastSelectedFigureX = lastSelectedFigureX;
+        }
+
+        public void setLastSelectedFigureY(int lastSelectedFigureY) {
+                this.lastSelectedFigureY = lastSelectedFigureY;
+        }
+
         public void restart() {
                 board = new Figure[8][8];
 
@@ -588,6 +627,44 @@ public class ChessBoardView extends JPanel {
 
         }
 
+        public void animate(int endX, int endY) {
+                final double startX = selectedFigureX;
+                final double startY = selectedFigureY;
+                final double distanceX = Math.abs(endX - startX);
+                final double distanceY = Math.abs(endY - startY);
+                final double totalDistance = Math.max(distanceX, distanceY);
+                final double stepSize = totalDistance / 10;
+                final double xStep = distanceX / totalDistance * stepSize;
+                final double yStep = distanceY / totalDistance * stepSize;
+                final int directionX = endX > startX ? 1 : -1;
+                final int directionY = endY > startY ? 1 : -1;
+                boardController.setAnimationIsOn(true);
+                doAnimate = true;
+                Timer timer = new Timer(DELAY, new ActionListener() {
+                        double x = startX;
+                        double y = startY;
+                        double distanceCovered = 0;
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                x += xStep * directionX;
+                                y += yStep * directionY;
+                                selectedFigure.setX(x);
+                                selectedFigure.setY(y);
+                                repaint();
+                                distanceCovered += stepSize;
+                                if (distanceCovered >= totalDistance) {
+                                        doAnimate = false;
+                                        selectedFigure.setCol(endX);
+                                        selectedFigure.setRow(endY);
+                                        selectedFigure = null;
+                                        boardController.setAnimationIsOn(false);
+                                        ((Timer)e.getSource()).stop();
+                                }
+                        }
+                });
+                timer.start();
+        }
+
         public void createPNGImage(String fileName) {
                 // Создаем изображение с размерами компонента
                 BufferedImage image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -603,40 +680,5 @@ public class ChessBoardView extends JPanel {
                 } catch (IOException e) {
                         e.printStackTrace();
                 }
-        }
-        
-        public void animate(int endX, int endY) {
-                final double startX = selectedFigureX;
-                final double startY = selectedFigureY;
-                final double distanceX = Math.abs(endX - startX);
-                final double distanceY = Math.abs(endY - startY);
-                final double totalDistance = Math.max(distanceX, distanceY);
-                final double xStep = distanceX / totalDistance;
-                final double yStep = distanceY / totalDistance;
-                final int directionX = endX > startX ? 1 : -1;
-                final int directionY = endY > startY ? 1 : -1;
-                doAnimate = true;
-                Timer timer = new Timer(1000, new ActionListener() {
-                        double x = startX;
-                        double y = startY;
-                        int steps = 0;
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                                x += xStep * directionX;
-                                y += yStep * directionY;
-                                selectedFigure.setX(x);
-                                selectedFigure.setY(y);
-                                repaint();
-                                steps++;
-                                if (steps >= totalDistance) {
-                                        doAnimate = false;
-                                        selectedFigure.setCol(endX);
-                                        selectedFigure.setRow(endY);
-                                        selectedFigure = null;
-                                        ((Timer)e.getSource()).stop();
-                                }
-                        }
-                });
-                timer.start();
         }
 }
