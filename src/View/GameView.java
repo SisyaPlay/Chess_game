@@ -1,14 +1,11 @@
 package View;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.print.Printable;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.io.File;
 
 public class GameView extends JFrame{
 
@@ -27,8 +24,8 @@ public class GameView extends JFrame{
     private JMenuItem item2 = new JMenuItem("Export graph");
     private JMenuItem item3 = new JMenuItem("Export to PNG");
 
-    private JLabel timer1 = new JLabel("Timer 1");
-    private JLabel timer2 = new JLabel("Timer 2");
+    public JLabel timer1;
+    public JLabel timer2;
     private JLabel countOfKillerFig1 = new JLabel("countOfKillerFig1");
     private JLabel countOfKillerFig2 = new JLabel("countOfKillerFig1");
 
@@ -37,7 +34,7 @@ public class GameView extends JFrame{
 
     }
 
-    public void createWindow() {
+    public void createWindow(JFrame frame) {
         ChessBoardView board = new ChessBoardView();
         this.setTitle("UPG Sachy Mukanov - A22B0388P");
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -45,16 +42,56 @@ public class GameView extends JFrame{
 //        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
 
+        timer1 = board.timer1;
+        timer2 = board.timer2;
+
+        timer1.setFont(new Font("Verdana", Font.PLAIN, calculateSize()));
+        timer2.setFont(new Font("Verdana", Font.PLAIN, calculateSize()));
+
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 board.restart();
             }
         });
+        item2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Save as PNG");
+                FileNameExtensionFilter pngFilter = new FileNameExtensionFilter("PNG Images", "png");
+                fileChooser.addChoosableFileFilter(pngFilter);
+                fileChooser.setFileFilter(pngFilter);
+                int option = fileChooser.showSaveDialog(frame);
+                if(option == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    String pathName = file.getPath();
+                    if (pathName.endsWith(".png")) {
+                        board.createPNGImageOfGraf(file.getAbsolutePath());
+                    } else {
+                        board.createPNGImageOfGraf(file.getAbsolutePath() + ".png");
+                    }
+                }
+            }
+        });
         item3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                board.createPNGImage("output.png");
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Save as PNG");
+                FileNameExtensionFilter pngFilter = new FileNameExtensionFilter("PNG Images", "png");
+                fileChooser.addChoosableFileFilter(pngFilter);
+                fileChooser.setFileFilter(pngFilter);
+                int option = fileChooser.showSaveDialog(frame);
+                if(option == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    String pathName = file.getPath();
+                    if (pathName.endsWith(".png")) {
+                        board.createPNGImage(file.getAbsolutePath());
+                    } else {
+                        board.createPNGImage(file.getAbsolutePath() + ".png");
+                    }
+                }
             }
         });
         // Menu
@@ -86,6 +123,10 @@ public class GameView extends JFrame{
         this.pack();
 
         this.setVisible(true);
+    }
 
+    private int calculateSize() {
+        int size = WIDTH / 50;
+        return size;
     }
 }

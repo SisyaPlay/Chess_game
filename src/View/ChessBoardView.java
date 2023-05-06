@@ -2,12 +2,21 @@ package View;
 
 import Controllers.BoardController;
 import Figures.*;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +44,9 @@ public class ChessBoardView extends JPanel {
         private BoardController boardController;
         private boolean doAnimate = false;
         private final int DELAY = 15;
+        public int countOfBeingSelected = 0;
+        public JLabel timer1 = new JLabel();
+        public JLabel timer2 = new JLabel();
 
 
         /**
@@ -141,7 +153,9 @@ public class ChessBoardView extends JPanel {
                         }
                 }
 
-                drawLastStep(g2);
+                if(countOfBeingSelected != 0) {
+                        drawLastStep(g2);
+                }
                 if(!doAnimate && selectedFigure != null) {
                         switch(selectedFigure.getType()) {
                                 case PAWNS:
@@ -594,6 +608,10 @@ public class ChessBoardView extends JPanel {
                 this.lastSelectedFigureY = lastSelectedFigureY;
         }
 
+        public void addCountOfBeingSelected() {
+                countOfBeingSelected++;
+        }
+
         public void restart() {
                 board = new Figure[8][8];
 
@@ -624,7 +642,16 @@ public class ChessBoardView extends JPanel {
 
                 BoardController.currentPlayer = Color.WHITE;
                 repaint();
+                reset();
+        }
 
+        private void reset() {
+                boardController.wTimer.stop();
+                boardController.wTimeCounter = 0;
+                boardController.bTimer.stop();
+                boardController.bTimeCounter = 0;
+                boardController.updateTimeLabel();
+                boardController.wTimer.start();
         }
 
         public void animate(int endX, int endY) {
@@ -673,6 +700,61 @@ public class ChessBoardView extends JPanel {
                 Graphics2D g2 = image.createGraphics();
                 paintComponent(g2);
                 //g2.dispose();
+
+                // Сохраняем изображение в файл
+                try {
+                        ImageIO.write(image, "png", new File(fileName));
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
+        }
+
+        public JFreeChart createGraf() {
+                // Создаем объект NumberAxis для оси x и настраиваем его
+                NumberAxis xAxis = new NumberAxis("Count of moves");
+                xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+
+                NumberAxis yAxis = new NumberAxis("Time in seconds");
+                yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+
+// Создаем график с настроенным NumberAxis
+                JFreeChart chart = ChartFactory.createXYLineChart("Average time of move", null, null, createDataset());
+                XYPlot plot = chart.getXYPlot();
+                plot.setDomainAxis(xAxis);
+                plot.setRangeAxis(yAxis);
+
+                return chart;
+        }
+
+        private XYDataset createDataset() {
+                XYSeriesCollection dataset = new XYSeriesCollection();
+                XYSeries series1 = new XYSeries("White");
+                XYSeries series2 = new XYSeries("Black");
+
+                for (int i = 0; i < boardController.getWhiteTime().size(); i++) {
+                        series1.add(boardController.getWhiteCountOfMove().get(i), boardController.getWhiteTime().get(i));
+                }
+                for (int i = 0; i < boardController.getBlackTime().size(); i++) {
+                        series2.add(boardController.getBlackCountOfMove().get(i), boardController.getBlackTime().get(i));
+                }
+
+                dataset.addSeries(series1);
+                dataset.addSeries(series2);
+                return dataset;
+        }
+
+        public void createPNGImageOfGraf(String fileName) {
+                JFreeChart chart = createGraf();
+                int width = 640; // ширина изображения в пикселях
+                int height = 480; // высота изображения в пикселях
+
+                // Создаем изображение с указанными размерами и типом
+                BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+                // Рисуем график на изображении
+                Graphics2D g2 = image.createGraphics();
+                chart.draw(g2, new Rectangle2D.Double(0, 0, width, height));
+                g2.dispose();
 
                 // Сохраняем изображение в файл
                 try {

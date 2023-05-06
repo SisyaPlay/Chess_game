@@ -1,6 +1,11 @@
 package Figures;
 
+import View.ChessBoardView;
+
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 
 /**
@@ -8,6 +13,7 @@ import java.awt.geom.Point2D;
  * Dedi od spolecni a abtraktni tridy Figure
  */
 public class King extends Figure {
+	private Timer timer;
 	public King(double x, double y, Color color, double square_size) {
 		super(x, y, color, square_size);
 		this.type = EFigure.KING;
@@ -46,15 +52,11 @@ public class King extends Figure {
 
 		if(doCastling(cX, cY, x, y, board)) {
 			if(x == 6) {
-				board[(int)cY][7].setCol(5);
-				board[(int)cY][5] = board[(int)cY][7];
-				board[(int)cY][7] = null;
+				animation(5, cY, 7, board);
 				addCountOfMove();
 				return true;
 			} else if(x == 2) {
-				board[(int)cY][0].setCol(3);
-				board[(int)cY][3] = board[(int)cY][0];
-				board[(int)cY][0] = null;
+				animation(3, cY, 0, board);
 				addCountOfMove();
 				return true;
 			}
@@ -160,5 +162,32 @@ public class King extends Figure {
 			}
 		}
 		return true;
+	}
+
+	private void animation(double endX, double endY, double cX, Figure[][] board) {
+		final double startX = board[(int)endY][(int)cX].getFigureX();
+		final double distanceX = Math.abs(endX - startX);
+		final double totalDistance = distanceX;
+		final double stepSize = totalDistance / 10;
+		final double xStep = distanceX / totalDistance * stepSize;
+		final int directionX = endX > startX ? 1 : -1;
+		timer = new Timer(15, new ActionListener() {
+			double x = startX;
+			double distanceCovered = 0;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				x += xStep * directionX;
+				board[(int)endY][(int)cX].setX(x);
+				repaint();
+				distanceCovered += stepSize;
+				if (distanceCovered >= totalDistance) {
+					board[(int)endY][(int)cX].setCol((int)endX);
+					board[(int)endY][(int)endX] = board[(int)endY][(int)cX];
+					board[(int)endY][(int)cX] = null;
+					((Timer)e.getSource()).stop();
+				}
+			}
+		});
+		timer.start();
 	}
 }

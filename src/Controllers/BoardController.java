@@ -5,10 +5,12 @@ import Figures.King;
 import Figures.Pawns;
 import Figures.Queen;
 import View.ChessBoardView;
+import View.GameView;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 import static View.ChessBoardView.ROW_COUNT;
 
@@ -16,13 +18,28 @@ public class BoardController implements MouseListener {
 
     private ChessBoardView chessBoardView;
     public static Color currentPlayer = Color.WHITE;
-    private static final int DELAY = 100;
     public int countOfCheckWhite = 0;
     public int countOfCheckBlack = 0;
     public boolean animationIsOn = false;
+    public Timer wTimer;
+    public int wTimeCounter = 0;
+    public Timer bTimer;
+    public int bTimeCounter = 0;
+    private final int DELAY = 1000;
+    private int wCount = 0;
+    private int bCount = 0;
+    public ArrayList<Integer> whiteTime = new ArrayList<>();
+    public ArrayList<Integer> blackTime = new ArrayList<>();
+    public ArrayList<Integer> whiteCountOfMove = new ArrayList<>();
+    public ArrayList<Integer> blackCountOfMove = new ArrayList<>();
 
     public BoardController(ChessBoardView chessBoardView) {
         this.chessBoardView = chessBoardView;
+        whiteStart();
+        whiteTime.add(wTimeCounter);
+        blackTime.add(bTimeCounter);
+        whiteCountOfMove.add(wCount);
+        blackCountOfMove.add(bCount);
     }
 
     /**
@@ -84,6 +101,7 @@ public class BoardController implements MouseListener {
                     chessBoardView.getBoard()[row][col] = chessBoardView.getSelectedFigure(); // Zapise do pole figuru
                     chessBoardView.getSelectedFigure().setRow(row);
                     chessBoardView.getSelectedFigure().setCol(col);
+                    chessBoardView.addCountOfBeingSelected();
                     chessBoardView.setLastSelectedFigureX(col);
                     chessBoardView.setLastSelectedFigureY(row);
                     chessBoardView.setStartSelectedFigureX(chessBoardView.getSelectedFigureX());
@@ -130,8 +148,20 @@ public class BoardController implements MouseListener {
         if (chessBoardView.getSelectedFigure().getColor().equals(currentPlayer)) {
             if (currentPlayer == Color.WHITE) {
                 currentPlayer = Color.BLACK;
+                whiteStop();
+                int lastWhiteTime = whiteTime.get(whiteTime.size() - 1);
+                whiteTime.add(wTimeCounter - lastWhiteTime);
+                wCount++;
+                whiteCountOfMove.add(wCount);
+                blackStart();
             } else {
                 currentPlayer = Color.WHITE;
+                blackStop();
+                int lastBlackTime = blackTime.get(blackTime.size() - 1);
+                blackTime.add(bTimeCounter - lastBlackTime);
+                bCount++;
+                blackCountOfMove.add(bCount);
+                whiteStart();
             }
             return true;
         }
@@ -211,5 +241,78 @@ public class BoardController implements MouseListener {
 
     public void setAnimationIsOn(boolean animationIsOn) {
         this.animationIsOn = animationIsOn;
+    }
+
+    private void whiteStart() {
+        wTimer = new Timer(DELAY, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                wTimeCounter++;
+                updateTimeLabel();
+            }
+        });
+        wTimer.start();
+    }
+    private void blackStart() {
+        bTimer = new Timer(DELAY, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bTimeCounter++;
+                updateTimeLabel();
+            }
+        });
+        bTimer.start();
+    }
+
+    private void whiteStop() {
+        wTimer.stop();
+    }
+
+    private void blackStop() {
+        bTimer.stop();
+    }
+
+    private void reset() {
+        wTimer.stop();
+        wTimeCounter = 0;
+        bTimer.stop();
+        bTimeCounter = 0;
+        updateTimeLabel();
+    }
+
+    public void updateTimeLabel() {
+        int wMinutes = (wTimeCounter % 3600) / 60;
+        int wSeconds = wTimeCounter % 60;
+
+        int bMinutes = (bTimeCounter % 3600) / 60;
+        int bSeconds = bTimeCounter % 60;
+
+        String wMinutesString = (wMinutes < 10) ? "0" + wMinutes : Integer.toString(wMinutes);
+        String wSecondsString = (wSeconds < 10) ? "0" + wSeconds : Integer.toString(wSeconds);
+
+        String bMinutesString = (bMinutes < 10) ? "0" + bMinutes : Integer.toString(bMinutes);
+        String bSecondsString = (bSeconds < 10) ? "0" + bSeconds : Integer.toString(bSeconds);
+
+        String wTimeString = "White" + wMinutesString + ":" + wSecondsString;
+        String bTimeString = "Black" + bMinutesString + ":" + bSecondsString;
+
+        chessBoardView.timer1.setText(wTimeString);
+        chessBoardView.timer2.setText(bTimeString);
+    }
+
+    public ArrayList<Integer> getWhiteTime() {
+        return whiteTime;
+    }
+
+    public ArrayList<Integer> getBlackTime() {
+        return blackTime;
+    }
+
+    public ArrayList<Integer> getWhiteCountOfMove() {
+        return whiteCountOfMove;
+    }
+
+    public ArrayList<Integer> getBlackCountOfMove() {
+        return blackCountOfMove;
     }
 }
