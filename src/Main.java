@@ -6,16 +6,16 @@ import java.awt.*;
 
 
 /**
- * Tento projekt je hra sachy, zatim bez pravidl, ale s drag and drop funkci.
- * Trida Main spusti program a vytvori okno c sachovnice.
+ * Tento projekt je hra sachy.
+ * Trida Main spusti program a vytvori hru.
  * @author Alinzhan Mukanov
- * @version 26.03.2023
+ * @version 07.05.2023
  */
 public class Main {
 
     public static void main(String[] args) {
-        GameView gameView = new GameView();
-        gameView.createWindow(gameView);
+        GameView gameView = new GameView(); // Vytvoru hru, ktera vykresli okno a sachovnice
+        gameView.createWindow(gameView); // Vytvori okno
 
     }
 }

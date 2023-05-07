@@ -53,10 +53,7 @@ public class Knight extends Figure{
 		int deltaX = (int)Math.abs(getCol() - x);
 		int deltaY = (int)Math.abs(getRow() - y);
 
-		// Проверяем, что конь двигается в форме буквы "L"
 		if ((deltaX == 2 && deltaY == 1) || (deltaX == 1 && deltaY == 2)) {
-
-			// Проверяем, что на клетке, на которую собирается перейти конь, нет фигур своего цвета
 			if (board[(int)y][(int)x] != null && board[(int)y][(int)x].getColor().equals(getColor())) {
 				return false;
 			}
@@ -72,10 +69,7 @@ public class Knight extends Figure{
 		int deltaX = (int)Math.abs(getCol() - x);
 		int deltaY = (int)Math.abs(getRow() - y);
 
-		// Проверяем, что конь двигается в форме буквы "L"
 		if ((deltaX == 2 && deltaY == 1) || (deltaX == 1 && deltaY == 2)) {
-
-			// Проверяем, что на клетке, на которую собирается перейти конь, нет фигур своего цвета
 			if (board[(int)y][(int)x] != null && (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
 				return true;
 			}
@@ -87,7 +81,6 @@ public class Knight extends Figure{
 	}
 
 	public boolean hasMoves(double x, double y, Figure[][] board) {
-		// Check all possible knight moves
 		int[] dx = {-2, -1, 1, 2, 2, 1, -1, -2};
 		int[] dy = {1, 2, 2, 1, -1, -2, -2, -1};
 		for (int i = 0; i < 8; i++) {

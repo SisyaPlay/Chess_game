@@ -3,10 +3,14 @@ package View;
 import Controllers.BoardController;
 import Figures.*;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -16,10 +20,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 /**
  * Trida View.ChessBoard dedi od JPanelu a implementuje MouseListener, MouseMotionListener.
@@ -35,18 +42,18 @@ public class ChessBoardView extends JPanel {
         private Figure selectedFigure; // Vybrana figura
         private int selectedFigureX; // Pozice vybranou figury podle osy X
         private int selectedFigureY; // Pozice vybranou figury podle osy Y
-        private int startSelectedFigureX;
-        private int startSelectedFigureY;
-        private int lastSelectedFigureX;
-        private int lastSelectedFigureY;
+        private int startSelectedFigureX; // Pocatecni pozice vybranou figury podle osy X
+        private int startSelectedFigureY; // Pocatecni pozice vybranou figury podle osy Y
+        private int lastSelectedFigureX; // Konecna pozice vybranou figury podle osy X
+        private int lastSelectedFigureY; // Konecna pozice vybranou figury podle osy Y
         private int shiftX; // Posun
         private int shiftY;
-        private BoardController boardController;
-        private boolean doAnimate = false;
-        private final int DELAY = 15;
-        public int countOfBeingSelected = 0;
-        public JLabel timer1 = new JLabel();
-        public JLabel timer2 = new JLabel();
+        private BoardController boardController; // Kontroler sachovnice
+        private boolean doAnimate = false; // Kontrola pokud jde animace
+        private final int DELAY = 15; // Delka casu animace
+        public int countOfBeingSelected = 0; // Pocet kolik bylo vybrano
+        public JLabel timer1 = new JLabel(); // Label prvniho casovace
+        public JLabel timer2 = new JLabel(); // Label druheho casovace
 
 
         /**
@@ -156,6 +163,8 @@ public class ChessBoardView extends JPanel {
                 if(countOfBeingSelected != 0) {
                         drawLastStep(g2);
                 }
+
+                // Kresli mozne tahi
                 if(!doAnimate && selectedFigure != null) {
                         switch(selectedFigure.getType()) {
                                 case PAWNS:
@@ -180,12 +189,20 @@ public class ChessBoardView extends JPanel {
                 }
         }
 
+        /**
+         * Vykresli odkud se presunula figura
+         * @param g2
+         */
         private void drawLastStep(Graphics2D g2) {
                 g2.setColor(Color.ORANGE);
                 g2.drawRect(startSelectedFigureX * square_size, startSelectedFigureY * square_size, square_size, square_size);
                 g2.drawRect(lastSelectedFigureX * square_size, lastSelectedFigureY * square_size, square_size, square_size);
         }
 
+        /**
+         * Mozny tah pro vez
+         * @param g2
+         */
         private void showAvailableMoveToRook(Graphics2D g2) {
                 int x = selectedFigure.getCol() * square_size;
                 int y = selectedFigure.getRow() * square_size;
@@ -222,7 +239,10 @@ public class ChessBoardView extends JPanel {
                 }
         }
 
-
+        /**
+         * Mozny tah pro damu
+         * @param g2
+         */
         private void showAvailableMoveToQueen(Graphics2D g2) {
                 int x = selectedFigure.getCol() * square_size;
                 int y = selectedFigure.getRow() * square_size;
@@ -292,6 +312,11 @@ public class ChessBoardView extends JPanel {
                         }
                 }
         }
+
+        /**
+         * Mozny tah pro krala
+         * @param g2
+         */
         private void showAvailableMoveToKing(Graphics2D g2) {
                 int x = selectedFigure.getCol() * square_size;
                 int y = selectedFigure.getRow() * square_size;
@@ -363,6 +388,11 @@ public class ChessBoardView extends JPanel {
                         }
                 }
         }
+
+        /**
+         * Mozny tah pro strelce
+         * @param g2
+         */
         private void showAvailableMoveToBishop(Graphics2D g2) {
                 int x = selectedFigure.getCol() * square_size;
                 int y = selectedFigure.getRow() * square_size;
@@ -401,6 +431,10 @@ public class ChessBoardView extends JPanel {
                 }
         }
 
+        /**
+         * Mozny tah pro jezdce
+         * @param g2
+         */
         private void showAvailableMoveToKnight(Graphics2D g2) {
                 int[] rowOffsets = {-2, -1, 1, 2, 2, 1, -1, -2};
                 int[] colOffsets = {1, 2, 2, 1, -1, -2, -2, -1};
@@ -427,7 +461,10 @@ public class ChessBoardView extends JPanel {
                 }
         }
 
-
+        /**
+         * Mozny tah pro pesce
+         * @param g2
+         */
         private void showAvailableMoveToPawn(Graphics2D g2) {
                 int x = selectedFigure.getCol() * square_size;
                 int y = selectedFigure.getRow() * square_size;
@@ -552,66 +589,128 @@ public class ChessBoardView extends JPanel {
                 }
         }
 
+        /**
+         * Vrati rozmer ctvrcu
+         * @return
+         */
         public int getSquare_size() {
                 return square_size;
         }
 
+        /**
+         * Vrati pole figur
+         * @return
+         */
         public Figure[][] getBoard() {
                 return board;
         }
 
+        /**
+         * Vrati vybranou figuru
+         * @return
+         */
         public Figure getSelectedFigure() {
                 return selectedFigure;
         }
 
+        /**
+         * Vrati pozice vybranou figury podle osy X
+         * @return
+         */
         public int getSelectedFigureX() {
                 return selectedFigureX;
         }
 
+        /**
+         * Vrati pozice vybranou figury podle osy Y
+         * @return
+         */
         public int getSelectedFigureY() {
                 return selectedFigureY;
         }
 
+        /**
+         * Vrati posun sachovnice podle osy X
+         * @return
+         */
         public int getShiftX() {
                 return shiftX;
         }
 
+        /**
+         * Vrati posun sachovnice podle osy Y
+         * @return
+         */
         public int getShiftY() {
                 return shiftY;
         }
 
+        /**
+         * Nastavi vybranou figuru
+         * @param selectedFigure
+         */
         public void setSelectedFigure(Figure selectedFigure) {
                 this.selectedFigure = selectedFigure;
         }
 
+        /**
+         * Nastavi pozice vybranou figury podle osy X
+         * @return
+         */
         public void setSelectedFigureX(int selectedFigureX) {
                 this.selectedFigureX = selectedFigureX;
         }
 
+        /**
+         * Nastavi pozice vybranou figury podle osy Y
+         * @return
+         */
         public void setSelectedFigureY(int selectedFigureY) {
                 this.selectedFigureY = selectedFigureY;
         }
 
+        /**
+         * Nastavi pocatecni pozice vybranou figury podle osy X
+         * @return
+         */
         public void setStartSelectedFigureX(int startSelectedFigureX) {
                 this.startSelectedFigureX = startSelectedFigureX;
         }
 
+        /**
+         * Nastavi pocatecni pozice vybranou figury podle osy Y
+         * @return
+         */
         public void setStartSelectedFigureY(int startSelectedFigureY) {
                 this.startSelectedFigureY = startSelectedFigureY;
         }
 
+        /**
+         * Nastavi posledni pozice vybranou figury podle osy X
+         * @return
+         */
         public void setLastSelectedFigureX(int lastSelectedFigureX) {
                 this.lastSelectedFigureX = lastSelectedFigureX;
         }
 
+        /**
+         * Nastavi posledni pozice vybranou figury podle osy Y
+         * @return
+         */
         public void setLastSelectedFigureY(int lastSelectedFigureY) {
                 this.lastSelectedFigureY = lastSelectedFigureY;
         }
 
+        /**
+         * Pridava pocet vybranych
+         */
         public void addCountOfBeingSelected() {
                 countOfBeingSelected++;
         }
 
+        /**
+         * Restartuje
+         */
         public void restart() {
                 board = new Figure[8][8];
 
@@ -640,33 +739,50 @@ public class ChessBoardView extends JPanel {
                 board[7][2] = new Bishop( 2, 7, Color.WHITE, square_size);
                 board[7][5] = new Bishop( 5, 7, Color.WHITE, square_size);
 
-                BoardController.currentPlayer = Color.WHITE;
+                BoardController.setCurrentPlayer(Color.WHITE);
+                for (int i = 0; i < board.length; i++) {
+                        for (int j = 0; j < board.length; j++) {
+                                if (board[i][j] != null) {
+                                        board[i][j].setHistory(new ArrayList<Point2D[]>());
+                                        board[i][j].setCountOfMove(0);
+                                }
+                        }
+                }
+                countOfBeingSelected = 0;
                 repaint();
                 reset();
         }
 
+        /**
+         * Obnovi casovac
+         */
         private void reset() {
-                boardController.wTimer.stop();
-                boardController.wTimeCounter = 0;
-                boardController.bTimer.stop();
-                boardController.bTimeCounter = 0;
+                boardController.getwTimer().stop();
+                boardController.setwTimeCounter(0);
+                boardController.getbTimer().stop();
+                boardController.setbTimeCounter(0);
                 boardController.updateTimeLabel();
-                boardController.wTimer.start();
+                boardController.getwTimer().start();
         }
 
+        /**
+         * Animace posunu figur
+         * @param endX konecna pozice na ose X
+         * @param endY konecna pozice na ose Y
+         */
         public void animate(int endX, int endY) {
-                final double startX = selectedFigureX;
-                final double startY = selectedFigureY;
-                final double distanceX = Math.abs(endX - startX);
-                final double distanceY = Math.abs(endY - startY);
-                final double totalDistance = Math.max(distanceX, distanceY);
-                final double stepSize = totalDistance / 10;
-                final double xStep = distanceX / totalDistance * stepSize;
-                final double yStep = distanceY / totalDistance * stepSize;
-                final int directionX = endX > startX ? 1 : -1;
-                final int directionY = endY > startY ? 1 : -1;
-                boardController.setAnimationIsOn(true);
-                doAnimate = true;
+                final double startX = selectedFigureX; // Pocatecna pozice na ose X
+                final double startY = selectedFigureY; // Pocatecna pozice na ose X
+                final double distanceX = Math.abs(endX - startX); // Vzdalenost podle osy X
+                final double distanceY = Math.abs(endY - startY); // Vzdalenost podle osy Y
+                final double totalDistance = Math.max(distanceX, distanceY); // Cesta animace
+                final double stepSize = totalDistance / 10; // Krok animace
+                final double xStep = distanceX / totalDistance * stepSize; // Krok animace podle osy X
+                final double yStep = distanceY / totalDistance * stepSize; // Krok animace podle osy Y
+                final int directionX = endX > startX ? 1 : -1; // Smer na ose X
+                final int directionY = endY > startY ? 1 : -1; // Smer na ose X
+                boardController.setAnimationIsOn(true); // Nastavi, ze jde animace a vypne mouseListener
+                doAnimate = true; // Nastavi ze jde animace, nekresli mozne tahy figur
                 Timer timer = new Timer(DELAY, new ActionListener() {
                         double x = startX;
                         double y = startY;
@@ -692,16 +808,16 @@ public class ChessBoardView extends JPanel {
                 timer.start();
         }
 
+        /**
+         * Exportuje PNG obrazek
+         * @param fileName nazev souboru
+         */
         public void createPNGImage(String fileName) {
-                // Создаем изображение с размерами компонента
                 BufferedImage image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
-                // Рисуем компонент на изображении
                 Graphics2D g2 = image.createGraphics();
                 paintComponent(g2);
-                //g2.dispose();
 
-                // Сохраняем изображение в файл
                 try {
                         ImageIO.write(image, "png", new File(fileName));
                 } catch (IOException e) {
@@ -709,16 +825,18 @@ public class ChessBoardView extends JPanel {
                 }
         }
 
-        public JFreeChart createGraf() {
-                // Создаем объект NumberAxis для оси x и настраиваем его
+        /**
+         * Linearni graf jednotlevich tahu
+         * @return
+         */
+        public JFreeChart createXYGraf() {
                 NumberAxis xAxis = new NumberAxis("Count of moves");
                 xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
                 NumberAxis yAxis = new NumberAxis("Time in seconds");
                 yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
-// Создаем график с настроенным NumberAxis
-                JFreeChart chart = ChartFactory.createXYLineChart("Average time of move", null, null, createDataset());
+                JFreeChart chart = ChartFactory.createXYLineChart("Average time of move", null, null, createDatasetForXY());
                 XYPlot plot = chart.getXYPlot();
                 plot.setDomainAxis(xAxis);
                 plot.setRangeAxis(yAxis);
@@ -726,7 +844,42 @@ public class ChessBoardView extends JPanel {
                 return chart;
         }
 
-        private XYDataset createDataset() {
+        /**
+         * Sloupcovy graf
+         * @return
+         */
+        public JFreeChart createBarGraf() {
+                JFreeChart chart = ChartFactory.createBarChart("Average time of move", "Count of moves", "Time in seconds",
+                        createDatasetFotBarChart(), PlotOrientation.VERTICAL, true, true, false);
+
+                NumberAxis rangeAxis = (NumberAxis) chart.getCategoryPlot().getRangeAxis();
+                rangeAxis.setTickUnit(new NumberTickUnit(1));
+                rangeAxis.setNumberFormatOverride(new DecimalFormat("0s"));
+
+                return chart;
+        }
+
+        /**
+         * Databaza pro sloupcovy graf
+         * @return
+         */
+        private CategoryDataset createDatasetFotBarChart() {
+                DefaultCategoryDataset dataset = new DefaultCategoryDataset ();
+
+                for (int i = 1; i < boardController.getWhiteTime().size(); i++) {
+                        dataset.addValue(boardController.getWhiteTime().get(i), "White", boardController.getWhiteCountOfMove().get(i));
+                }
+                for (int i = 1; i < boardController.getBlackTime().size(); i++) {
+                        dataset.addValue(boardController.getBlackTime().get(i), "Black", boardController.getBlackCountOfMove().get(i));
+                }
+                return dataset;
+        }
+
+        /**
+         * databaza pro linearni graf
+         * @return
+         */
+        private XYDataset createDatasetForXY() {
                 XYSeriesCollection dataset = new XYSeriesCollection();
                 XYSeries series1 = new XYSeries("White");
                 XYSeries series2 = new XYSeries("Black");
@@ -743,20 +896,27 @@ public class ChessBoardView extends JPanel {
                 return dataset;
         }
 
-        public void createPNGImageOfGraf(String fileName) {
-                JFreeChart chart = createGraf();
-                int width = 640; // ширина изображения в пикселях
-                int height = 480; // высота изображения в пикселях
+        /**
+         * Vytvori obrazek grafu v PNG
+         * @param fileName nazev souboru
+         * @param BarOrXY vyber slopoveho ci linearniho grafu
+         */
+        public void createPNGImageOfGraf(String fileName, boolean BarOrXY) {
+                JFreeChart chart;
+                if(BarOrXY) {
+                        chart = createBarGraf();
+                } else {
+                        chart = createXYGraf();
+                }
+                int width = 640;
+                int height = 480;
 
-                // Создаем изображение с указанными размерами и типом
                 BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
-                // Рисуем график на изображении
                 Graphics2D g2 = image.createGraphics();
                 chart.draw(g2, new Rectangle2D.Double(0, 0, width, height));
                 g2.dispose();
 
-                // Сохраняем изображение в файл
                 try {
                         ImageIO.write(image, "png", new File(fileName));
                 } catch (IOException e) {

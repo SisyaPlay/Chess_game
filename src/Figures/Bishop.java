@@ -42,31 +42,25 @@ public class Bishop extends Figure {
 
 	@Override
 	public boolean moveTo(double cX, double cY, double x, double y, Figure[][] board) {
-		// проверяем, что слон двигается по диагонали
 		int deltaX = (int)Math.abs(getCol() - x);
 		int deltaY = (int)Math.abs(getRow() - y);
 
 		if (deltaX != deltaY) {
-			// слон не двигается по диагонали
 			return false;
 		}
 
-		// определяем направление движения слона
 		int stepX = (x - getCol()) > 0 ? 1 : -1;
 		int stepY = (y - getRow()) > 0 ? 1 : -1;
 
-		// проверяем клетки на пути движения слона
 		for (int i = 1; i < deltaX; i++) {
 			int checkX = getCol() + i * stepX;
 			int checkY = getRow() + i * stepY;
 
 			if (board[checkY][checkX] != null) {
-				// на пути стоит фигура
 				return false;
 			}
 		}
 
-		// проверяем, что конечная клетка пуста или занята фигурой другого цвета
 		if (board[(int)y][(int)x] == null || board[(int)y][(int)x].getColor() != getColor()) {
 			addCountOfMove();
 			return true;
@@ -77,31 +71,25 @@ public class Bishop extends Figure {
 
 	@Override
 	public boolean canEatKing(double cX, double cY, double x, double y, Figure[][] board) {
-		// проверяем, что слон двигается по диагонали
 		int deltaX = (int)Math.abs(getCol() - x);
 		int deltaY = (int)Math.abs(getRow() - y);
 
 		if (deltaX != deltaY) {
-			// слон не двигается по диагонали
 			return false;
 		}
 
-		// определяем направление движения слона
 		int stepX = ((int)x - getCol()) > 0 ? 1 : -1;
 		int stepY = ((int)y - getRow()) > 0 ? 1 : -1;
 
-		// проверяем клетки на пути движения слона
 		for (int i = 1; i < deltaX; i++) {
 			int checkX = getCol() + i * stepX;
 			int checkY = getRow() + i * stepY;
 
 			if (board[checkY][checkX] != null) {
-				// на пути стоит фигура
 				return false;
 			}
 		}
 
-		// проверяем, что конечная клетка пуста или занята фигурой другого цвета
 		if (board[(int)y][(int)x] == null || (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
 			return true;
 		}

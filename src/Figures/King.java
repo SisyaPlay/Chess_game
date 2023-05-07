@@ -65,7 +65,6 @@ public class King extends Figure {
 			return false;
 		}
 
-// Проверяем, что на клетке, на которую собирается перейти король, нет фигур своего цвета
 		if (board[(int)y][(int)x] == null || board[(int)y][(int)x].getColor() != getColor()) {
 			addCountOfMove();
 			addHistory((int)cX, (int)cY, (int)x, (int)y);
@@ -73,14 +72,6 @@ public class King extends Figure {
 
 		}
 		return false;
-	}
-
-	public void addHistory(int cX, int cY, int x, int y) {
-		Point2D[] points = new Point2D[2];
-		points[0] = new Point2D.Double(cX, cY);
-		points[1] = new Point2D.Double(x, y);
-
-		this.history.add(points);
 	}
 
 	@Override
@@ -99,7 +90,15 @@ public class King extends Figure {
 		return false;
 	}
 
-
+	/**
+	 * Metoda kontroluje pokud je moznost udelat rosadu
+	 * @param cX pocatecni pozice na ose x
+	 * @param cY pocatecni pozice na ose y
+	 * @param x konecni pozice na ose x
+	 * @param y konecni pozice na ose y
+	 * @param board pole figur
+	 * @return
+	 */
 	public boolean doCastling(double cX, double cY, double x, double y, Figure[][] board) {
 		if(this.countOfMove != 0) {
 			return false;
@@ -143,7 +142,6 @@ public class King extends Figure {
 	}
 
 	public boolean hasMoves(double x, double y, Figure[][] board) {
-		// Determine the surrounding cells around the king
 		int[] xOffset = {-1, 0, 1, -1, 1, -1, 0, 1};
 		int[] yOffset = {-1, -1, -1, 0, 0, 1, 1, 1};
 
@@ -153,7 +151,7 @@ public class King extends Figure {
 					int dx = (int)x + xOffset[i];
 					int dy = (int)y + yOffset[i];
 					Figure figure = board[row][col];
-					if (dx >= 0 && dx < 8 && dy >= 0 && dy < 8) { // Check if the cell is inside the boar
+					if (dx >= 0 && dx < 8 && dy >= 0 && dy < 8) {
 						if (figure != null && figure.getColor() != getColor() && figure.moveTo(figure.getCol(), figure.getRow(), dx, dy, board)) {
 							return false;
 						}
@@ -164,6 +162,13 @@ public class King extends Figure {
 		return true;
 	}
 
+	/**
+	 * Animace pro vez
+	 * @param endX
+	 * @param endY
+	 * @param cX
+	 * @param board
+	 */
 	private void animation(double endX, double endY, double cX, Figure[][] board) {
 		final double startX = board[(int)endY][(int)cX].getFigureX();
 		final double distanceX = Math.abs(endX - startX);

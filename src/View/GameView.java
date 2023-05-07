@@ -7,6 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+/**
+ * Trida gameView zpusti okno a sachy v okne
+ * Dedi od JFrame
+ */
 public class GameView extends JFrame{
 
 
@@ -14,26 +18,30 @@ public class GameView extends JFrame{
     private static final int WIDTH = 800; // Sirka onka
     private static final int HEIGHT = 600; // Vyska okna
 
-    private final Panel rightPanel = new Panel();
-    private final Panel leftPanel = new Panel();
-
-    private JMenuBar menuBar = new JMenuBar();
-    private JMenu menuGame = new JMenu("Game");
-    private JMenu menuHelp = new JMenu("Help");
-    private JMenuItem item = new JMenuItem("Restart");
-    private JMenuItem item2 = new JMenuItem("Export graph");
-    private JMenuItem item3 = new JMenuItem("Export to PNG");
-
-    public JLabel timer1;
-    public JLabel timer2;
-    private JLabel countOfKillerFig1 = new JLabel("countOfKillerFig1");
+    private final Panel rightPanel = new Panel(); // Pravy panel
+    private final Panel leftPanel = new Panel(); // Levy panel
+    private JMenuBar menuBar = new JMenuBar(); // Menu bar
+    private JMenu menuGame = new JMenu("Game"); // Menu hra, ma restart, a dva exporty do PNG
+    private JMenu menuHelp = new JMenu("Help"); // Menu Help, zatim ne pouziva
+    private JMenuItem item = new JMenuItem("Restart"); // Tlacitko restart, restartuje hru
+    private JMenuItem item2 = new JMenuItem("Export graph"); // Tlacitko exportuje graf do PNG formatu
+    private JMenuItem subItem1 = new JMenuItem("Linear graf");
+    private JMenuItem subItem2 = new JMenuItem("Bar graf");
+    private JMenuItem item3 = new JMenuItem("Export to PNG"); // Tlacitko exportuje sachovnice a figury do PNG formatu
+    public JLabel timer1; // Prvni label na casovac
+    public JLabel timer2; // Druhy label na casovac
+    private JLabel countOfKillerFig1 = new JLabel("countOfKillerFig1"); // Pocet zabitych figur, zatim nepouziva
     private JLabel countOfKillerFig2 = new JLabel("countOfKillerFig1");
 
+    /**
+     * Konstruktor tridy GameView
+     */
+    public GameView() {}
 
-    public GameView() {
-
-    }
-
+    /**
+     * Vytvori okno s hrou
+     * @param frame
+     */
     public void createWindow(JFrame frame) {
         ChessBoardView board = new ChessBoardView();
         this.setTitle("UPG Sachy Mukanov - A22B0388P");
@@ -67,9 +75,9 @@ public class GameView extends JFrame{
                     File file = fileChooser.getSelectedFile();
                     String pathName = file.getPath();
                     if (pathName.endsWith(".png")) {
-                        board.createPNGImageOfGraf(file.getAbsolutePath());
+                        board.createPNGImageOfGraf(file.getAbsolutePath(), true);
                     } else {
-                        board.createPNGImageOfGraf(file.getAbsolutePath() + ".png");
+                        board.createPNGImageOfGraf(file.getAbsolutePath() + ".png", true);
                     }
                 }
             }

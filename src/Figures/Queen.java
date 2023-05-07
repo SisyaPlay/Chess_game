@@ -94,11 +94,9 @@ public class Queen extends Figure {
 			return false;
 		}
 
-		// определяем направление движения слона
 		int stepX = (x - getCol()) > 0 ? 1 : -1;
 		int stepY = (y - getRow()) > 0 ? 1 : -1;
 
-		// проверяем клетки на пути движения слона
 		for (int i = 1; i < deltaX; i++) {
 			int checkX = getCol() + i * stepX;
 			int checkY = getRow() + i * stepY;
@@ -109,7 +107,6 @@ public class Queen extends Figure {
 			}
 		}
 
-		// проверяем, что конечная клетка пуста или занята фигурой другого цвета
 		if (board[(int)y][(int)x] == null || board[(int)y][(int)x].getColor() != getColor()) {
 			addCountOfMove();
 			return true;
@@ -125,26 +122,25 @@ public class Queen extends Figure {
 
 		if (getCol() == (int)x || getRow() == (int)y) {
 			int start, end;
-			if (getCol() == x) { // движение по вертикали
+			if (getCol() == x) {
 				start = (int)Math.min(getRow(), y);
 				end = (int)Math.max(getRow(), y);
-			} else { // движение по горизонтали
+			} else {
 				start = (int)Math.min(getCol(), x);
 				end = (int)Math.max(getCol(), x);
 			}
 
-			for (int i = start + 1; i < end; i++) { // проверяем все клетки на пути
-				if (getCol() == (int)x) { // движение по вертикали
-					if (board[i][getCol()] != null) { // есть фигура на пути
+			for (int i = start + 1; i < end; i++) {
+				if (getCol() == (int)x) {
+					if (board[i][getCol()] != null) {
 						return false;
 					}
-				} else { // движение по горизонтали
-					if (board[getRow()][i] != null) { // есть фигура на пути
+				} else {
+					if (board[getRow()][i] != null) {
 						return false;
 					}
 				}
 			}
-			// проверяем цвет фигуры на конечной позиции
 			if (board[(int)y][(int)x] != null && (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
 				return true;
 			}
@@ -154,22 +150,18 @@ public class Queen extends Figure {
 			return false;
 		}
 
-		// определяем направление движения слона
 		int stepX = ((int)x - getCol()) > 0 ? 1 : -1;
 		int stepY = ((int)y - getRow()) > 0 ? 1 : -1;
 
-		// проверяем клетки на пути движения слона
 		for (int i = 1; i < deltaX; i++) {
 			int checkX = getCol() + i * stepX;
 			int checkY = getRow() + i * stepY;
 
 			if (board[checkY][checkX] != null) {
-				// на пути стоит фигура
 				return false;
 			}
 		}
 
-		// проверяем, что конечная клетка пуста или занята фигурой другого цвета
 		if (board[(int)y][(int)x] != null && (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
 			return true;
 		}
@@ -180,7 +172,7 @@ public class Queen extends Figure {
 	public boolean hasMoves(double x, double y, Figure[][] board) {
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
-				if (i == 0 && j == 0) continue; // skip checking the same position as the king
+				if (i == 0 && j == 0) continue;
 
 				int row = (int)y + i;
 				int col = (int)x + j;

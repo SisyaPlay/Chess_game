@@ -52,7 +52,6 @@ public class Rook extends Figure {
 	}
 	@Override
 	public boolean moveTo(double cX, double cY, double x, double y, Figure[][] board) {
-		// проверяем, что башня двигается по вертикали или горизонтали
 		if (getCol() == x || getRow() == y) {
 			int start, end;
 			if (getCol() == x) { // движение по вертикали
@@ -63,18 +62,17 @@ public class Rook extends Figure {
 				end = (int)Math.max(getCol(), x);
 			}
 
-			for (int i = start + 1; i < end; i++) { // проверяем все клетки на пути
-				if (getCol() == x) { // движение по вертикали
-					if (board[i][getCol()] != null) { // есть фигура на пути
+			for (int i = start + 1; i < end; i++) {
+				if (getCol() == x) {
+					if (board[i][getCol()] != null) {
 						return false;
 					}
-				} else { // движение по горизонтали
-					if (board[getRow()][i] != null) { // есть фигура на пути
+				} else {
+					if (board[getRow()][i] != null) {
 						return false;
 					}
 				}
 			}
-			// проверяем цвет фигуры на конечной позиции
 			if (board[(int)y][(int)x] == null || board[(int)y][(int)x].getColor() != getColor()) {
 				addCountOfMove();
 				addHistory((int)cX, (int)cY, (int)x, (int)y);
@@ -84,38 +82,28 @@ public class Rook extends Figure {
 		return false;
 	}
 
-	public void addHistory(int cX, int cY, int x, int y) {
-		Point2D[] points = new Point2D[2];
-		points[0] = new Point2D.Double(cX, cY);
-		points[1] = new Point2D.Double(x, y);
-
-		this.history.add(points);
-	}
-
 	public boolean canEatKing(double cX, double cY, double x, double y, Figure[][] board) {
-// проверяем, что башня двигается по вертикали или горизонтали
 		if (getCol() == x || getRow() == y) {
 			int start, end;
-			if (getCol() == x) { // движение по вертикали
+			if (getCol() == x) {
 				start = (int)Math.min(getRow(), y);
 				end = (int)Math.max(getRow(), y);
-			} else { // движение по горизонтали
+			} else {
 				start = (int)Math.min(getCol(), x);
 				end = (int)Math.max(getCol(), x);
 			}
 
-			for (int i = start + 1; i < end; i++) { // проверяем все клетки на пути
-				if (getCol() == x) { // движение по вертикали
-					if (board[i][getCol()] != null) { // есть фигура на пути
+			for (int i = start + 1; i < end; i++) {
+				if (getCol() == x) {
+					if (board[i][getCol()] != null) {
 						return false;
 					}
-				} else { // движение по горизонтали
-					if (board[getRow()][i] != null) { // есть фигура на пути
+				} else {
+					if (board[getRow()][i] != null) {
 						return false;
 					}
 				}
 			}
-			// проверяем цвет фигуры на конечной позиции
 			if (board[(int)y][(int)x] == null || (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
 				addCountOfMove();
 				addHistory((int)cX, (int)cY, (int)x, (int)y);
@@ -126,7 +114,6 @@ public class Rook extends Figure {
 	}
 
 	public boolean hasMoves(double x, double y, Figure[][] board) {
-		// Check horizontal moves to the right
 		for (int col = (int)x + 1; col < 8; col++) {
 			Figure figure = board[(int)y][col];
 			if (figure == null) {
@@ -138,7 +125,6 @@ public class Rook extends Figure {
 			break;
 		}
 
-		// Check horizontal moves to the left
 		for (int col = (int)x - 1; col >= 0; col--) {
 			Figure figure = board[(int)y][col];
 			if (figure == null) {
@@ -150,7 +136,6 @@ public class Rook extends Figure {
 			break;
 		}
 
-		// Check vertical moves up
 		for (int row = (int)y - 1; row >= 0; row--) {
 			Figure figure = board[row][(int)x];
 			if (figure == null) {
@@ -162,7 +147,6 @@ public class Rook extends Figure {
 			break;
 		}
 
-		// Check vertical moves down
 		for (int row = (int)y + 1; row < 8; row++) {
 			Figure figure = board[row][(int)x];
 			if (figure == null) {

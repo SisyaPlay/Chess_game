@@ -14,28 +14,38 @@ import java.util.ArrayList;
 
 import static View.ChessBoardView.ROW_COUNT;
 
+/**
+ * Trida kontroler, implementuje mouseListener a ma v sobe pravidla sachu
+ */
 public class BoardController implements MouseListener {
 
-    private ChessBoardView chessBoardView;
-    public static Color currentPlayer = Color.WHITE;
-    public int countOfCheckWhite = 0;
-    public int countOfCheckBlack = 0;
-    public boolean animationIsOn = false;
-    public Timer wTimer;
-    public int wTimeCounter = 0;
-    public Timer bTimer;
-    public int bTimeCounter = 0;
-    private final int DELAY = 1000;
-    private int wCount = 0;
-    private int bCount = 0;
-    public ArrayList<Integer> whiteTime = new ArrayList<>();
-    public ArrayList<Integer> blackTime = new ArrayList<>();
-    public ArrayList<Integer> whiteCountOfMove = new ArrayList<>();
-    public ArrayList<Integer> blackCountOfMove = new ArrayList<>();
+    private ChessBoardView chessBoardView; // Trida, ktera vykresli sachy
+    private static Color currentPlayer = Color.WHITE; // Aktualni hrac
+    private int countOfCheckWhite = 0; // Pocet sahu pro bileho hrace
+    private int countOfCheckBlack = 0; // Pocet sahu pro cerneho hrace
+    private boolean animationIsOn = false; // Kontrola jestli animate zapnuto
+    private Timer wTimer; // Casovac bileho hrace
+    private int wTimeCounter = 0; // Pocet secund
+    private Timer bTimer; // Casovac cerneho hrace
+    private int bTimeCounter = 0; // Pocet secund
+    private final int DELAY = 1000; // Zpozdeni 1 sekundu
+    private int wCount = 0; // Pocet tahu bileho hrace
+    private int bCount = 0; // Pocet tahu cerneho hrace
+    private ArrayList<Integer> whiteTime = new ArrayList<>(); // List sekund bileho hrace
+    private ArrayList<Integer> blackTime = new ArrayList<>(); // List sekund cerneho hrace
+    private ArrayList<Integer> whiteCountOfMove = new ArrayList<>(); // List poctu tahu bileho hrace
+    private ArrayList<Integer> blackCountOfMove = new ArrayList<>(); // List poctu tahu bileho hrace
 
+    /**
+     * Konstruktor tridy BoardController.
+     * Nastavi graficky tridu, zpusti casovaci a prida ji do listu
+     * @param chessBoardView
+     */
     public BoardController(ChessBoardView chessBoardView) {
         this.chessBoardView = chessBoardView;
         whiteStart();
+        blackStart();
+        blackStop();
         whiteTime.add(wTimeCounter);
         blackTime.add(bTimeCounter);
         whiteCountOfMove.add(wCount);
@@ -122,6 +132,9 @@ public class BoardController implements MouseListener {
         }
     }
 
+    /**
+     * Proměna pesce
+     */
     private void changePawnToQueen() {
         if(chessBoardView.getSelectedFigure() instanceof Pawns) {
             if(chessBoardView.getSelectedFigure().getColor().equals(Color.WHITE) && chessBoardView.getSelectedFigure().getRow() == 0) {
@@ -139,8 +152,14 @@ public class BoardController implements MouseListener {
     public void mouseExited(MouseEvent e) {}
     public void mouseClicked(MouseEvent e) {}
 
+    /**
+     * Aktualni hrac
+     * @param row sloupec
+     * @param col rada
+     * @return
+     */
     private boolean currentPlayerMove(int row, int col) {
-        if(chessBoardView.getSelectedFigureX() == col) {
+        if(chessBoardView.getSelectedFigureX() == col) { // jestli figura se neposunula, aktualni hrac se nesmeni
             if(chessBoardView.getSelectedFigureY() == row){
                 return false;
             }
@@ -168,6 +187,10 @@ public class BoardController implements MouseListener {
         return false;
     }
 
+    /**
+     * Kontrola na mat
+     * @return
+     */
     private boolean isCheckmate() {
         Figure whiteKing = null;
         Figure blackKing = null;
@@ -202,11 +225,14 @@ public class BoardController implements MouseListener {
         return false;
     }
 
-
+    /**
+     * Kontrola na pat
+     * @return
+     */
     public boolean isStalemate() {
         Figure king = null;
 
-        // Находим короля текущего игрока на доске
+        // Hlada krala aktualniho hrace
         for (int row = 0; row < ROW_COUNT; row++) {
             for (int col = 0; col < ROW_COUNT; col++) {
                 Figure figure = chessBoardView.getBoard()[row][col];
@@ -217,12 +243,12 @@ public class BoardController implements MouseListener {
             }
         }
 
-        // Проверяем, находится ли король под атакой
+        // Kontroluje je-li kral pod utokem
         if (king.isUnderAttack(king.getCol(), king.getRow(), chessBoardView.getBoard())) {
             return false;
         }
 
-        // Перебираем все фигуры текущего игрока и проверяем, есть ли у них допустимый ход
+        // Kontroluje pokud figury ma tahy
         for (int row = 0; row < ROW_COUNT; row++) {
             for (int col = 0; col < ROW_COUNT; col++) {
                 Figure figure = chessBoardView.getBoard()[row][col];
@@ -233,16 +259,13 @@ public class BoardController implements MouseListener {
                 }
             }
         }
-
-        // Если ни один ход не найден, то это пат
         JOptionPane.showMessageDialog(null, "Stalemate!");
         return true;
     }
 
-    public void setAnimationIsOn(boolean animationIsOn) {
-        this.animationIsOn = animationIsOn;
-    }
-
+    /**
+     * Zpusti casovac pro bileho hrace
+     */
     private void whiteStart() {
         wTimer = new Timer(DELAY, new ActionListener() {
             @Override
@@ -253,6 +276,10 @@ public class BoardController implements MouseListener {
         });
         wTimer.start();
     }
+
+    /**
+     * Zpusti casovac pro cerneho hrace
+     */
     private void blackStart() {
         bTimer = new Timer(DELAY, new ActionListener() {
             @Override
@@ -264,22 +291,23 @@ public class BoardController implements MouseListener {
         bTimer.start();
     }
 
+    /**
+     * Zastavi casovac pro bileho hrace
+     */
     private void whiteStop() {
         wTimer.stop();
     }
 
+    /**
+     * Zastavi casovac pro cerneho hrace
+     */
     private void blackStop() {
         bTimer.stop();
     }
 
-    private void reset() {
-        wTimer.stop();
-        wTimeCounter = 0;
-        bTimer.stop();
-        bTimeCounter = 0;
-        updateTimeLabel();
-    }
-
+    /**
+     * Obnovi text aktualnim casem
+     */
     public void updateTimeLabel() {
         int wMinutes = (wTimeCounter % 3600) / 60;
         int wSeconds = wTimeCounter % 60;
@@ -300,19 +328,83 @@ public class BoardController implements MouseListener {
         chessBoardView.timer2.setText(bTimeString);
     }
 
+    /**
+     * Vrati list sekund bileho hrace
+     * @return
+     */
     public ArrayList<Integer> getWhiteTime() {
         return whiteTime;
     }
 
+    /**
+     * Vrati list sekund cerneho hrace
+     * @return
+     */
     public ArrayList<Integer> getBlackTime() {
         return blackTime;
     }
 
+    /**
+     * Vrati list tahu bileho hrace
+     * @return
+     */
     public ArrayList<Integer> getWhiteCountOfMove() {
         return whiteCountOfMove;
     }
 
+    /**
+     * Vrati list tahu cerneho hrace
+     * @return
+     */
     public ArrayList<Integer> getBlackCountOfMove() {
         return blackCountOfMove;
+    }
+
+    /**
+     * Nastavi aktualniho hrace
+     * @param currentPlayer
+     */
+    public static void setCurrentPlayer(Color currentPlayer) {
+        BoardController.currentPlayer = currentPlayer;
+    }
+
+    /**
+     * Nastavi pocet sekund bileho hrace
+     * @param wTimeCounter
+     */
+    public void setwTimeCounter(int wTimeCounter) {
+        this.wTimeCounter = wTimeCounter;
+    }
+
+    /**
+     * Nastavi pocet sekund cerneho hrace
+     * @param bTimeCounter
+     */
+    public void setbTimeCounter(int bTimeCounter) {
+        this.bTimeCounter = bTimeCounter;
+    }
+
+    /**
+     * Vrati casovac bileho hrace
+     * @return
+     */
+    public Timer getwTimer() {
+        return wTimer;
+    }
+
+    /**
+     * Vrati casovac cerneho hrace
+     * @return
+     */
+    public Timer getbTimer() {
+        return bTimer;
+    }
+
+    /**
+     * Nastavi jestli animace zapnuta
+     * @param animationIsOn
+     */
+    public void setAnimationIsOn(boolean animationIsOn) {
+        this.animationIsOn = animationIsOn;
     }
 }
