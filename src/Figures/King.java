@@ -141,6 +141,16 @@ public class King extends Figure {
 		return false;
 	}
 
+	public boolean isThisPlaceIsSave(int col, int row, Figure[][] board, Figure king) {
+		if(board[row][col] == null) {
+			board[row][col] = king;
+			if(board[row][col].isUnderAttack(col, row, board)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public boolean hasMoves(double x, double y, Figure[][] board) {
 		int[] xOffset = {-1, 0, 1, -1, 1, -1, 0, 1};
 		int[] yOffset = {-1, -1, -1, 0, 0, 1, 1, 1};

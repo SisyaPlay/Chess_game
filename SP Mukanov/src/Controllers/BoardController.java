@@ -101,74 +101,68 @@ public class BoardController implements MouseListener {
             int y = e.getY() - chessBoardView.getShiftY();
             int row = y / chessBoardView.getSquare_size();
             int col = x / chessBoardView.getSquare_size();
-            if (col > ROW_COUNT - 1 || row > ROW_COUNT - 1 || col < 0 || row < 0 || x < 0 || y < 0) {
-                chessBoardView.getBoard()[chessBoardView.getSelectedFigureY()][chessBoardView.getSelectedFigureX()] = chessBoardView.getSelectedFigure();
-            } else if(!findKing(chessBoardView.getBoard())) {
+            if (!findKing(chessBoardView.getBoard())) {
                 if (chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard())
-                        && makeAMove(row, col) && chessBoardView.getSelectedFigure().getColor().equals(currentPlayer)) {
-                    moveFigure(col, row);
-                }
-            } else if(!(chessBoardView.getSelectedFigure() instanceof King)) {
-                if(chessBoardView.getSelectedFigure().canSafeKing(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(),
-                        col, row, chessBoardView.getBoard()) && makeAMove(row, col) && chessBoardView.getSelectedFigure().getColor().equals(currentPlayer)) {
-                    moveFigure(col, row);
+                        && currentPlayerMove(row, col)) {
+                    if (col > ROW_COUNT - 1 || row > ROW_COUNT - 1 || col < 0 || row < 0 || x < 0 || y < 0) {
+                        chessBoardView.getBoard()[chessBoardView.getSelectedFigureY()][chessBoardView.getSelectedFigureX()] = chessBoardView.getSelectedFigure();
+                    } else {
+                        chessBoardView.animate(col, row);
+                        chessBoardView.getBoard()[chessBoardView.getSelectedFigure().getRow()][chessBoardView.getSelectedFigure().getCol()] = null;
+                        chessBoardView.getBoard()[row][col] = chessBoardView.getSelectedFigure(); // Zapise do pole figuru
+                        chessBoardView.getSelectedFigure().setRow(row);
+                        chessBoardView.getSelectedFigure().setCol(col);
+                        chessBoardView.addCountOfBeingSelected();
+                        chessBoardView.setLastSelectedFigureX(col);
+                        chessBoardView.setLastSelectedFigureY(row);
+                        chessBoardView.setStartSelectedFigureX(chessBoardView.getSelectedFigureX());
+                        chessBoardView.setStartSelectedFigureY(chessBoardView.getSelectedFigureY());
+                    }
+                    changePawnToQueen();
+                    if (isCheckmate()) {
+                        chessBoardView.restart();
+                        countOfCheckWhite = 0;
+                        countOfCheckBlack = 0;
+                    }
+                    if (isStalemate()) {
+                        chessBoardView.restart();
+                        countOfCheckWhite = 0;
+                        countOfCheckBlack = 0;
+                    }
                 }
             } else {
-                if(isSaveForKing(col, row, chessBoardView.getBoard())) {
-                    moveFigure(col, row);
+                if(chessBoardView.getSelectedFigure().canSafeKing(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(),
+                        col, row, chessBoardView.getBoard()) && currentPlayerMove(row, col)) {
+                    if (col > ROW_COUNT - 1 || row > ROW_COUNT - 1 || col < 0 || row < 0 || x < 0 || y < 0) {
+                        chessBoardView.getBoard()[chessBoardView.getSelectedFigureY()][chessBoardView.getSelectedFigureX()] = chessBoardView.getSelectedFigure();
+                    } else {
+                        chessBoardView.animate(col, row);
+                        chessBoardView.getBoard()[chessBoardView.getSelectedFigure().getRow()][chessBoardView.getSelectedFigure().getCol()] = null;
+                        chessBoardView.getBoard()[row][col] = chessBoardView.getSelectedFigure(); // Zapise do pole figuru
+                        chessBoardView.getSelectedFigure().setRow(row);
+                        chessBoardView.getSelectedFigure().setCol(col);
+                        chessBoardView.addCountOfBeingSelected();
+                        chessBoardView.setLastSelectedFigureX(col);
+                        chessBoardView.setLastSelectedFigureY(row);
+                        chessBoardView.setStartSelectedFigureX(chessBoardView.getSelectedFigureX());
+                        chessBoardView.setStartSelectedFigureY(chessBoardView.getSelectedFigureY());
+                    }
+                    changePawnToQueen();
+                    if (isCheckmate()) {
+                        chessBoardView.restart();
+                        countOfCheckWhite = 0;
+                        countOfCheckBlack = 0;
+                    }
+                    if (isStalemate()) {
+                        chessBoardView.restart();
+                        countOfCheckWhite = 0;
+                        countOfCheckBlack = 0;
+                    }
                 }
             }
         }
     }
 
-    private void moveFigure(int col, int row) {
-        chessBoardView.animate(col, row);
-        chessBoardView.getBoard()[chessBoardView.getSelectedFigure().getRow()][chessBoardView.getSelectedFigure().getCol()] = null;
-        chessBoardView.getBoard()[row][col] = chessBoardView.getSelectedFigure(); // Zapise do pole figuru
-        chessBoardView.getSelectedFigure().setRow(row);
-        chessBoardView.getSelectedFigure().setCol(col);
-        chessBoardView.addCountOfBeingSelected();
-        chessBoardView.setLastSelectedFigureX(col);
-        chessBoardView.setLastSelectedFigureY(row);
-        chessBoardView.setStartSelectedFigureX(chessBoardView.getSelectedFigureX());
-        chessBoardView.setStartSelectedFigureY(chessBoardView.getSelectedFigureY());
-        currentPlayerMove();
-        changePawnToQueen();
-        if (isCheckmate()) {
-            chessBoardView.restart();
-            countOfCheckWhite = 0;
-            countOfCheckBlack = 0;
-        }
-        if (isStalemate()) {
-            chessBoardView.restart();
-            countOfCheckWhite = 0;
-            countOfCheckBlack = 0;
-        }
-    }
-
-    private boolean isSaveForKing(int col, int row, Figure[][] board) {
-        Figure king = null;
-
-        for (int y = 0; y < ROW_COUNT; y++) {
-            for (int x = 0; x < ROW_COUNT; x++) {
-                Figure figure = board[y][x];
-                if(figure instanceof King && figure.getColor().equals(currentPlayer)) {
-                    king = figure;
-                }
-            }
-        }
-
-        if(king.isThisPlaceIsSave(col, row, board, king)) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Metoda vrati true, kdyz kral bude pod utokem
-     * @param board
-     * @return
-     */
     private boolean findKing(Figure[][] board) {
         Figure king = null;
 
@@ -181,7 +175,8 @@ public class BoardController implements MouseListener {
             }
         }
 
-        return king.isUnderAttack(king.getCol(), king.getRow(), board);
+        if(king.isUnderAttack(king.getCol(), king.getRow(), board)) return true;
+        return false;
     }
 
     /**
@@ -206,9 +201,16 @@ public class BoardController implements MouseListener {
 
     /**
      * Aktualni hrac
+     * @param row sloupec
+     * @param col rada
      * @return
      */
-    private void currentPlayerMove() {
+    private boolean currentPlayerMove(int row, int col) {
+        if(chessBoardView.getSelectedFigureX() == col) { // jestli figura se neposunula, aktualni hrac se nesmeni
+            if(chessBoardView.getSelectedFigureY() == row){
+                return false;
+            }
+        }
         if (chessBoardView.getSelectedFigure().getColor().equals(currentPlayer)) {
             if (currentPlayer == Color.WHITE) {
                 currentPlayer = Color.BLACK;
@@ -227,16 +229,9 @@ public class BoardController implements MouseListener {
                 blackCountOfMove.add(bCount);
                 whiteStart();
             }
+            return true;
         }
-    }
-
-    private boolean makeAMove(int row, int col) {
-        if(chessBoardView.getSelectedFigureX() == col) { // jestli figura se neposunula, aktualni hrac se nesmeni
-            if(chessBoardView.getSelectedFigureY() == row){
-                return false;
-            }
-        }
-        return true;
+        return false;
     }
 
     /**

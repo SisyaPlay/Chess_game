@@ -1,11 +1,6 @@
 package Figures;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseMotionListener;
 
 
 /**
@@ -14,8 +9,9 @@ import java.awt.event.MouseMotionListener;
  */
 public class Knight extends Figure{
 
-	public Knight(int x, int y, Color color, double square_size) {
+	public Knight(double x, double y, Color color, double square_size) {
 		super(x, y, color, square_size);
+		this.type = EFigure.KNIGHT;
 	}
 
 
@@ -24,8 +20,8 @@ public class Knight extends Figure{
 		super.paintComponent(g);
 
 		double R = square_size;
-		double x = square_size * this.getX();
-		double y = square_size * this.getY();
+		double x = square_size * this.getFigureX();
+		double y = square_size * this.getFigureY();
 
 
 		Graphics2D g2 = (Graphics2D)g;
@@ -52,6 +48,51 @@ public class Knight extends Figure{
 		g.drawOval((int)(x + square_size / 3) , (int)(y + square_size / 4), (int)R / 4, (int)(R - square_size / 2));
 		g2.rotate(Math.toRadians(-45), (int)(x + square_size / 2), (int)(y + square_size / 3));
 	}
+	@Override
+	public boolean moveTo(double cX, double cY, double x, double y, Figure[][] board) {
+		int deltaX = (int)Math.abs(getCol() - x);
+		int deltaY = (int)Math.abs(getRow() - y);
 
+		if ((deltaX == 2 && deltaY == 1) || (deltaX == 1 && deltaY == 2)) {
+			if (board[(int)y][(int)x] != null && board[(int)y][(int)x].getColor().equals(getColor())) {
+				return false;
+			}
+			addCountOfMove();
+			return true;
+		}
 
+		return false;
+	}
+
+	@Override
+	public boolean canEatKing(double cX, double cY, double x, double y, Figure[][] board) {
+		int deltaX = (int)Math.abs(getCol() - x);
+		int deltaY = (int)Math.abs(getRow() - y);
+
+		if ((deltaX == 2 && deltaY == 1) || (deltaX == 1 && deltaY == 2)) {
+			if (board[(int)y][(int)x] != null && (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
+				return true;
+			}
+
+			return false;
+		}
+
+		return false;
+	}
+
+	public boolean hasMoves(double x, double y, Figure[][] board) {
+		int[] dx = {-2, -1, 1, 2, 2, 1, -1, -2};
+		int[] dy = {1, 2, 2, 1, -1, -2, -2, -1};
+		for (int i = 0; i < 8; i++) {
+			int nx = (int)x + dx[i];
+			int ny = (int)y + dy[i];
+			if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8) {
+				Figure figure = board[ny][nx];
+				if (figure == null || figure.getColor() != getColor()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

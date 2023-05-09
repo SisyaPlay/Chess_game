@@ -153,6 +153,10 @@ public abstract class Figure extends JPanel{
 		return false;
 	}
 
+	public boolean isThisPlaceIsSave(int col, int row, Figure[][] board, Figure king) {
+		return false;
+	}
+
 	/**
 	 * Metoda kontroluje jestli nejaka figura ma tahy
 	 * @param cX pozice libovolne figury na ose X
@@ -162,6 +166,10 @@ public abstract class Figure extends JPanel{
 	 */
 	public boolean hasMoves(double cX, double cY, Figure[][] board) {
 		return false;
+	}
+
+	public ArrayList<Point2D[]> getHistory() {
+		return history;
 	}
 
 	/**
@@ -193,6 +201,33 @@ public abstract class Figure extends JPanel{
 		points[1] = new Point2D.Double(x, y);
 
 		this.history.add(points);
+	}
+
+	public boolean canSafeKing(double cX, double cY, double x, double y, Figure[][] board) {
+		Figure defender = board[(int)cY][(int)cX];
+		Figure king = null;
+		int[] xOffset = {-1, 0, 1, -1, 1, -1, 0, 1};
+		int[] yOffset = {-1, -1, -1, 0, 0, 1, 1, 1};
+
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Figure figure = board[i][j];
+				if(figure instanceof King && figure.getColor() == getColor()) {
+					king = figure;
+				}
+			}
+		}
+
+		for (int i = 0; i < yOffset.length; i++) {
+			for (int j = 0; j < xOffset.length; j++) {
+				if(king.getCol() + xOffset[j] == x && king.getRow() + yOffset[i] == y) {
+					if (defender.moveTo(cX, cY, king.getCol() + xOffset[j], king.getRow() + yOffset[i], board)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 }
 

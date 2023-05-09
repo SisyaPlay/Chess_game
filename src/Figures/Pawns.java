@@ -183,7 +183,7 @@ public class Pawns extends Figure {
 	 * @param pawnHistory
 	 * @return
 	 */
-	private boolean firstStep(ArrayList<Point2D[]> pawnHistory) {
+	public boolean firstStep(ArrayList<Point2D[]> pawnHistory) {
 		Point2D[] firstPoint = pawnHistory.get(0);
 		int cY = (int)firstPoint[0].getY();
 		int y = (int)firstPoint[1].getY();
