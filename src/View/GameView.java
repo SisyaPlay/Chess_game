@@ -17,7 +17,6 @@ public class GameView extends JFrame{
     private static final long serialVersionUID = 1L;
     private static final int WIDTH = 800; // Sirka onka
     private static final int HEIGHT = 600; // Vyska okna
-
     private final Panel rightPanel = new Panel(); // Pravy panel
     private final Panel leftPanel = new Panel(); // Levy panel
     private JMenuBar menuBar = new JMenuBar(); // Menu bar
@@ -32,11 +31,42 @@ public class GameView extends JFrame{
     public JLabel timer2; // Druhy label na casovac
     //private JLabel countOfKillerFig1 = new JLabel("countOfKillerFig1"); // Pocet zabitych figur, zatim nepouziva
     //private JLabel countOfKillerFig2 = new JLabel("countOfKillerFig1");
+    private JButton startButton;
+    private JButton settingsButton;
 
     /**
      * Konstruktor tridy GameView
      */
     public GameView() {}
+
+    public void startMenu(JFrame frame) {
+        JPanel buttonPanel = new JPanel();
+        startButton = new JButton("Start");
+        settingsButton = new JButton("Settings");
+        buttonPanel.add(startButton);
+        buttonPanel.add(settingsButton);
+        add(buttonPanel, BorderLayout.CENTER);
+
+        // Add action listeners to the buttons
+        startButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Remove the buttons
+                buttonPanel.remove(startButton);
+                buttonPanel.remove(settingsButton);
+
+                // Add the chess board view
+                createWindow(frame);
+            }
+        });
+
+        settingsButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Add code for the settings button action here
+            }
+        });
+
+        setVisible(true);
+    }
 
     /**
      * Vytvori okno s hrou

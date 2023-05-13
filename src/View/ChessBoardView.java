@@ -322,56 +322,22 @@ public class ChessBoardView extends JPanel {
                 int y = selectedFigure.getRow() * square_size;
                 g2.setColor(Color.BLUE);
                 g2.drawRect(x, y, square_size, square_size);
-                if (y - square_size >= 0) {
-                        if (board[selectedFigure.getRow() - 1][selectedFigure.getCol()] == null ||
-                                board[selectedFigure.getRow() - 1][selectedFigure.getCol()].getColor() != selectedFigure.getColor()) {
-                                g2.drawRect(x, y - square_size, square_size, square_size);
-                                if (x - square_size >= 0) {
-                                        if (board[selectedFigure.getRow() - 1][selectedFigure.getCol() - 1] == null ||
-                                                board[selectedFigure.getRow() - 1][selectedFigure.getCol() - 1].getColor() != selectedFigure.getColor()) {
-                                                g2.drawRect(x - square_size, y - square_size, square_size, square_size);
-                                        }
-                                }
-                                if (x + square_size < ROW_COUNT * square_size) {
-                                        if (board[selectedFigure.getRow() - 1][selectedFigure.getCol() + 1] == null ||
-                                                board[selectedFigure.getRow() - 1][selectedFigure.getCol() + 1].getColor() != selectedFigure.getColor()) {
-                                                g2.drawRect(x + square_size, y - square_size, square_size, square_size);
-                                        }
+                int[] xOffset = {-1, 0, 1, -1, 1, -1, 0, 1};
+                int[] yOffset = {-1, -1, -1, 0, 0, 1, 1, 1};
+                for (int i = 0; i < xOffset.length; i++) {
+                        int row = selectedFigure.getRow() + yOffset[i];
+                        int col = selectedFigure.getCol() + xOffset[i];
+                        if (row >= 0 && row < ROW_COUNT && col >= 0 && col < ROW_COUNT) {
+                                if (board[row][col] == null) {
+                                        g2.drawRect(col * square_size, row * square_size, square_size, square_size);
+                                } else if (board[row][col].getColor() != selectedFigure.getColor()) {
+                                        g2.setColor(Color.RED);
+                                        g2.drawRect(col * square_size, row * square_size, square_size, square_size);
+                                        g2.setColor(Color.BLUE);
                                 }
                         }
                 }
 
-                if (y + square_size < ROW_COUNT * square_size) {
-                        if (board[selectedFigure.getRow() + 1][selectedFigure.getCol()] == null ||
-                                board[selectedFigure.getRow() + 1][selectedFigure.getCol()].getColor() != selectedFigure.getColor()) {
-                                g2.drawRect(x, y + square_size, square_size, square_size);
-                                if (x - square_size >= 0) {
-                                        if (board[selectedFigure.getRow() + 1][selectedFigure.getCol() - 1] == null ||
-                                                board[selectedFigure.getRow() + 1][selectedFigure.getCol() - 1].getColor() != selectedFigure.getColor()) {
-                                                g2.drawRect(x - square_size, y + square_size, square_size, square_size);
-                                        }
-                                }
-                                if (x + square_size < ROW_COUNT * square_size) {
-                                        if (board[selectedFigure.getRow() + 1][selectedFigure.getCol() + 1] == null ||
-                                                board[selectedFigure.getRow() + 1][selectedFigure.getCol() + 1].getColor() != selectedFigure.getColor()) {
-                                                g2.drawRect(x + square_size, y + square_size, square_size, square_size);
-                                        }
-                                }
-                        }
-                }
-
-                if (x - square_size >= 0) {
-                        if (board[selectedFigure.getRow()][selectedFigure.getCol() - 1] == null ||
-                                board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getColor() != selectedFigure.getColor()) {
-                                g2.drawRect(x - square_size, y, square_size, square_size);
-                        }
-                }
-                if (x + square_size < ROW_COUNT * square_size) {
-                        if (board[selectedFigure.getRow()][selectedFigure.getCol() + 1] == null ||
-                                board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getColor() != selectedFigure.getColor()) {
-                                g2.drawRect(x + square_size, y, square_size, square_size);
-                        }
-                }
                 if(selectedFigure.getCountOfMove() == 0) {
                         if (board[selectedFigure.getRow()][selectedFigure.getCol() + 1] == null && board[selectedFigure.getRow()][selectedFigure.getCol() + 2] == null &&
                                 board[selectedFigure.getRow()][selectedFigure.getCol() + 3] instanceof Rook &&

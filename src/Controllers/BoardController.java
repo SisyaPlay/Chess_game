@@ -5,7 +5,6 @@ import Figures.King;
 import Figures.Pawns;
 import Figures.Queen;
 import View.ChessBoardView;
-import View.GameView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,6 +34,8 @@ public class BoardController implements MouseListener {
     private ArrayList<Integer> blackTime = new ArrayList<>(); // List sekund cerneho hrace
     private ArrayList<Integer> whiteCountOfMove = new ArrayList<>(); // List poctu tahu bileho hrace
     private ArrayList<Integer> blackCountOfMove = new ArrayList<>(); // List poctu tahu bileho hrace
+    private ArrayList<Figure> killedWhFigure = new ArrayList<>();
+    private ArrayList<Figure> killedBlFigure = new ArrayList<>();
 
     /**
      * Konstruktor tridy BoardController.
@@ -103,7 +104,7 @@ public class BoardController implements MouseListener {
             int col = x / chessBoardView.getSquare_size();
             if (col > ROW_COUNT - 1 || row > ROW_COUNT - 1 || col < 0 || row < 0 || x < 0 || y < 0) {
                 chessBoardView.getBoard()[chessBoardView.getSelectedFigureY()][chessBoardView.getSelectedFigureX()] = chessBoardView.getSelectedFigure();
-            } else if(!findKing(chessBoardView.getBoard())) {
+            } else if(!kingIsUnderAttack(chessBoardView.getBoard())) {
                 if (chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard())
                         && makeAMove(row, col) && chessBoardView.getSelectedFigure().getColor().equals(currentPlayer)) {
                     moveFigure(col, row);
@@ -114,7 +115,8 @@ public class BoardController implements MouseListener {
                     moveFigure(col, row);
                 }
             } else {
-                if(isSaveForKing(col, row, chessBoardView.getBoard())) {
+                if(isSaveForKing(col, row, chessBoardView.getBoard()) &&
+                        chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard())) {
                     moveFigure(col, row);
                 }
             }
@@ -123,6 +125,7 @@ public class BoardController implements MouseListener {
 
     private void moveFigure(int col, int row) {
         chessBoardView.animate(col, row);
+        eatFigure(chessBoardView.getBoard()[chessBoardView.getSelectedFigure().getRow()][chessBoardView.getSelectedFigure().getCol()]);
         chessBoardView.getBoard()[chessBoardView.getSelectedFigure().getRow()][chessBoardView.getSelectedFigure().getCol()] = null;
         chessBoardView.getBoard()[row][col] = chessBoardView.getSelectedFigure(); // Zapise do pole figuru
         chessBoardView.getSelectedFigure().setRow(row);
@@ -146,6 +149,14 @@ public class BoardController implements MouseListener {
         }
     }
 
+    private void eatFigure(Figure figure) {
+        if(figure.getColor().equals(Color.WHITE)) {
+            killedWhFigure.add(figure);
+        } else {
+            killedBlFigure.add(figure);
+        }
+    }
+
     private boolean isSaveForKing(int col, int row, Figure[][] board) {
         Figure king = null;
 
@@ -158,10 +169,10 @@ public class BoardController implements MouseListener {
             }
         }
 
-        if(king.isThisPlaceIsSave(col, row, board, king)) {
-            return false;
+        if(king.isThisPlaceIsSafe(col, row, board, king)) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -169,7 +180,7 @@ public class BoardController implements MouseListener {
      * @param board
      * @return
      */
-    private boolean findKing(Figure[][] board) {
+    public boolean kingIsUnderAttack(Figure[][] board) {
         Figure king = null;
 
         for (int y = 0; y < ROW_COUNT; y++) {

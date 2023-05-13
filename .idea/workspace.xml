@@ -10,48 +10,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="913933c6-3ac9-491f-b08e-28036316a50d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Engine/stockfish-windows-2022-x86-64-avx2.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Engine/Stockfish.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makedoc.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/Makedoc.cmd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/Build.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/Build.cmd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/Run.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/Run.cmd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/Alimzhan Dokumentace.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/Alimzhan Dokumentace.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/ChessBoard.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Main.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/allclasses-index.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/allclasses-index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/allclasses.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/allclasses.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/allpackages-index.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/allpackages-index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/constant-values.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/constant-values.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/deprecated-list.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/deprecated-list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/element-list" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/element-list" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/help-doc.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/help-doc.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/index-all.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/index-all.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/member-search-index.js" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/member-search-index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/overview-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/overview-tree.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/package-search-index.js" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/package-search-index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/package-summary.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/package-tree.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/serialized-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/serialized-form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/type-search-index.js" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/type-search-index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/ChessBoard.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Figures/Bishop.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/Figures/Bishop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Figures/ESide.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Figures/Figure.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/Figures/Figure.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Figures/King.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/Figures/King.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Figures/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/Figures/Knight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Figures/Pawns.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/Figures/Pawns.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Figures/Queen.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/Figures/Queen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Figures/Rook.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/Figures/Rook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/META-INF/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/outputgraf.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controllers/BoardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/BoardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Figures/ESide.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Figures/Figure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Figure.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Figures/King.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/King.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Figures/Pawns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Pawns.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/ChessBoardView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ChessBoardView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/GameView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/GameView.java" afterDir="false" />
     </list>
@@ -78,26 +42,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "extract.method.default.visibility": "private",
-    "last_opened_file_path": "C:/Program Files/Java/jfreechart-1.5.3.jar",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settings.ide.settings.uml",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/kekus/OneDrive/Документы/repository/Kostra_UPG_cv12_2022&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.uml&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\kekus\OneDrive\Документы\repository\kiv-upg\Engine" />
+      <recent name="C:\Users\kekus\OneDrive\Документы\repository\kiv-upg" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
@@ -171,7 +141,11 @@
       <workItem from="1683479844427" duration="322000" />
       <workItem from="1683537981099" duration="4759000" />
       <workItem from="1683627302266" duration="362000" />
-      <workItem from="1683634940907" duration="6610000" />
+      <workItem from="1683634940907" duration="8661000" />
+      <workItem from="1683700289035" duration="908000" />
+      <workItem from="1683709943599" duration="656000" />
+      <workItem from="1683835951658" duration="58000" />
+      <workItem from="1683901727394" duration="2781000" />
     </task>
     <servers />
   </component>
@@ -188,17 +162,6 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Controllers/BoardController.java</url>
-          <line>116</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

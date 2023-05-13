@@ -153,7 +153,7 @@ public abstract class Figure extends JPanel{
 		return false;
 	}
 
-	public boolean isThisPlaceIsSave(int col, int row, Figure[][] board, Figure king) {
+	public boolean isThisPlaceIsSafe(int col, int row, Figure[][] board, Figure king) {
 		return false;
 	}
 

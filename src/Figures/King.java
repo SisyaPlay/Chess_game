@@ -141,14 +141,18 @@ public class King extends Figure {
 		return false;
 	}
 
-	public boolean isThisPlaceIsSave(int col, int row, Figure[][] board, Figure king) {
-		if(board[row][col] == null) {
-			board[row][col] = king;
-			if(board[row][col].isUnderAttack(col, row, board)) {
-				return false;
-			}
+	@Override
+	public boolean isThisPlaceIsSafe(int col, int row, Figure[][] board, Figure king) {
+		if (board[row][col] == null) {
+			Figure prevFigure = board[king.getRow()][king.getCol()]; // сохраняем предыдущую фигуру на месте короля
+			board[king.getRow()][king.getCol()] = null; // удаляем короля из предыдущего места
+			board[row][col] = king; // перемещаем короля на новое место
+			boolean isSafe = !king.isUnderAttack(col, row, board); // проверяем, является ли новое место безопасным
+			board[row][col] = null; // удаляем короля с нового места
+			board[king.getRow()][king.getCol()] = prevFigure; // восстанавливаем предыдущую фигуру на место короля
+			return isSafe;
 		}
-		return true;
+		return false;
 	}
 
 	public boolean hasMoves(double x, double y, Figure[][] board) {
