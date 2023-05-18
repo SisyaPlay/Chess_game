@@ -1,159 +1,113 @@
 package Engine;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import Controllers.BoardController;
+import Utils.Utils;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.*;
 
 public class Stockfish {
 
-    private Process engineProcess;
-    private BufferedReader processReader;
-    private OutputStreamWriter processWriter;
+    private BufferedWriter writer;
+    private BufferedReader reader;
+    private String figureLocation;
+    private static final String PATH_TO_STOCKFISH = "././Engine/stockfish-windows-2022-x86-64-avx2.exe";
+    private static final String DIR_TO_STOCKFISH = "././Engine/";
+    private final String REGEX = "(?<=bestmove )[a-h][1-8][a-h][1-8](?= ponder)";
 
-    private static final String PATH = "../engine/stockfish";
+    private Pattern pattern = Pattern.compile(REGEX);
 
-    /**
-     * Starts Stockfish engine as a process and initializes it
-     *
-     * @return True on success. False otherwise
-     */
-    public boolean startEngine() {
+    private ArrayList<String> positions = new ArrayList<>();
+    private BoardController bc;
+
+    private final String SET_SF_POSITIONS = "position startpos move ";
+    private final String SET_SF_TIME = "go btime ";
+
+    private final String SF_IS_READY = "isready";
+    private final String SF_READY_OK = "readyok";
+
+    public AtomicReference<String> sfResultOutput = new AtomicReference<>("");;
+
+
+    public Stockfish(BoardController bc) {
+        this.bc = bc;
         try {
-            engineProcess = Runtime.getRuntime().exec(PATH);
-            processReader = new BufferedReader(new InputStreamReader(
-                    engineProcess.getInputStream()));
-            processWriter = new OutputStreamWriter(
-                    engineProcess.getOutputStream());
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Takes in any valid UCI command and executes it
-     *
-     * @param command
-     */
-    public void sendCommand(String command) {
-        try {
-            processWriter.write(command + "\n");
-            processWriter.flush();
+            startEngine();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * This is generally called right after 'sendCommand' for getting the raw
-     * output from Stockfish
-     *
-     * @param waitTime
-     *            Time in milliseconds for which the function waits before
-     *            reading the output. Useful when a long running command is
-     *            executed
-     * @return Raw output from Stockfish
-     */
-    public String getOutput(int waitTime) {
-        StringBuffer buffer = new StringBuffer();
-        try {
-            Thread.sleep(waitTime);
-            sendCommand("isready");
-            while (true) {
-                String text = processReader.readLine();
-                if (text.equals("readyok"))
-                    break;
-                else
-                    buffer.append(text + "\n");
+    public void startEngine() throws IOException {
+        Process p = new ProcessBuilder(PATH_TO_STOCKFISH).start();
+        InputStream processInputStream = p.getInputStream();
+        OutputStream processOutputStream = p.getOutputStream();
+
+        writer = new BufferedWriter(new OutputStreamWriter(processOutputStream));
+
+        reader = new BufferedReader(new InputStreamReader(processInputStream));
+    }
+
+    public void sendIsReadyCommand() throws IOException {
+        writer.write(SF_IS_READY + "\n");
+        writer.flush();
+    }
+
+    public void sendPositionCommand(String position, int timer) throws IOException {
+        figureLocation = position;
+
+        // Nastavit atkualni pozici figur pro Stockfish
+        if(figureLocation != null) {
+            positions.add(figureLocation);
+            StringBuilder setPosition = new StringBuilder(SET_SF_POSITIONS);
+
+            for (String s : positions) {
+                setPosition.append(s).append(" ");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return buffer.toString();
-    }
+            writer.write(setPosition.toString() +  "\n");
+            writer.flush();
+            // Spustit Stockfish
+            writer.write(SET_SF_TIME + Integer.toString(timer) +  "\n");
+            writer.flush();
 
-    /**
-     * This function returns the best move for a given position after
-     * calculating for 'waitTime' ms
-     *
-     * @param fen
-     *            Position string
-     * @param waitTime
-     *            in milliseconds
-     * @return Best Move in PGN format
-     */
-    public String getBestMove(String fen, int waitTime) {
-        sendCommand("position fen " + fen);
-        sendCommand("go movetime " + waitTime);
-        return getOutput(waitTime + 20).split("bestmove ")[1].split(" ")[0];
-    }
-
-    /**
-     * Stops Stockfish and cleans up before closing it
-     */
-    public void stopEngine() {
-        try {
-            sendCommand("quit");
-            processReader.close();
-            processWriter.close();
-        } catch (IOException e) {
+            System.out.println(setPosition);
+            System.out.println(SET_SF_TIME + Integer.toString(timer));
         }
     }
 
-    /**
-     * Get a list of all legal moves from the given position
-     *
-     * @param fen
-     *            Position string
-     * @return String of moves
-     */
-    public String getLegalMoves(String fen) {
-        sendCommand("position fen " + fen);
-        sendCommand("d");
-        return getOutput(0).split("Legal moves: ")[1];
-    }
+    public void output() throws IOException {
+        Runnable basic = () ->
+        {
+            try {
+                while (true) {
+                    String text = reader.readLine();
 
-    /**
-     * Draws the current state of the chess board
-     *
-     * @param fen
-     *            Position string
-     */
-    public void drawBoard(String fen) {
-        sendCommand("position fen " + fen);
-        sendCommand("d");
+                    if (text.contains("bestmove")) {
+                        String code = text.split("bestmove ")[1].split(" ")[0];
+                        positions.add(code);
+                        int old_col = Utils.getInstance().decodeWord(code.charAt(0));
+                        int old_row = Utils.getInstance().decodeWord(code.charAt(1));
+                        int new_col = Utils.getInstance().decodeWord(code.charAt(2));
+                        int new_row = Utils.getInstance().decodeWord(code.charAt(3));
 
-        String[] rows = getOutput(0).split("\n");
+                        bc.setSelectedFigure(old_row, old_col);
+                        bc.setSelectedFigureX(old_col);
+                        bc.setSelectedFigureY(old_row);
+                        bc.moveFigure(new_col, new_row);
+                        bc.blackStop();
 
-        for (int i = 1; i < 18; i++) {
-            System.out.println(rows[i]);
-        }
-    }
+                        System.out.println(code);
 
-    /**
-     * Get the evaluation score of a given board position
-     * @param fen Position string
-     * @param waitTime in milliseconds
-     * @return evalScore
-     */
-    public float getEvalScore(String fen, int waitTime) {
-        sendCommand("position fen " + fen);
-        sendCommand("go movetime " + waitTime);
-
-        float evalScore = 0.0f;
-        String[] dump = getOutput(waitTime + 20).split("\n");
-        for (int i = dump.length - 1; i >= 0; i--) {
-            if (dump[i].startsWith("info depth ")) {
-                try {
-                    evalScore = Float.parseFloat(dump[i].split("score cp ")[1]
-                            .split(" nodes")[0]);
-                } catch(Exception e) {
-                    evalScore = Float.parseFloat(dump[i].split("score cp ")[1]
-                            .split(" upperbound nodes")[0]);
+                        break;
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }
-        return evalScore/100;
+        };
+
+        new Thread(basic).start();
     }
 }

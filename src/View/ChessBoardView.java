@@ -1,12 +1,12 @@
 package View;
 
 import Controllers.BoardController;
+import Engine.Stockfish;
 import Figures.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
-import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.category.CategoryDataset;
@@ -49,11 +49,16 @@ public class ChessBoardView extends JPanel {
         private int shiftX; // Posun
         private int shiftY;
         private BoardController boardController; // Kontroler sachovnice
-        private boolean doAnimate = false; // Kontrola pokud jde animace
-        private final int DELAY = 15; // Delka casu animace
+        private boolean doAnimate = false;              // Zobrazeni moznych pozic (zluta / modra / ..)
+        private final int DELAY = 30; // Delka casu animace
         public int countOfBeingSelected = 0; // Pocet kolik bylo vybrano
         public JLabel timer1 = new JLabel(); // Label prvniho casovace
         public JLabel timer2 = new JLabel(); // Label druheho casovace
+        public KilledFigureView whiteFigureView;
+        public KilledFigureView blackFigureView;
+        private int gameMinuts;
+
+        private Timer animationTimer;
 
 
         /**
@@ -62,11 +67,14 @@ public class ChessBoardView extends JPanel {
          * Nastavi preferovanou velikost sachovnice a inicializuje figury do dvojite pole board.
          * A zavola posluchac mysi.
          */
-        public ChessBoardView() {
-                this.boardController = new BoardController(this);
-
+        public ChessBoardView(boolean playVSBot) {
+                this.boardController = new BoardController(this, playVSBot);
+                //setBackground(Color.BLUE);
                 setPreferredSize(new Dimension(square_size * ROW_COUNT, square_size * ROW_COUNT));
                 addMouseListener(boardController);
+
+                whiteFigureView = new KilledFigureView(Color.BLACK, 45);
+                blackFigureView = new KilledFigureView(Color.WHITE, 45);
 
 
                 for (int i = 0; i < 8; i++) {
@@ -99,7 +107,8 @@ public class ChessBoardView extends JPanel {
                 board[0][7] = new King(7, 0, Color.BLACK, square_size);
                 board[2][5] = new Queen(5, 2, Color.WHITE, square_size);
                 board[2][1] = new King(1, 2, Color.WHITE, square_size);
-                 */
+                */
+
 
         }
 
@@ -338,7 +347,7 @@ public class ChessBoardView extends JPanel {
                         }
                 }
 
-                if(selectedFigure.getCountOfMove() == 0) {
+                if(selectedFigure.getCountOfMove() == 0 && (selectedFigure.getRow() == 0 || selectedFigure.getRow() == 7) && selectedFigure.getCol() == 4) {
                         if (board[selectedFigure.getRow()][selectedFigure.getCol() + 1] == null && board[selectedFigure.getRow()][selectedFigure.getCol() + 2] == null &&
                                 board[selectedFigure.getRow()][selectedFigure.getCol() + 3] instanceof Rook &&
                                 board[selectedFigure.getRow()][selectedFigure.getCol() + 3].getCountOfMove() == 0 &&
@@ -680,6 +689,26 @@ public class ChessBoardView extends JPanel {
                 countOfBeingSelected++;
         }
 
+        public int getGameMinuts() {
+                return gameMinuts;
+        }
+
+        public void setGameMinuts(int gameMinuts) {
+                this.gameMinuts = gameMinuts;
+        }
+
+        public BoardController getBoardController() {
+                return boardController;
+        }
+
+        public KilledFigureView getWhiteFigureView() {
+                return whiteFigureView;
+        }
+
+        public KilledFigureView getBlackFigureView() {
+                return blackFigureView;
+        }
+
         /**
          * Restartuje
          */
@@ -720,6 +749,19 @@ public class ChessBoardView extends JPanel {
                                 }
                         }
                 }
+                boardController.BbC = 0;
+                boardController.BqC = 0;
+                boardController.BkC = 0;
+                boardController.BrC = 0;
+                boardController.BpC = 0;
+                boardController.WbC = 0;
+                boardController.WqC = 0;
+                boardController.WkC = 0;
+                boardController.WrC = 0;
+                boardController.WpC = 0;
+                whiteFigureView.setEvNew();
+                blackFigureView.setEvNew();
+                //boardController.setAnimationIsOn(false);
                 countOfBeingSelected = 0;
                 repaint();
                 reset();
@@ -729,12 +771,12 @@ public class ChessBoardView extends JPanel {
          * Obnovi casovac
          */
         private void reset() {
-                boardController.getwTimer().stop();
+                boardController.whiteStop();
                 boardController.setwTimeCounter(0);
-                boardController.getbTimer().stop();
+                boardController.blackStop();
                 boardController.setbTimeCounter(0);
                 boardController.updateTimeLabel();
-                boardController.getwTimer().start();
+                boardController.whiteStart();
         }
 
         /**
@@ -753,31 +795,44 @@ public class ChessBoardView extends JPanel {
                 final double yStep = distanceY / totalDistance * stepSize; // Krok animace podle osy Y
                 final int directionX = endX > startX ? 1 : -1; // Smer na ose X
                 final int directionY = endY > startY ? 1 : -1; // Smer na ose X
-                boardController.setAnimationIsOn(true); // Nastavi, ze jde animace a vypne mouseListener
                 doAnimate = true; // Nastavi ze jde animace, nekresli mozne tahy figur
-                Timer timer = new Timer(DELAY, new ActionListener() {
+                //final long[] start = {0};
+                animationTimer = new Timer(DELAY, new ActionListener() {
                         double x = startX;
                         double y = startY;
                         double distanceCovered = 0;
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                                // Nastaveni novych souradnic
                                 x += xStep * directionX;
                                 y += yStep * directionY;
                                 selectedFigure.setX(x);
                                 selectedFigure.setY(y);
                                 repaint();
                                 distanceCovered += stepSize;
+
+                                // Konecna pozice
                                 if (distanceCovered >= totalDistance) {
                                         doAnimate = false;
                                         selectedFigure.setCol(endX);
                                         selectedFigure.setRow(endY);
                                         selectedFigure = null;
-                                        boardController.setAnimationIsOn(false);
                                         ((Timer)e.getSource()).stop();
                                 }
                         }
                 });
-                timer.start();
+                animationTimer.start();
+        }
+
+        /**
+         * Vraci zda timer animace jeste bezi
+         * @return true / false
+         */
+        public boolean isAnimationOnProcess() {
+                if (animationTimer != null)
+                        return animationTimer.isRunning();
+
+                return false;
         }
 
         /**
@@ -894,5 +949,11 @@ public class ChessBoardView extends JPanel {
                 } catch (IOException e) {
                         e.printStackTrace();
                 }
+        }
+
+        public void startGame() {
+                boardController.whiteStart();
+                //boardController.blackStart();
+                //boardController.blackStop();
         }
 }

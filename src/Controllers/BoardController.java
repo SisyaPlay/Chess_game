@@ -1,5 +1,6 @@
 package Controllers;
 
+import Engine.Stockfish;
 import Figures.Figure;
 import Figures.King;
 import Figures.Pawns;
@@ -9,6 +10,7 @@ import View.ChessBoardView;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static View.ChessBoardView.ROW_COUNT;
@@ -16,13 +18,14 @@ import static View.ChessBoardView.ROW_COUNT;
 /**
  * Trida kontroler, implementuje mouseListener a ma v sobe pravidla sachu
  */
-public class BoardController implements MouseListener {
+public class BoardController implements MouseListener{
 
     private ChessBoardView chessBoardView; // Trida, ktera vykresli sachy
     private static Color currentPlayer = Color.WHITE; // Aktualni hrac
     private int countOfCheckWhite = 0; // Pocet sahu pro bileho hrace
     private int countOfCheckBlack = 0; // Pocet sahu pro cerneho hrace
-    private boolean animationIsOn = false; // Kontrola jestli animate zapnuto
+    // private boolean animationIsOn; // Flag pro zakazani pouziti mysi behem animaci
+    private int minToSec;
     private Timer wTimer; // Casovac bileho hrace
     private int wTimeCounter = 0; // Pocet secund
     private Timer bTimer; // Casovac cerneho hrace
@@ -34,23 +37,28 @@ public class BoardController implements MouseListener {
     private ArrayList<Integer> blackTime = new ArrayList<>(); // List sekund cerneho hrace
     private ArrayList<Integer> whiteCountOfMove = new ArrayList<>(); // List poctu tahu bileho hrace
     private ArrayList<Integer> blackCountOfMove = new ArrayList<>(); // List poctu tahu bileho hrace
-    private ArrayList<Figure> killedWhFigure = new ArrayList<>();
-    private ArrayList<Figure> killedBlFigure = new ArrayList<>();
+    public int WqC = 0, WbC = 0, WkC = 0, WrC = 0, WpC = 0;
+    public int BqC = 0, BbC = 0, BkC = 0, BrC = 0, BpC = 0;
+    public String positionAfter = null;
+    public String positionBefore = null;
+    public int bTotalSeconds;
+    private Stockfish sf;
 
     /**
      * Konstruktor tridy BoardController.
      * Nastavi graficky tridu, zpusti casovaci a prida ji do listu
      * @param chessBoardView
      */
-    public BoardController(ChessBoardView chessBoardView) {
+    public BoardController(ChessBoardView chessBoardView, Boolean playVSBot) {
         this.chessBoardView = chessBoardView;
-        whiteStart();
-        blackStart();
-        blackStop();
         whiteTime.add(wTimeCounter);
         blackTime.add(bTimeCounter);
         whiteCountOfMove.add(wCount);
         blackCountOfMove.add(bCount);
+
+        if(playVSBot) {
+            sf = new Stockfish(this);
+        }
     }
 
     /**
@@ -58,37 +66,44 @@ public class BoardController implements MouseListener {
      * @param e the event to be processed
      */
     public void mousePressed(MouseEvent e) {
-        if(animationIsOn) {
+        if (chessBoardView.isAnimationOnProcess()) {
             return;
-        } else {
-            int x = e.getX() - chessBoardView.getShiftX();
-            int y = e.getY() - chessBoardView.getShiftY();
-            int row = y / chessBoardView.getSquare_size();
-            int col = x / chessBoardView.getSquare_size();
+        }
 
-            if (col > ROW_COUNT - 1) {
-                col = ROW_COUNT - 1;
-            }
-            if (col < 0) {
-                col = 0;
-            }
+        // Zakazat hrat za cerneho hrace jestli je hra proti botu
+        if (currentPlayer == Color.BLACK && sf != null) {
+            return;
+        }
 
-            if (row > ROW_COUNT - 1) {
-                row = ROW_COUNT - 1;
-            }
-            if (row < 0) {
-                row = 0;
-            }
+        int x = e.getX() - chessBoardView.getShiftX();
+        int y = e.getY() - chessBoardView.getShiftY();
+        int row = y / chessBoardView.getSquare_size();
+        int col = x / chessBoardView.getSquare_size();
 
-            // Zapishe do chessBoard.getSelectedFigure() figuru z pole
-            chessBoardView.setSelectedFigure(chessBoardView.getBoard()[row][col]);
-            if (chessBoardView.getSelectedFigure() != null) {
-                chessBoardView.setSelectedFigureX(col);
-                chessBoardView.setSelectedFigureY(row);
-            }
-            if (chessBoardView.getSelectedFigure() != null && chessBoardView.getSelectedFigure().getColor() == currentPlayer) {
-                chessBoardView.repaint();
-            }
+        if (col > ROW_COUNT - 1) {
+            col = ROW_COUNT - 1;
+        }
+        if (col < 0) {
+            col = 0;
+        }
+
+        if (row > ROW_COUNT - 1) {
+            row = ROW_COUNT - 1;
+        }
+        if (row < 0) {
+            row = 0;
+        }
+
+        // Ulozi vybranu figuru
+        chessBoardView.setSelectedFigure(chessBoardView.getBoard()[row][col]);
+        if (chessBoardView.getSelectedFigure() != null) {
+            chessBoardView.setSelectedFigureX(col);
+            chessBoardView.setSelectedFigureY(row);
+            positionAfter = codeCoord(col, row);
+        }
+        if (chessBoardView.getSelectedFigure() != null &&
+                chessBoardView.getSelectedFigure().getColor() == currentPlayer) {
+            chessBoardView.repaint();
         }
     }
 
@@ -104,32 +119,38 @@ public class BoardController implements MouseListener {
             int col = x / chessBoardView.getSquare_size();
             if (col > ROW_COUNT - 1 || row > ROW_COUNT - 1 || col < 0 || row < 0 || x < 0 || y < 0) {
                 chessBoardView.getBoard()[chessBoardView.getSelectedFigureY()][chessBoardView.getSelectedFigureX()] = chessBoardView.getSelectedFigure();
-            } else if(!kingIsUnderAttack(chessBoardView.getBoard())) {
-                if (chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard())
-                        && makeAMove(row, col) && chessBoardView.getSelectedFigure().getColor().equals(currentPlayer)) {
-                    moveFigure(col, row);
-                }
-            } else if(!(chessBoardView.getSelectedFigure() instanceof King)) {
-                if(chessBoardView.getSelectedFigure().canSafeKing(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(),
-                        col, row, chessBoardView.getBoard()) && makeAMove(row, col) && chessBoardView.getSelectedFigure().getColor().equals(currentPlayer)) {
-                    moveFigure(col, row);
-                }
-            } else {
-                if(isSaveForKing(col, row, chessBoardView.getBoard()) &&
-                        chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard())) {
-                    moveFigure(col, row);
-                }
             }
+            moveFigure(col, row);
+//            else if(!kingIsUnderAttack(chessBoardView.getBoard())) {
+//                if (chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard())
+//                        && makeAMove(row, col) && chessBoardView.getSelectedFigure().getColor().equals(currentPlayer)) {
+//                    moveFigure(col, row);
+//                }
+//            } else if(!(chessBoardView.getSelectedFigure() instanceof King)) {
+//                if(chessBoardView.getSelectedFigure().canSafeKing(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(),
+//                        col, row, chessBoardView.getBoard()) && makeAMove(row, col) && chessBoardView.getSelectedFigure().getColor().equals(currentPlayer)) {
+//                    moveFigure(col, row);
+//                }
+//            } else {
+//                if(isSaveForKing(col, row, chessBoardView.getBoard()) &&
+//                        chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard())) {
+//                    moveFigure(col, row);
+//                }
+//            }
+            //System.out.println(positionAfter + positionBefore);
         }
     }
 
-    private void moveFigure(int col, int row) {
+    public void move(int col, int row) {
         chessBoardView.animate(col, row);
-        eatFigure(chessBoardView.getBoard()[chessBoardView.getSelectedFigure().getRow()][chessBoardView.getSelectedFigure().getCol()]);
         chessBoardView.getBoard()[chessBoardView.getSelectedFigure().getRow()][chessBoardView.getSelectedFigure().getCol()] = null;
+        if(chessBoardView.getBoard()[row][col] != null) {
+            eatFigure(chessBoardView.getBoard()[row][col]);
+        }
         chessBoardView.getBoard()[row][col] = chessBoardView.getSelectedFigure(); // Zapise do pole figuru
         chessBoardView.getSelectedFigure().setRow(row);
         chessBoardView.getSelectedFigure().setCol(col);
+        positionBefore = codeCoord(col, row);
         chessBoardView.addCountOfBeingSelected();
         chessBoardView.setLastSelectedFigureX(col);
         chessBoardView.setLastSelectedFigureY(row);
@@ -149,11 +170,105 @@ public class BoardController implements MouseListener {
         }
     }
 
+    /**
+     *
+     * @param col   new column position
+     * @param row   new row position
+     */
+    public void moveFigure(int col, int row) {
+        if(!kingIsUnderAttack(chessBoardView.getBoard())) {
+            if (chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard())
+                    && makeAMove(row, col) && chessBoardView.getSelectedFigure().getColor().equals(currentPlayer)) {
+                move(col, row);
+            }
+        } else if(!(chessBoardView.getSelectedFigure() instanceof King)) {
+            if(chessBoardView.getSelectedFigure().canSafeKing(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(),
+                    col, row, chessBoardView.getBoard()) && makeAMove(row, col) && chessBoardView.getSelectedFigure().getColor().equals(currentPlayer)) {
+                move(col, row);
+            }
+        } else {
+            if(isSaveForKing(col, row, chessBoardView.getBoard()) &&
+                    chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard())) {
+                move(col, row);
+            }
+        }
+
+    }
+
+
+    private String codeCoord(int x, int y) {
+        String outputX = null;
+        String outputY = null;
+        switch (x) {
+            case 0 -> outputX = "a";
+            case 1 -> outputX = "b";
+            case 2 -> outputX = "c";
+            case 3 -> outputX = "d";
+            case 4 -> outputX = "e";
+            case 5 -> outputX = "f";
+            case 6 -> outputX = "g";
+            case 7 -> outputX = "h";
+        }
+        switch (y) {
+            case 0 -> outputY = "8";
+            case 1 -> outputY = "7";
+            case 2 -> outputY = "6";
+            case 3 -> outputY = "5";
+            case 4 -> outputY = "4";
+            case 5 -> outputY = "3";
+            case 6 -> outputY = "2";
+            case 7 -> outputY = "1";
+        }
+        return outputX + outputY;
+    }
+
     private void eatFigure(Figure figure) {
         if(figure.getColor().equals(Color.WHITE)) {
-            killedWhFigure.add(figure);
+            switch (figure.getType()) {
+                case PAWNS -> {
+                    BpC++;
+                    chessBoardView.getBlackFigureView().setPawnsCount(BpC);
+                }
+                case KNIGHT -> {
+                    BkC++;
+                    chessBoardView.getBlackFigureView().setKnightCount(BkC);
+                }
+                case BISHOP -> {
+                    BbC++;
+                    chessBoardView.getBlackFigureView().setBishopCount(BbC);
+                }
+                case QUEEN -> {
+                    BqC++;
+                    chessBoardView.getBlackFigureView().setQueenCount(BqC);
+                }
+                case ROOK -> {
+                    BrC++;
+                    chessBoardView.getBlackFigureView().setRookCount(BrC);
+                }
+            }
         } else {
-            killedBlFigure.add(figure);
+            switch (figure.getType()) {
+                case PAWNS -> {
+                    WpC++;
+                    chessBoardView.getWhiteFigureView().setPawnsCount(WpC);
+                }
+                case KNIGHT -> {
+                    WkC++;
+                    chessBoardView.getWhiteFigureView().setKnightCount(WkC);
+                }
+                case BISHOP -> {
+                    WbC++;
+                    chessBoardView.getWhiteFigureView().setBishopCount(WbC);
+                }
+                case QUEEN -> {
+                    WqC++;
+                    chessBoardView.getWhiteFigureView().setQueenCount(WqC);
+                }
+                case ROOK -> {
+                    WrC++;
+                    chessBoardView.getWhiteFigureView().setRookCount(WrC);
+                }
+            }
         }
     }
 
@@ -169,10 +284,7 @@ public class BoardController implements MouseListener {
             }
         }
 
-        if(king.isThisPlaceIsSafe(col, row, board, king)) {
-            return true;
-        }
-        return false;
+        return king != null && king.isThisPlaceIsSafe(col, row, board, king);
     }
 
     /**
@@ -192,7 +304,7 @@ public class BoardController implements MouseListener {
             }
         }
 
-        return king.isUnderAttack(king.getCol(), king.getRow(), board);
+        return king != null &&  king.isUnderAttack(king.getCol(), king.getRow(), board);
     }
 
     /**
@@ -267,12 +379,12 @@ public class BoardController implements MouseListener {
                 }
             }
         }
-        if(whiteKing.isUnderAttack(whiteKing.getCol(), whiteKing.getRow(), chessBoardView.getBoard())) {
+        if(whiteKing != null && whiteKing.isUnderAttack(whiteKing.getCol(), whiteKing.getRow(), chessBoardView.getBoard())) {
             countOfCheckWhite++;
         } else {
             countOfCheckWhite = 0;
         }
-        if(blackKing.isUnderAttack(blackKing.getCol(), blackKing.getRow(), chessBoardView.getBoard())) {
+        if(blackKing != null && blackKing.isUnderAttack(blackKing.getCol(), blackKing.getRow(), chessBoardView.getBoard())) {
             countOfCheckBlack++;
         } else {
             countOfCheckBlack = 0;
@@ -307,7 +419,7 @@ public class BoardController implements MouseListener {
         }
 
         // Kontroluje je-li kral pod utokem
-        if (king.isUnderAttack(king.getCol(), king.getRow(), chessBoardView.getBoard())) {
+        if (king != null && king.isUnderAttack(king.getCol(), king.getRow(), chessBoardView.getBoard())) {
             return false;
         }
 
@@ -329,7 +441,7 @@ public class BoardController implements MouseListener {
     /**
      * Zpusti casovac pro bileho hrace
      */
-    private void whiteStart() {
+    public void whiteStart() {
         wTimer = new Timer(DELAY, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -341,9 +453,10 @@ public class BoardController implements MouseListener {
     }
 
     /**
+     * Black ~ StockFish
      * Zpusti casovac pro cerneho hrace
      */
-    private void blackStart() {
+    public void blackStart() {
         bTimer = new Timer(DELAY, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -352,31 +465,51 @@ public class BoardController implements MouseListener {
             }
         });
         bTimer.start();
+
+        // Ziskat pozici od Stockfish
+        if(sf != null) {
+            try {
+                sf.sendPositionCommand(positionAfter + positionBefore, bTotalSeconds * 1000);
+                sf.output();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     /**
      * Zastavi casovac pro bileho hrace
      */
-    private void whiteStop() {
-        wTimer.stop();
+    public void whiteStop() {
+        if (wTimer != null)
+        {
+            wTimer.stop();
+        }
     }
 
     /**
      * Zastavi casovac pro cerneho hrace
      */
-    private void blackStop() {
-        bTimer.stop();
+    public void blackStop() {
+        if (bTimer != null)
+        {
+            bTimer.stop();
+        }
     }
 
     /**
      * Obnovi text aktualnim casem
      */
     public void updateTimeLabel() {
-        int wMinutes = (wTimeCounter % 3600) / 60;
-        int wSeconds = wTimeCounter % 60;
+        minToSec = chessBoardView.getGameMinuts() * 60;
 
-        int bMinutes = (bTimeCounter % 3600) / 60;
-        int bSeconds = bTimeCounter % 60;
+        int wTotalSeconds = minToSec - wTimeCounter;
+        int wMinutes = wTotalSeconds / 60;
+        int wSeconds = wTotalSeconds % 60;
+
+        bTotalSeconds = minToSec - bTimeCounter;
+        int bMinutes = bTotalSeconds / 60;
+        int bSeconds = bTotalSeconds % 60;
 
         String wMinutesString = (wMinutes < 10) ? "0" + wMinutes : Integer.toString(wMinutes);
         String wSecondsString = (wSeconds < 10) ? "0" + wSeconds : Integer.toString(wSeconds);
@@ -384,12 +517,23 @@ public class BoardController implements MouseListener {
         String bMinutesString = (bMinutes < 10) ? "0" + bMinutes : Integer.toString(bMinutes);
         String bSecondsString = (bSeconds < 10) ? "0" + bSeconds : Integer.toString(bSeconds);
 
-        String wTimeString = "White" + wMinutesString + ":" + wSecondsString;
-        String bTimeString = "Black" + bMinutesString + ":" + bSecondsString;
+        String wTimeString = "White " + wMinutesString + ":" + wSecondsString;
+        String bTimeString = "Black " + bMinutesString + ":" + bSecondsString;
 
         chessBoardView.timer1.setText(wTimeString);
         chessBoardView.timer2.setText(bTimeString);
+
+        if(wMinutes == 0 && wSeconds == 0) {
+            JOptionPane.showMessageDialog(null, "Black wins!");
+            chessBoardView.restart();
+        }
+        if(bMinutes == 0 && bSeconds == 0) {
+            JOptionPane.showMessageDialog(null, "White wins!");
+            chessBoardView.restart();
+        }
     }
+
+
 
     /**
      * Vrati list sekund bileho hrace
@@ -463,11 +607,20 @@ public class BoardController implements MouseListener {
         return bTimer;
     }
 
-    /**
-     * Nastavi jestli animace zapnuta
-     * @param animationIsOn
-     */
-    public void setAnimationIsOn(boolean animationIsOn) {
-        this.animationIsOn = animationIsOn;
+    public static Color getCurrentPlayer() {
+        return currentPlayer;
     }
+
+    public void setSelectedFigure(int row, int col) {
+        chessBoardView.setSelectedFigure(chessBoardView.getBoard()[row][col]);
+    }
+
+    public void setSelectedFigureX(int col) {
+        chessBoardView.setSelectedFigureX(col);
+    }
+
+    public void setSelectedFigureY(int row) {
+        chessBoardView.setSelectedFigureY(row);
+    }
+
 }
