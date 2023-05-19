@@ -52,11 +52,10 @@ public class ChessBoardView extends JPanel {
         private boolean doAnimate = false;              // Zobrazeni moznych pozic (zluta / modra / ..)
         private final int DELAY = 30; // Delka casu animace
         public int countOfBeingSelected = 0; // Pocet kolik bylo vybrano
-        public JLabel timer1 = new JLabel(); // Label prvniho casovace
-        public JLabel timer2 = new JLabel(); // Label druheho casovace
         public KilledFigureView whiteFigureView;
         public KilledFigureView blackFigureView;
         private int gameMinuts;
+        private GameView gv;
 
         private Timer animationTimer;
 
@@ -67,8 +66,9 @@ public class ChessBoardView extends JPanel {
          * Nastavi preferovanou velikost sachovnice a inicializuje figury do dvojite pole board.
          * A zavola posluchac mysi.
          */
-        public ChessBoardView(boolean playVSBot) {
+        public ChessBoardView(GameView gv, boolean playVSBot) {
                 this.boardController = new BoardController(this, playVSBot);
+                this.gv = gv;
                 //setBackground(Color.BLUE);
                 setPreferredSize(new Dimension(square_size * ROW_COUNT, square_size * ROW_COUNT));
                 addMouseListener(boardController);
@@ -955,5 +955,12 @@ public class ChessBoardView extends JPanel {
                 boardController.whiteStart();
                 //boardController.blackStart();
                 //boardController.blackStop();
+        }
+
+        public void setTextToTimer1(String time) {
+                gv.setTextToTimer1(time);
+        }
+        public void setTextToTimer2(String time) {
+                gv.setTextToTimer2(time);
         }
 }

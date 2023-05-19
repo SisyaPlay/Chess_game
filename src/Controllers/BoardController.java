@@ -6,6 +6,7 @@ import Figures.King;
 import Figures.Pawns;
 import Figures.Queen;
 import View.ChessBoardView;
+import View.GameView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -520,8 +521,8 @@ public class BoardController implements MouseListener{
         String wTimeString = "White " + wMinutesString + ":" + wSecondsString;
         String bTimeString = "Black " + bMinutesString + ":" + bSecondsString;
 
-        chessBoardView.timer1.setText(wTimeString);
-        chessBoardView.timer2.setText(bTimeString);
+        chessBoardView.setTextToTimer1(wTimeString);
+        chessBoardView.setTextToTimer2(bTimeString);
 
         if(wMinutes == 0 && wSeconds == 0) {
             JOptionPane.showMessageDialog(null, "Black wins!");

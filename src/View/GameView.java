@@ -33,10 +33,8 @@ public class GameView extends JFrame{
     private JMenuItem item2 = new JMenuItem("Export graph"); // Tlacitko exportuje graf do PNG formatu
     private JMenuItem item3 = new JMenuItem("Export to PNG"); // Tlacitko exportuje sachovnice a figury do PNG formatu
     private JMenuItem item4 = new JMenuItem("Pause");
-    public JLabel timer1; // Prvni label na casovac
-    public JLabel timer2; // Druhy label na casovac
-    private JLabel countOfKillerFig1 = new JLabel("countOfKillerFig1"); // Pocet zabitych figur, zatim nepouziva
-    //private JLabel countOfKillerFig2 = new JLabel("countOfKillerFig1");
+    public JLabel timer1 = new JLabel("White 00:00"); // Prvni label na casovac
+    public JLabel timer2 = new JLabel("Black 00:00"); // Druhy label na casovac
     private JButton playVsPlBttn = new JButton("Play VS. Player");
     private JButton playVsBotBttn = new JButton("Play VS. StockFish");
     private KilledFigureView whiteFigureView;
@@ -142,11 +140,12 @@ public class GameView extends JFrame{
         comboBox.setMaximumSize(new Dimension(100, comboBox.getPreferredSize().height));
 
         JButton startButton = new JButton("Start");
+        GameView gv = this;
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedTime = (int) comboBox.getSelectedItem();
-                board = new ChessBoardView(playVSBot);
+                board = new ChessBoardView(gv, playVSBot);
                 board.setGameMinuts(selectedTime);
                 frame.getContentPane().remove(dialogPanel);
                 createGame(frame);
@@ -195,9 +194,6 @@ public class GameView extends JFrame{
      */
     private void createGame(JFrame frame) {
         board.startGame();
-
-        timer1 = board.timer1;
-        timer2 = board.timer2;
 
         whiteFigureView = board.whiteFigureView;
         blackFigureView = board.blackFigureView;
@@ -337,5 +333,12 @@ public class GameView extends JFrame{
 
         int scaledSquareSize = (int) (15 * scaleFactor);
         return scaledSquareSize;
+    }
+
+    public void setTextToTimer1(String time) {
+        timer1.setText(time);
+    }
+    public void setTextToTimer2(String time) {
+        timer2.setText(time);
     }
 }
