@@ -158,14 +158,14 @@ public class King extends Figure {
 					int dy = (int)y + yOffset[i];
 					Figure figure = board[row][col];
 					if (dx >= 0 && dx < 8 && dy >= 0 && dy < 8) {
-						if (figure != null && figure.getColor() != getColor() && figure.moveTo(figure.getCol(), figure.getRow(), dx, dy, board)) {
-							return false;
+						if (isUnderAttack(dx, dy, board)) {
+							return true;
 						}
 					}
 				}
 			}
 		}
-		return true;
+		return false;
 	}
 
 	/**

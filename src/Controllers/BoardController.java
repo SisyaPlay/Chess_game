@@ -6,7 +6,6 @@ import Figures.King;
 import Figures.Pawns;
 import Figures.Queen;
 import View.ChessBoardView;
-import View.GameView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,6 +43,7 @@ public class BoardController implements MouseListener{
     public String positionBefore = null;
     public int bTotalSeconds;
     private Stockfish sf;
+    private Figure killableFigure = null;
 
     /**
      * Konstruktor tridy BoardController.
@@ -121,33 +121,17 @@ public class BoardController implements MouseListener{
             if (col > ROW_COUNT - 1 || row > ROW_COUNT - 1 || col < 0 || row < 0 || x < 0 || y < 0) {
                 chessBoardView.getBoard()[chessBoardView.getSelectedFigureY()][chessBoardView.getSelectedFigureX()] = chessBoardView.getSelectedFigure();
             }
+            killableFigure = chessBoardView.getBoard()[row][col];
             moveFigure(col, row);
-//            else if(!kingIsUnderAttack(chessBoardView.getBoard())) {
-//                if (chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard())
-//                        && makeAMove(row, col) && chessBoardView.getSelectedFigure().getColor().equals(currentPlayer)) {
-//                    moveFigure(col, row);
-//                }
-//            } else if(!(chessBoardView.getSelectedFigure() instanceof King)) {
-//                if(chessBoardView.getSelectedFigure().canSafeKing(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(),
-//                        col, row, chessBoardView.getBoard()) && makeAMove(row, col) && chessBoardView.getSelectedFigure().getColor().equals(currentPlayer)) {
-//                    moveFigure(col, row);
-//                }
-//            } else {
-//                if(isSaveForKing(col, row, chessBoardView.getBoard()) &&
-//                        chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard())) {
-//                    moveFigure(col, row);
-//                }
-//            }
-            //System.out.println(positionAfter + positionBefore);
         }
     }
 
     public void move(int col, int row) {
         chessBoardView.animate(col, row);
-        chessBoardView.getBoard()[chessBoardView.getSelectedFigure().getRow()][chessBoardView.getSelectedFigure().getCol()] = null;
-        if(chessBoardView.getBoard()[row][col] != null) {
-            eatFigure(chessBoardView.getBoard()[row][col]);
+        if(killableFigure != null) {
+            eatFigure(killableFigure);
         }
+        chessBoardView.getBoard()[chessBoardView.getSelectedFigure().getRow()][chessBoardView.getSelectedFigure().getCol()] = null;
         chessBoardView.getBoard()[row][col] = chessBoardView.getSelectedFigure(); // Zapise do pole figuru
         chessBoardView.getSelectedFigure().setRow(row);
         chessBoardView.getSelectedFigure().setCol(col);
@@ -266,49 +250,49 @@ public class BoardController implements MouseListener{
     private void eatFigure(Figure figure) {
         if(figure.getColor().equals(Color.WHITE)) {
             switch (figure.getType()) {
-                case PAWNS -> {
+                case PAWNS:
                     BpC++;
                     chessBoardView.getBlackFigureView().setPawnsCount(BpC);
-                }
-                case KNIGHT -> {
+                    break;
+                case KNIGHT:
                     BkC++;
                     chessBoardView.getBlackFigureView().setKnightCount(BkC);
-                }
-                case BISHOP -> {
+                    break;
+                case BISHOP:
                     BbC++;
                     chessBoardView.getBlackFigureView().setBishopCount(BbC);
-                }
-                case QUEEN -> {
+                    break;
+                case QUEEN:
                     BqC++;
                     chessBoardView.getBlackFigureView().setQueenCount(BqC);
-                }
-                case ROOK -> {
+                    break;
+                case ROOK:
                     BrC++;
                     chessBoardView.getBlackFigureView().setRookCount(BrC);
-                }
+                    break;
             }
         } else {
             switch (figure.getType()) {
-                case PAWNS -> {
+                case PAWNS:
                     WpC++;
                     chessBoardView.getWhiteFigureView().setPawnsCount(WpC);
-                }
-                case KNIGHT -> {
+                    break;
+                case KNIGHT:
                     WkC++;
                     chessBoardView.getWhiteFigureView().setKnightCount(WkC);
-                }
-                case BISHOP -> {
+                    break;
+                case BISHOP:
                     WbC++;
                     chessBoardView.getWhiteFigureView().setBishopCount(WbC);
-                }
-                case QUEEN -> {
+                    break;
+                case QUEEN:
                     WqC++;
                     chessBoardView.getWhiteFigureView().setQueenCount(WqC);
-                }
-                case ROOK -> {
+                    break;
+                case ROOK:
                     WrC++;
                     chessBoardView.getWhiteFigureView().setRookCount(WrC);
-                }
+                    break;
             }
         }
     }
