@@ -100,18 +100,20 @@ public class King extends Figure {
 	 * @return
 	 */
 	public boolean doCastling(double cX, double cY, double x, double y, Figure[][] board) {
-		if (board[(int)cY][(int)cX + 1] == null && board[(int)cY][(int)cX + 2] == null &&
-				board[(int)cY][(int)cX + 3] instanceof Rook &&
-				board[(int)cY][(int)cX + 3].getCountOfMove() == 0 &&
-				!this.isUnderAttack(cX, cY, board)) {
-			return true;
-		}
-		if (board[(int)cY][(int)cX - 1] == null && board[(int)cY][(int)cX - 2] == null &&
-				board[(int)cY][(int)cX - 3] == null &&
-				board[(int)cY][(int)cX - 4] instanceof Rook &&
-				board[(int)cY][(int)cX - 4].getCountOfMove() == 0 &&
-				!this.isUnderAttack(cX, cY, board)) {
-			return true;
+		if(this.countOfMove == 0) {
+			if (board[(int) cY][(int) cX + 1] == null && board[(int) cY][(int) cX + 2] == null &&
+					board[(int) cY][(int) cX + 3] instanceof Rook &&
+					board[(int) cY][(int) cX + 3].getCountOfMove() == 0 &&
+					!this.isUnderAttack(cX, cY, board)) {
+				return true;
+			}
+			if (board[(int) cY][(int) cX - 1] == null && board[(int) cY][(int) cX - 2] == null &&
+					board[(int) cY][(int) cX - 3] == null &&
+					board[(int) cY][(int) cX - 4] instanceof Rook &&
+					board[(int) cY][(int) cX - 4].getCountOfMove() == 0 &&
+					!this.isUnderAttack(cX, cY, board)) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -122,7 +124,7 @@ public class King extends Figure {
 			for (int j = 0; j < 8; j++) {
 				Figure figure = board[j][i];
 				if (figure != null && figure.getColor() != getColor()) {
-					if (figure.canEatKing(i, j, king.getCol(), king.getRow(), board)) {
+					if (king != null && figure.canEatKing(i, j, cX, cY, board)) {
 						return true;
 					}
 				}

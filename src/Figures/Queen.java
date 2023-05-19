@@ -101,7 +101,7 @@ public class Queen extends Figure {
 			int checkX = getCol() + i * stepX;
 			int checkY = getRow() + i * stepY;
 
-			if (board[checkY][checkX] != null) {
+			if (board[checkY][checkX] != null && !(board[checkY][checkX]instanceof King)) {
 				// на пути стоит фигура
 				return false;
 			}
@@ -157,7 +157,7 @@ public class Queen extends Figure {
 			int checkX = getCol() + i * stepX;
 			int checkY = getRow() + i * stepY;
 
-			if (board[checkY][checkX] != null) {
+			if (board[checkY][checkX] != null && !(board[checkY][checkX]instanceof King)) {
 				return false;
 			}
 		}

@@ -206,25 +206,26 @@ public abstract class Figure extends JPanel{
 	public boolean canSafeKing(double cX, double cY, double x, double y, Figure[][] board) {
 		Figure defender = board[(int)cY][(int)cX];
 		Figure king = null;
-		int[] xOffset = {-1, 0, 1, -1, 1, -1, 0, 1};
-		int[] yOffset = {-1, -1, -1, 0, 0, 1, 1, 1};
 
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				Figure figure = board[i][j];
 				if(figure instanceof King && figure.getColor() == getColor()) {
 					king = figure;
+					break;
 				}
 			}
 		}
 
-		for (int i = 0; i < yOffset.length; i++) {
-			for (int j = 0; j < xOffset.length; j++) {
-				if(king.getCol() + xOffset[j] == x && king.getRow() + yOffset[i] == y) {
-					if (defender.moveTo(cX, cY, king.getCol() + xOffset[j], king.getRow() + yOffset[i], board)) {
-						return true;
-					}
-				}
+		if(defender.moveTo(cX, cY, x, y, board)) {
+			if (board[(int)y][(int)x] == null || (board[(int)y][(int)x] != null && board[(int)y][(int)x].getColor() != this.color)) {
+				Figure prevFigure = board[defender.getRow()][defender.getCol()];
+				board[defender.getRow()][defender.getCol()] = null;
+				board[(int)y][(int)x] = defender;
+				boolean isSave = king != null && !king.isUnderAttack(king.getCol(), king.getRow(), board);
+				board[(int)y][(int)x] = null;
+				board[defender.getRow()][defender.getCol()] = prevFigure;
+				return isSave;
 			}
 		}
 		return false;

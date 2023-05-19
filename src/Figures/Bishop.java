@@ -90,7 +90,7 @@ public class Bishop extends Figure {
 			}
 		}
 
-		if (board[(int)y][(int)x] == null || (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
+		if (board[(int)y][(int)x] != null && (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
 			return true;
 		}
 

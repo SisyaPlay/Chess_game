@@ -104,9 +104,7 @@ public class Rook extends Figure {
 					}
 				}
 			}
-			if (board[(int)y][(int)x] == null || (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
-				addCountOfMove();
-				addHistory((int)cX, (int)cY, (int)x, (int)y);
+			if (board[(int)y][(int)x] != null && (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
 				return true;
 			}
 		}

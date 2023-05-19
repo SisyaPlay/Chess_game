@@ -91,6 +91,7 @@ public class Stockfish {
                         int old_row = Utils.getInstance().decodeWord(code.charAt(1));
                         int new_col = Utils.getInstance().decodeWord(code.charAt(2));
                         int new_row = Utils.getInstance().decodeWord(code.charAt(3));
+                        Thread.sleep(1000);
 
                         bc.setSelectedFigure(old_row, old_col);
                         bc.setSelectedFigureX(old_col);
