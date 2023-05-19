@@ -122,11 +122,15 @@ public class BoardController implements MouseListener{
                 chessBoardView.getBoard()[chessBoardView.getSelectedFigureY()][chessBoardView.getSelectedFigureX()] = chessBoardView.getSelectedFigure();
             }
             killableFigure = chessBoardView.getBoard()[row][col];
-            moveFigure(col, row);
+            try {
+                moveFigure(col, row);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 
-    public void move(int col, int row) {
+    public void move(int col, int row) throws IOException {
         chessBoardView.animate(col, row);
         if(killableFigure != null) {
             eatFigure(killableFigure);
@@ -160,7 +164,7 @@ public class BoardController implements MouseListener{
      * @param col   new column position
      * @param row   new row position
      */
-    public void moveFigure(int col, int row) {
+    public void moveFigure(int col, int row) throws IOException {
         if(!kingIsUnderAttack(chessBoardView.getBoard()) && !(chessBoardView.getSelectedFigure() instanceof King)) {
             if (chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard()) &&
                     posibleCheck(col, row, chessBoardView.getBoard()) &&
@@ -620,4 +624,7 @@ public class BoardController implements MouseListener{
         chessBoardView.setSelectedFigureY(row);
     }
 
+    public Stockfish getSf() {
+        return sf;
+    }
 }

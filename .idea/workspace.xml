@@ -12,7 +12,9 @@
     <list default="true" id="913933c6-3ac9-491f-b08e-28036316a50d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controllers/BoardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/BoardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Figures/King.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/King.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Stockfish.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Stockfish.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/ChessBoardView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ChessBoardView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/GameView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/GameView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,7 +162,7 @@
       <workItem from="1684475277652" duration="1991000" />
       <workItem from="1684480449370" duration="6000" />
       <workItem from="1684480800072" duration="350000" />
-      <workItem from="1684489997233" duration="12666000" />
+      <workItem from="1684489997233" duration="14252000" />
     </task>
     <servers />
   </component>
@@ -177,17 +179,6 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Engine/Stockfish.java</url>
-          <line>95</line>
-          <option name="timeStamp" value="45" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

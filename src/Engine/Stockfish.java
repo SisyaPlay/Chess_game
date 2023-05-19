@@ -24,8 +24,8 @@ public class Stockfish {
 
     private final String SET_SF_POSITIONS = "position startpos move ";
     private final String SET_SF_TIME = "go btime ";
-
     private final String SF_IS_READY = "isready";
+    private final String SF_QUIT = "quit";
     private final String SF_READY_OK = "readyok";
 
     public AtomicReference<String> sfResultOutput = new AtomicReference<>("");;
@@ -110,5 +110,15 @@ public class Stockfish {
         };
 
         new Thread(basic).start();
+    }
+
+    public void restartEngine() {
+        try {
+            writer.write(SF_QUIT);
+            positions = new ArrayList<String>();
+            startEngine();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

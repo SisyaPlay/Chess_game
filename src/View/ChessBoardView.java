@@ -1,7 +1,6 @@
 package View;
 
 import Controllers.BoardController;
-import Engine.Stockfish;
 import Figures.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -712,7 +711,7 @@ public class ChessBoardView extends JPanel {
         /**
          * Restartuje
          */
-        public void restart() {
+        public void restart()  {
                 board = new Figure[8][8];
 
                 for (int i = 0; i < 8; i++) {
@@ -761,8 +760,10 @@ public class ChessBoardView extends JPanel {
                 boardController.WpC = 0;
                 whiteFigureView.setEvNew();
                 blackFigureView.setEvNew();
-                //boardController.setAnimationIsOn(false);
                 countOfBeingSelected = 0;
+                if(boardController.getSf() != null) {
+                        boardController.getSf().restartEngine();
+                }
                 repaint();
                 reset();
         }
