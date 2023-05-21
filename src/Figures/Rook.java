@@ -1,7 +1,6 @@
 package Figures;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 /**
  * Trida Rook, vykresli vez
@@ -104,58 +103,21 @@ public class Rook extends Figure {
 					}
 				}
 			}
-			if (board[(int)y][(int)x] != null && (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
-				return true;
-			}
+			return board[(int) y][(int) x] != null && (board[(int) y][(int) x].getColor() != getColor() && board[(int) y][(int) x] instanceof King);
 		}
 		return false;
 	}
 
 	public boolean hasMoves(double x, double y, Figure[][] board) {
-		for (int col = (int)x + 1; col < 8; col++) {
-			Figure figure = board[(int)y][col];
-			if (figure == null) {
-				continue;
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if(i == x || j == y) {
+					if(moveTo(x, y, i, j, board)) {
+						return true;
+					}
+				}
 			}
-			if (figure.getColor() != getColor()) {
-				return true;
-			}
-			break;
 		}
-
-		for (int col = (int)x - 1; col >= 0; col--) {
-			Figure figure = board[(int)y][col];
-			if (figure == null) {
-				continue;
-			}
-			if (figure.getColor() != getColor()) {
-				return true;
-			}
-			break;
-		}
-
-		for (int row = (int)y - 1; row >= 0; row--) {
-			Figure figure = board[row][(int)x];
-			if (figure == null) {
-				continue;
-			}
-			if (figure.getColor() != getColor()) {
-				return true;
-			}
-			break;
-		}
-
-		for (int row = (int)y + 1; row < 8; row++) {
-			Figure figure = board[row][(int)x];
-			if (figure == null) {
-				continue;
-			}
-			if (figure.getColor() != getColor()) {
-				return true;
-			}
-			break;
-		}
-
 		return false;
 	}
 }

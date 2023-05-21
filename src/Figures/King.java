@@ -1,12 +1,9 @@
 package Figures;
 
-import View.ChessBoardView;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Point2D;
 
 /**
  * Trida Rook, vykresli krala
@@ -49,7 +46,7 @@ public class King extends Figure {
 		int deltaX = (int)Math.abs(getCol() - x);
 		int deltaY = (int)Math.abs(getRow() - y);
 
-
+		// Rosada
 		if(doCastling(cX, cY, x, y, board)) {
 			if(x == 6) {
 				animation(5, cY, 7, board);
@@ -61,6 +58,8 @@ public class King extends Figure {
 				return true;
 			}
 		}
+
+		// Tah
 		if (deltaX > 1 || deltaY > 1) {
 			return false;
 		}
@@ -144,6 +143,16 @@ public class King extends Figure {
 			board[king.getRow()][king.getCol()] = prevFigure; // восстанавливаем предыдущую фигуру на место короля
 			return isSafe;
 		}
+		if(board[row][col] != null && !board[row][col].getColor().equals(getColor())) {
+			Figure prevFigure = board[row][col];
+			Figure prevKing = board[king.getRow()][king.getCol()];
+			board[king.getRow()][king.getCol()] = null;
+			board[row][col] = king;
+			boolean isSafe = !king.isUnderAttack(col, row, board);
+			board[row][col] = prevFigure;
+			board[king.getRow()][king.getCol()] = prevKing;
+			return isSafe;
+		}
 		return false;
 	}
 
@@ -151,20 +160,17 @@ public class King extends Figure {
 		int[] xOffset = {-1, 0, 1, -1, 1, -1, 0, 1};
 		int[] yOffset = {-1, -1, -1, 0, 0, 1, 1, 1};
 
-		for (int row = 0; row < 8; row++) {
-			for (int col = 0; col < 8; col++) {
-				for (int i = 0; i < xOffset.length; i++) {
-					int dx = (int)x + xOffset[i];
-					int dy = (int)y + yOffset[i];
-					Figure figure = board[row][col];
-					if (dx >= 0 && dx < 8 && dy >= 0 && dy < 8) {
-						if (isUnderAttack(dx, dy, board)) {
-							return true;
-						}
-					}
+		for (int i = 0; i < xOffset.length; i++) {
+			int dx = (int)x + xOffset[i];
+			int dy = (int)y + yOffset[i];
+			//Figure figure = board[row][col];
+			if (dx >= 0 && dx < 8 && dy >= 0 && dy < 8) {
+				if (isThisPlaceIsSafe(dx, dy, board, this)) {
+					return true;
 				}
 			}
 		}
+
 		return false;
 	}
 

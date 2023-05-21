@@ -1,6 +1,7 @@
 package Figures;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Trida Rook, vykresli strelce
@@ -98,25 +99,51 @@ public class Bishop extends Figure {
 	}
 
 	public boolean hasMoves(double x, double y, Figure[][] board) {
-		for (int i = -1; i <= 1; i += 2) {
-			for (int j = -1; j <= 1; j += 2) {
-				int row = (int)y + i;
-				int col = (int)x + j;
+		ArrayList<Integer> xOffset = new ArrayList<>();
+		ArrayList<Integer> yOffset = new ArrayList<>();
+		int startX = (int) x;
+		int startY = (int) y;
 
-				while (row >= 0 && row < 8 && col >= 0 && col < 8) {
-					Figure figure = board[row][col];
-					if (figure == null) {
-						if (moveTo(col, row, x, y, board)) return true;
-					} else if (figure.getColor() != getColor() && figure.moveTo(col, row, x, y, board)) {
-						return true;
-					} else {
-						break;
-					}
-					row += i;
-					col += j;
-				}
+		while (startX < 8 && startY >= 0) {
+			xOffset.add(startX);
+			yOffset.add(startY);
+			startX++;
+			startY--;
+		}
+		startX = (int) x;
+		startY = (int) y;
+
+		while (startX < 8 && startY < 8) {
+			xOffset.add(startX);
+			yOffset.add(startY);
+			startX++;
+			startY++;
+		}
+		startX = (int) x;
+		startY = (int) y;
+
+		while (startX >= 8 && startY < 8) {
+			xOffset.add(startX);
+			yOffset.add(startY);
+			startX--;
+			startY++;
+		}
+		startX = (int) x;
+		startY = (int) y;
+
+		while (startX >= 8 && startY >= 8) {
+			xOffset.add(startX);
+			yOffset.add(startY);
+			startX--;
+			startY--;
+		}
+
+		for (int i = 0; i < xOffset.size(); i++) {
+			if(moveTo((int)x, (int)y, xOffset.get(i), yOffset.get(i), board)) {
+				return true;
 			}
 		}
+
 		return false;
 	}
 }

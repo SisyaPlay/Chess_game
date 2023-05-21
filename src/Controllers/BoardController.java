@@ -7,6 +7,7 @@ import Figures.Pawns;
 import Figures.Queen;
 import View.ChessBoardView;
 
+import javax.lang.model.type.ArrayType;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -121,16 +122,12 @@ public class BoardController implements MouseListener{
             if (col > ROW_COUNT - 1 || row > ROW_COUNT - 1 || col < 0 || row < 0 || x < 0 || y < 0) {
                 chessBoardView.getBoard()[chessBoardView.getSelectedFigureY()][chessBoardView.getSelectedFigureX()] = chessBoardView.getSelectedFigure();
             }
-            killableFigure = chessBoardView.getBoard()[row][col];
-            try {
-                moveFigure(col, row);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            moveFigure(col, row);
+
         }
     }
 
-    public void move(int col, int row) throws IOException {
+    public void move(int col, int row) {
         chessBoardView.animate(col, row);
         if(killableFigure != null) {
             eatFigure(killableFigure);
@@ -152,7 +149,7 @@ public class BoardController implements MouseListener{
             countOfCheckWhite = 0;
             countOfCheckBlack = 0;
         }
-        if (isStalemate()) {
+        if (isStalemate(col, row)) {
             chessBoardView.restart();
             countOfCheckWhite = 0;
             countOfCheckBlack = 0;
@@ -164,7 +161,8 @@ public class BoardController implements MouseListener{
      * @param col   new column position
      * @param row   new row position
      */
-    public void moveFigure(int col, int row) throws IOException {
+    public void moveFigure(int col, int row) {
+        killableFigure = chessBoardView.getBoard()[row][col];
         if(!kingIsUnderAttack(chessBoardView.getBoard()) && !(chessBoardView.getSelectedFigure() instanceof King)) {
             if (chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard()) &&
                     posibleCheck(col, row, chessBoardView.getBoard()) &&
@@ -178,7 +176,8 @@ public class BoardController implements MouseListener{
             }
         } else {
             if(isSaveForKing(col, row, chessBoardView.getBoard()) &&
-                    chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard())) {
+                    chessBoardView.getSelectedFigure().moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard()) &&
+                    chessBoardView.getSelectedFigure().getColor().equals(currentPlayer)) {
                 move(col, row);
             }
         }
@@ -187,16 +186,7 @@ public class BoardController implements MouseListener{
 
     private boolean posibleCheck(int col, int row, Figure[][] board) {
         Figure figure = chessBoardView.getSelectedFigure();
-        Figure king = null;
-        for (int y = 0; y < ROW_COUNT; y++) {
-            for (int x = 0; x < ROW_COUNT; x++) {
-                Figure kFigure = board[y][x];
-                if(kFigure instanceof King && kFigure.getColor().equals(currentPlayer)) {
-                    king = kFigure;
-                    break;
-                }
-            }
-        }
+        Figure king = findKing(board);
 
         if(figure.moveTo(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, board)) {
             Figure prevFigure = board[figure.getRow()][figure.getCol()];
@@ -208,9 +198,20 @@ public class BoardController implements MouseListener{
             return isSafe;
         }
         return false;
+
+        /*
+        Figure prevFigure = board[row][col];
+            Figure prevEatableFig = board[king.getRow()][king.getCol()];
+            board[king.getRow()][king.getCol()] = null;
+            board[row][col] = king;
+            boolean isSafe = !king.isUnderAttack(col, row, board);
+            board[row][col] = prevFigure;
+            board[king.getRow()][king.getCol()] = prevEatableFig;
+            return isSafe;
+         */
     }
 
-    private Figure findKing(Figure[][] board) {
+    public Figure findKing(Figure[][] board) {
         Figure king = null;
         for (int y = 0; y < ROW_COUNT; y++) {
             for (int x = 0; x < ROW_COUNT; x++) {
@@ -379,34 +380,45 @@ public class BoardController implements MouseListener{
      * @return
      */
     private boolean isCheckmate() {
-        Figure whiteKing = null;
-        Figure blackKing = null;
-        for (int row = 0; row < ROW_COUNT; row++) {
-            for (int col = 0; col < ROW_COUNT; col++) {
-                Figure figure = chessBoardView.getBoard()[row][col];
-                if (figure instanceof King && figure.getColor().equals(Color.WHITE)) {
-                    whiteKing = figure;
-                } else if (figure instanceof King && figure.getColor().equals(Color.BLACK)) {
-                    blackKing = figure;
+        Figure bKing = null;
+        Figure wKing = null;
+
+        for (int i = 0; i < ROW_COUNT; i++) {
+            for (int j = 0; j < ROW_COUNT; j++) {
+                Figure figure = chessBoardView.getBoard()[j][i];
+                if(figure instanceof King) {
+                    if(figure.getColor().equals(Color.WHITE)) {
+                        wKing = figure;
+                    } else {
+                        bKing = figure;
+                    }
                 }
             }
         }
-        if(whiteKing != null && whiteKing.isUnderAttack(whiteKing.getCol(), whiteKing.getRow(), chessBoardView.getBoard())) {
-            countOfCheckWhite++;
-        } else {
-            countOfCheckWhite = 0;
+
+        if (wKing == null || bKing == null)
+        {
+            throw new RuntimeException();
         }
-        if(blackKing != null && blackKing.isUnderAttack(blackKing.getCol(), blackKing.getRow(), chessBoardView.getBoard())) {
-            countOfCheckBlack++;
-        } else {
-            countOfCheckBlack = 0;
+
+        for (int i = 0; i < ROW_COUNT; i++) {
+            for (int j = 0; j < ROW_COUNT; j++) {
+                Figure figure = chessBoardView.getBoard()[j][i];
+                if(figure != null && figure.getColor().equals(currentPlayer) && (!(figure instanceof King) && figure.hasMoves(figure.getCol(), figure.getRow(), chessBoardView.getBoard()) ||
+                        !(figure instanceof King) && figure.safeKing(figure.getCol(), figure.getRow(), chessBoardView.getBoard()))) {
+                    return false;
+                }
+            }
         }
-        if(countOfCheckWhite == 2) {
-            JOptionPane.showMessageDialog(null, "Black wins!");
+
+        if(wKing.isUnderAttack(wKing.getCol(), wKing.getRow(), chessBoardView.getBoard()) &&
+                !wKing.hasMoves(wKing.getCol(), wKing.getRow(), chessBoardView.getBoard())) {
+            JOptionPane.showMessageDialog(null, "Black Wins!");
             return true;
         }
-        if(countOfCheckBlack == 2) {
-            JOptionPane.showMessageDialog(null, "White wins!");
+        if(bKing.isUnderAttack(bKing.getCol(), bKing.getRow(), chessBoardView.getBoard()) &&
+                !bKing.hasMoves(bKing.getCol(), bKing.getRow(), chessBoardView.getBoard())) {
+            JOptionPane.showMessageDialog(null, "White Wins!");
             return true;
         }
         return false;
@@ -416,27 +428,66 @@ public class BoardController implements MouseListener{
      * Kontrola na pat
      * @return
      */
-    public boolean isStalemate() {
-        Figure king = findKing(chessBoardView.getBoard());
+    public boolean isStalemate(int col, int row) {
+        //Figure king = findKing(chessBoardView.getBoard());
 
-        // Kontroluje je-li kral pod utokem
-        if (king != null && king.isUnderAttack(king.getCol(), king.getRow(), chessBoardView.getBoard())) {
-            return false;
-        }
+        Figure bKing = null;
+        Figure wKing = null;
 
-        // Kontroluje pokud figury ma tahy
-        for (int row = 0; row < ROW_COUNT; row++) {
-            for (int col = 0; col < ROW_COUNT; col++) {
-                Figure figure = chessBoardView.getBoard()[row][col];
-                if (figure != null && figure.getColor().equals(currentPlayer)) {
-                    if (figure.hasMoves(col, row, chessBoardView.getBoard())) {
-                        return false;
+        // Hleda kralove
+        for (int i = 0; i < ROW_COUNT; i++) {
+            for (int j = 0; j < ROW_COUNT; j++) {
+                Figure figure = chessBoardView.getBoard()[j][i];
+                if(figure instanceof King) {
+                    if(figure.getColor().equals(Color.WHITE)) {
+                        wKing = figure;
+                    } else {
+                        bKing = figure;
                     }
                 }
             }
         }
-        JOptionPane.showMessageDialog(null, "Stalemate!");
-        return true;
+        for (int i = 0; i < ROW_COUNT; i++) {
+            for (int j = 0; j < ROW_COUNT; j++) {
+                Figure figure = chessBoardView.getBoard()[j][i];
+                if(figure != null && figure.getColor().equals(currentPlayer) && (!(figure instanceof King) && figure.hasMoves(figure.getCol(), figure.getRow(), chessBoardView.getBoard()) ||
+                        !(figure instanceof King) && figure.safeKing(figure.getCol(), figure.getRow(), chessBoardView.getBoard()))) {
+                    return false;
+                }
+            }
+        }
+
+        // Kontroluje je-li kral pod utokem
+        if (wKing != null && wKing.isUnderAttack(wKing.getCol(), wKing.getRow(), chessBoardView.getBoard())) {
+            return false;
+        }
+        if (bKing != null && bKing.isUnderAttack(bKing.getCol(), bKing.getRow(), chessBoardView.getBoard())) {
+            return false;
+        }
+
+        // Kontroluje pokud figury ma tahy
+        if(wKing != null && !wKing.hasMoves(wKing.getCol(), wKing.getRow(), chessBoardView.getBoard())) {
+            JOptionPane.showMessageDialog(null, "Stalemate!");
+            return true;
+        }
+        if(bKing != null && !bKing.hasMoves(bKing.getCol(), bKing.getRow(), chessBoardView.getBoard())) {
+            JOptionPane.showMessageDialog(null, "Stalemate!");
+            return true;
+        }
+        int countOfFigures = 0;
+        for (int i = 0; i < ROW_COUNT; i++) {
+            for (int j = 0; j < ROW_COUNT; j++) {
+                Figure figure = chessBoardView.getBoard()[j][i];
+                if(figure != null) {
+                    countOfFigures++;
+                }
+            }
+        }
+        if(countOfFigures == 2 && bKing != null && wKing != null) {
+            JOptionPane.showMessageDialog(null, "Stalemate!");
+            return true;
+        }
+        return false;
     }
 
     /**

@@ -153,21 +153,34 @@ public abstract class Figure extends JPanel{
 		return false;
 	}
 
+	/**
+	 * Metoda kontroluje jestli kral muze pretahovat na bezpecne misto
+	 * @param col konecni pozice na ose x
+	 * @param row konecni pozice na ose y
+	 * @param board pole figur
+	 * @param king kral
+	 * @return
+	 */
 	public boolean isThisPlaceIsSafe(int col, int row, Figure[][] board, Figure king) {
 		return false;
 	}
 
 	/**
 	 * Metoda kontroluje jestli nejaka figura ma tahy
-	 * @param cX pozice libovolne figury na ose X
-	 * @param cY pozice libovolne figury na ose Y
+	 *
+	 * @param sX    pozice libovolne figury na ose X
+	 * @param sY    pozice libovolne figury na ose Y
 	 * @param board pole figur
 	 * @return
 	 */
-	public boolean hasMoves(double cX, double cY, Figure[][] board) {
+	public boolean hasMoves(double sX, double sY, Figure[][] board) {
 		return false;
 	}
 
+	/**
+	 * Metoda vrati historie tahu pro pocitani figury kolik tahu uz udelala
+	 * @return
+	 */
 	public ArrayList<Point2D[]> getHistory() {
 		return history;
 	}
@@ -190,21 +203,31 @@ public abstract class Figure extends JPanel{
 
 	/**
 	 * Pridava historie
-	 * @param cX
-	 * @param cY
-	 * @param x
-	 * @param y
+	 *
+	 * @param sX
+	 * @param sY
+	 * @param dX
+	 * @param dY
 	 */
-	public void addHistory(int cX, int cY, int x, int y) {
+	public void addHistory(int sX, int sY, int dX, int dY) {
 		Point2D[] points = new Point2D[2];
-		points[0] = new Point2D.Double(cX, cY);
-		points[1] = new Point2D.Double(x, y);
+		points[0] = new Point2D.Double(sX, sY);
+		points[1] = new Point2D.Double(dX, dY);
 
 		this.history.add(points);
 	}
 
-	public boolean canSafeKing(double cX, double cY, double x, double y, Figure[][] board) {
-		Figure defender = board[(int)cY][(int)cX];
+	/**
+	 * Metoda Zjisti jestli nejaka figura muze zachranit krale
+	 * @param sX pozice libovolne figury na ose X
+	 * @param sY pozice libovolne figury na ose Y
+	 * @param dX konecni pozice na ose x
+	 * @param dY konecni pozice na ose y
+	 * @param board pole figur
+	 * @return
+	 */
+	public boolean canSafeKing(double sX, double sY, double dX, double dY, Figure[][] board) {
+		Figure defender = board[(int)sY][(int)sX];
 		Figure king = null;
 
 		for (int i = 0; i < 8; i++) {
@@ -217,15 +240,35 @@ public abstract class Figure extends JPanel{
 			}
 		}
 
-		if(defender.moveTo(cX, cY, x, y, board)) {
-			if (board[(int)y][(int)x] == null || (board[(int)y][(int)x] != null && board[(int)y][(int)x].getColor() != this.color)) {
+		if(defender.moveTo(sX, sY, dX, dY, board)) {
+			if (board[(int)dY][(int)dX] == null || (board[(int)dY][(int)dX] != null && board[(int)dY][(int)dX].getColor() != getColor())) {
 				Figure prevFigure = board[defender.getRow()][defender.getCol()];
+				Figure prevEatableFigure = board[(int)dY][(int)dX];
 				board[defender.getRow()][defender.getCol()] = null;
-				board[(int)y][(int)x] = defender;
+				board[(int)dY][(int)dX] = defender;
 				boolean isSave = king != null && !king.isUnderAttack(king.getCol(), king.getRow(), board);
-				board[(int)y][(int)x] = null;
+				board[(int)dY][(int)dX] = prevEatableFigure;
 				board[defender.getRow()][defender.getCol()] = prevFigure;
 				return isSave;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Metoda projde po vsem cetvercu a zjisti jestli figura-defender muze zachranit krale
+	 * @param sX pozice libovolne figury na ose X
+	 * @param sY pozice libovolne figury na ose Y
+	 * @param board pole figur
+	 * @return
+	 */
+	public boolean safeKing(double sX, double sY, Figure[][] board) {
+		Figure defender = board[(int)sY][(int)sX];
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if(defender.canSafeKing(sX, sY, j, i, board)) {
+					return true;
+				}
 			}
 		}
 		return false;

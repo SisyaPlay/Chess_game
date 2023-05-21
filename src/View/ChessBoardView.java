@@ -75,7 +75,6 @@ public class ChessBoardView extends JPanel {
                 whiteFigureView = new KilledFigureView(Color.BLACK, 45);
                 blackFigureView = new KilledFigureView(Color.WHITE, 45);
 
-
                 for (int i = 0; i < 8; i++) {
                         board[1][i] = new Pawns( i, 1, Color.BLACK, square_size);
                         board[6][i] = new Pawns( i, 6, Color.WHITE, square_size);
@@ -102,12 +101,50 @@ public class ChessBoardView extends JPanel {
                 board[7][5] = new Bishop( 5, 7, Color.WHITE, square_size);
 
 
-                /*
-                board[0][7] = new King(7, 0, Color.BLACK, square_size);
-                board[2][5] = new Queen(5, 2, Color.WHITE, square_size);
-                board[2][1] = new King(1, 2, Color.WHITE, square_size);
-                */
+                // Pat, Mat
+//                board[1][6] = new King(6, 1, Color.WHITE, square_size);
+//                board[3][5] = new Queen(5, 3, Color.BLACK, square_size);
+//                board[2][1] = new King(1, 2, Color.BLACK, square_size);
+//                board[1][6].setCountOfMove(5);
+//                board[2][1].setCountOfMove(5);
 
+                // Mat
+//                board[4][0] = new Pawns(0,4,Color.WHITE, square_size);
+//                board[4][2] = new Pawns(2,4,Color.WHITE, square_size);
+//                board[4][4] = new Knight(4, 4, Color.BLACK, square_size);
+//                board[4][7] = new Pawns(7,4,Color.WHITE, square_size);
+//                board[5][7] = new Bishop(7, 5, Color.WHITE, square_size);
+//                board[6][1] = new Bishop(1, 6, Color.WHITE, square_size);
+//                board[6][2] = new Pawns(2,6,Color.WHITE, square_size);
+//                board[6][5] = new Queen(5, 6, Color.BLACK, square_size);
+//                board[7][0] = new Rook(0, 7, Color.WHITE, square_size);
+//                board[7][3] = new King(3, 7, Color.WHITE, square_size);
+//                board[7][7] = new Rook(7, 7, Color.WHITE, square_size);
+//                board[0][4] = new King(4, 0, Color.BLACK, square_size);
+//                BoardController.setCurrentPlayer(Color.BLACK);
+//                board[7][3].setCountOfMove(5);
+
+                // Mat
+//                board[0][4] = new King(4, 0, Color.BLACK, square_size);
+//                board[4][2] = new Knight(2, 4, Color.BLACK, square_size);
+//                board[6][2] = new Pawns(2, 6, Color.WHITE, square_size);
+//                board[6][0] = new Queen(0, 6, Color.BLACK, square_size);
+//                board[7][2] = new King(2, 7, Color.WHITE, square_size);
+//                board[7][3] = new Queen(3, 7, Color.WHITE, square_size);
+//                BoardController.setCurrentPlayer(Color.BLACK);
+//                board[0][4].setCountOfMove(4);
+//                board[7][2].setCountOfMove(4);
+
+                // Sach
+//                board[0][4] = new King(4, 0, Color.BLACK, square_size);
+//                board[7][4] = new King(4, 7, Color.WHITE, square_size);
+//                board[7][7] = new Queen(7, 7, Color.BLACK, square_size);
+//                board[7][5] = new Bishop(5, 7, Color.WHITE, square_size);
+//                board[5][7] = new Bishop(7, 5, Color.BLACK, square_size);
+//                board[7][3] = new Queen(3, 7, Color.WHITE, square_size);
+//                board[6][5] = new Pawns( 5, 6, Color.WHITE, square_size);
+//                board[5][4] = new Pawns( 4, 5, Color.WHITE, square_size);
+//                board[6][3] = new Pawns( 3, 6, Color.WHITE, square_size);
 
         }
 
@@ -216,33 +253,54 @@ public class ChessBoardView extends JPanel {
                 int y = selectedFigure.getRow() * square_size;
                 int[] colOffsets = {1, 0, -1, 0};
                 int[] rowOffsets = {0, 1, 0, -1};
+                Figure king = boardController.findKing(board);
                 g2.setColor(Color.BLUE);
                 g2.drawRect(x, y, square_size, square_size);
 
                 for (int i = 0; i < rowOffsets.length; i++) {
                         int newRow = selectedFigure.getRow() + rowOffsets[i];
                         int newCol = selectedFigure.getCol() + colOffsets[i];
+                        boolean underAttack = king.isUnderAttack(king.getCol(), king.getRow(), board);
+                        if(!underAttack) {
+                                while (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
+                                        int newX = newCol * square_size;
+                                        int newY = newRow * square_size;
 
-                        // Пока можем продолжать двигаться по диагонали
-                        while (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
-                                int newX = newCol * square_size;
-                                int newY = newRow * square_size;
+                                        // Je-li na ceste protihrac
+                                        if (board[newRow][newCol] != null && !board[newRow][newCol].getColor().equals(selectedFigure.getColor())) {
+                                                g2.setColor(Color.RED);
+                                                g2.drawRect(newX, newY, square_size, square_size);
+                                                g2.setColor(Color.BLUE);
+                                        }
+                                        // Kontroluje jestli na ceste je figura sve barvy
+                                        if (board[newRow][newCol] != null) {
+                                                break;
+                                        }
 
-                                if(board[newRow][newCol] != null && !board[newRow][newCol].getColor().equals(selectedFigure.getColor())) {
-                                        g2.setColor(Color.RED);
                                         g2.drawRect(newX, newY, square_size, square_size);
-                                        g2.setColor(Color.BLUE);
-                                }
-                                // Если на пути по диагонали есть фигура, то останавливаемся
-                                if (board[newRow][newCol] != null) {
-                                        break;
-                                }
 
-                                g2.drawRect(newX, newY, square_size, square_size);
+                                        // Перемещаемся к следующей клетке по диагонали
+                                        newRow += rowOffsets[i];
+                                        newCol += colOffsets[i];
+                                }
+                        } else {
+                                while (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
+                                        int newX = newCol * square_size;
+                                        int newY = newRow * square_size;
 
-                                // Перемещаемся к следующей клетке по диагонали
-                                newRow += rowOffsets[i];
-                                newCol += colOffsets[i];
+                                        // Kontroluje jestli muze zachranit krale
+                                        if(selectedFigure.canSafeKing(selectedFigureX, selectedFigureY, newCol, newRow, board)) {
+                                                if (board[newRow][newCol] == null) {
+                                                        g2.drawRect(newX, newY, square_size, square_size);
+                                                } else if (board[newRow][newCol] != null && !board[newRow][newCol].getColor().equals(selectedFigure.getColor())) {
+                                                        g2.setColor(Color.RED);
+                                                        g2.drawRect(newX, newY, square_size, square_size);
+                                                }
+                                        }
+
+                                        newRow += rowOffsets[i];
+                                        newCol += colOffsets[i];
+                                }
                         }
                 }
         }
@@ -254,6 +312,7 @@ public class ChessBoardView extends JPanel {
         private void showAvailableMoveToQueen(Graphics2D g2) {
                 int x = selectedFigure.getCol() * square_size;
                 int y = selectedFigure.getRow() * square_size;
+                Figure king = boardController.findKing(board);
                 g2.setColor(Color.BLUE);
                 g2.drawRect(x, y, square_size, square_size);
 
@@ -264,27 +323,48 @@ public class ChessBoardView extends JPanel {
                 for (int i = 0; i < rowOffsets.length; i++) {
                         int newRow = selectedFigure.getRow() + rowOffsets[i];
                         int newCol = selectedFigure.getCol() + colOffsets[i];
+                        boolean underAttack = king.isUnderAttack(king.getCol(), king.getRow(), board);
+                        // Kontroluje jestli kral pod utokem
+                        if(!underAttack) {
+                                // Pokracuje kreslit po diagonale
+                                while (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
+                                        int newX = newCol * square_size;
+                                        int newY = newRow * square_size;
 
-                        // Пока можем продолжать двигаться по диагонали
-                        while (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
-                                int newX = newCol * square_size;
-                                int newY = newRow * square_size;
+                                        // Je-lo na diagonale protihrac
+                                        if (board[newRow][newCol] != null && !board[newRow][newCol].getColor().equals(selectedFigure.getColor())) {
+                                                g2.setColor(Color.RED);
+                                                g2.drawRect(newX, newY, square_size, square_size);
+                                                g2.setColor(Color.BLUE);
+                                        }
+                                        // Je-li na diagonale figura sve barvy
+                                        if (board[newRow][newCol] != null) {
+                                                break;
+                                        }
 
-                                if(board[newRow][newCol] != null && !board[newRow][newCol].getColor().equals(selectedFigure.getColor())) {
-                                        g2.setColor(Color.RED);
                                         g2.drawRect(newX, newY, square_size, square_size);
-                                        g2.setColor(Color.BLUE);
-                                }
-                                // Если на пути по диагонали есть фигура, то останавливаемся
-                                if (board[newRow][newCol] != null) {
-                                        break;
-                                }
 
-                                g2.drawRect(newX, newY, square_size, square_size);
+                                        newRow += rowOffsets[i];
+                                        newCol += colOffsets[i];
+                                }
+                        } else {
+                                while (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
+                                        int newX = newCol * square_size;
+                                        int newY = newRow * square_size;
 
-                                // Перемещаемся к следующей клетке по диагонали
-                                newRow += rowOffsets[i];
-                                newCol += colOffsets[i];
+                                        // Kontroluje jestli muze zachranit krale
+                                        if(selectedFigure.canSafeKing(selectedFigureX, selectedFigureY, newCol, newRow, board)) {
+                                                if (board[newRow][newCol] == null) {
+                                                        g2.drawRect(newX, newY, square_size, square_size);
+                                                } else if (board[newRow][newCol] != null && !board[newRow][newCol].getColor().equals(selectedFigure.getColor())) {
+                                                        g2.setColor(Color.RED);
+                                                        g2.drawRect(newX, newY, square_size, square_size);
+                                                }
+                                        }
+
+                                        newRow += rowOffsets[i];
+                                        newCol += colOffsets[i];
+                                }
                         }
                 }
 
@@ -296,27 +376,47 @@ public class ChessBoardView extends JPanel {
                 for (int i = 0; i < rowOffsetsGor.length; i++) {
                         int newRow = selectedFigure.getRow() + rowOffsetsGor[i];
                         int newCol = selectedFigure.getCol() + colOffsetsGor[i];
+                        boolean underAttack = king.isUnderAttack(king.getCol(), king.getRow(), board);
+                        if(!underAttack) {
+                                while (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
+                                        int newX = newCol * square_size;
+                                        int newY = newRow * square_size;
 
-                        // Пока можем продолжать двигаться по диагонали
-                        while (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
-                                int newX = newCol * square_size;
-                                int newY = newRow * square_size;
+                                        // Je-li na ceste protihrac
+                                        if (board[newRow][newCol] != null && !board[newRow][newCol].getColor().equals(selectedFigure.getColor())) {
+                                                g2.setColor(Color.RED);
+                                                g2.drawRect(newX, newY, square_size, square_size);
+                                                g2.setColor(Color.BLUE);
+                                        }
+                                        // Kontroluje jestli na ceste je figura sve barvy
+                                        if (board[newRow][newCol] != null) {
+                                                break;
+                                        }
 
-                                if(board[newRow][newCol] != null && !board[newRow][newCol].getColor().equals(selectedFigure.getColor())) {
-                                        g2.setColor(Color.RED);
                                         g2.drawRect(newX, newY, square_size, square_size);
-                                        g2.setColor(Color.BLUE);
-                                }
-                                // Если на пути по диагонали есть фигура, то останавливаемся
-                                if (board[newRow][newCol] != null) {
-                                        break;
-                                }
 
-                                g2.drawRect(newX, newY, square_size, square_size);
+                                        // Перемещаемся к следующей клетке по диагонали
+                                        newRow += rowOffsetsGor[i];
+                                        newCol += colOffsetsGor[i];
+                                }
+                        } else {
+                                while (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
+                                        int newX = newCol * square_size;
+                                        int newY = newRow * square_size;
 
-                                // Перемещаемся к следующей клетке по диагонали
-                                newRow += rowOffsetsGor[i];
-                                newCol += colOffsetsGor[i];
+                                        // Kontroluje jestli muze zachranit krale
+                                        if(selectedFigure.canSafeKing(selectedFigureX, selectedFigureY, newCol, newRow, board)) {
+                                                if (board[newRow][newCol] == null) {
+                                                        g2.drawRect(newX, newY, square_size, square_size);
+                                                } else if (board[newRow][newCol] != null && !board[newRow][newCol].getColor().equals(selectedFigure.getColor())) {
+                                                        g2.setColor(Color.RED);
+                                                        g2.drawRect(newX, newY, square_size, square_size);
+                                                }
+                                        }
+
+                                        newRow += rowOffsetsGor[i];
+                                        newCol += colOffsetsGor[i];
+                                }
                         }
                 }
         }
@@ -336,9 +436,9 @@ public class ChessBoardView extends JPanel {
                         int row = selectedFigure.getRow() + yOffset[i];
                         int col = selectedFigure.getCol() + xOffset[i];
                         if (row >= 0 && row < ROW_COUNT && col >= 0 && col < ROW_COUNT) {
-                                if (board[row][col] == null) {
+                                if (selectedFigure instanceof King && selectedFigure.isThisPlaceIsSafe(col, row, board, selectedFigure)) {
                                         g2.drawRect(col * square_size, row * square_size, square_size, square_size);
-                                } else if (board[row][col].getColor() != selectedFigure.getColor()) {
+                                } else if (board[row][col] != null && board[row][col].getColor() != selectedFigure.getColor()) {
                                         g2.setColor(Color.RED);
                                         g2.drawRect(col * square_size, row * square_size, square_size, square_size);
                                         g2.setColor(Color.BLUE);
@@ -372,37 +472,59 @@ public class ChessBoardView extends JPanel {
         private void showAvailableMoveToBishop(Graphics2D g2) {
                 int x = selectedFigure.getCol() * square_size;
                 int y = selectedFigure.getRow() * square_size;
+                Figure king = boardController.findKing(board);
                 g2.setColor(Color.BLUE);
 
-                // Проверяем возможные ходы по диагоналям
-                int[] rowOffsets = {-1, -1, 1, 1};
+                // Tahy po diagonale
                 int[] colOffsets = {1, -1, 1, -1};
+                int[] rowOffsets = {-1, -1, 1, 1};
                 g2.drawRect(x, y, square_size, square_size);
 
                 for (int i = 0; i < rowOffsets.length; i++) {
                         int newRow = selectedFigure.getRow() + rowOffsets[i];
                         int newCol = selectedFigure.getCol() + colOffsets[i];
+                        boolean underAttack = king.isUnderAttack(king.getCol(), king.getRow(), board);
+                        // Kontroluje jestli kral pod utokem
+                        if(!underAttack) {
+                                // Pokracuje kreslit po diagonale
+                                while (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
+                                        int newX = newCol * square_size;
+                                        int newY = newRow * square_size;
 
-                        // Пока можем продолжать двигаться по диагонали
-                        while (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
-                                int newX = newCol * square_size;
-                                int newY = newRow * square_size;
+                                        // Je-lo na diagonale protihrac
+                                        if (board[newRow][newCol] != null && !board[newRow][newCol].getColor().equals(selectedFigure.getColor())) {
+                                                g2.setColor(Color.RED);
+                                                g2.drawRect(newX, newY, square_size, square_size);
+                                                g2.setColor(Color.BLUE);
+                                        }
+                                        // Je-li na diagonale figura sve barvy
+                                        if (board[newRow][newCol] != null) {
+                                                break;
+                                        }
 
-                                if(board[newRow][newCol] != null && !board[newRow][newCol].getColor().equals(selectedFigure.getColor())) {
-                                    g2.setColor(Color.RED);
-                                    g2.drawRect(newX, newY, square_size, square_size);
-                                    g2.setColor(Color.BLUE);
+                                        g2.drawRect(newX, newY, square_size, square_size);
+
+                                        newRow += rowOffsets[i];
+                                        newCol += colOffsets[i];
                                 }
-                                // Если на пути по диагонали есть фигура, то останавливаемся
-                                if (board[newRow][newCol] != null) {
-                                        break;
+                        } else {
+                                while (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
+                                        int newX = newCol * square_size;
+                                        int newY = newRow * square_size;
+
+                                        // Kontroluje jestli muze zachranit krale
+                                        if(selectedFigure.canSafeKing(selectedFigureX, selectedFigureY, newCol, newRow, board)) {
+                                                if (board[newRow][newCol] == null) {
+                                                        g2.drawRect(newX, newY, square_size, square_size);
+                                                } else if (board[newRow][newCol] != null && !board[newRow][newCol].getColor().equals(selectedFigure.getColor())) {
+                                                        g2.setColor(Color.RED);
+                                                        g2.drawRect(newX, newY, square_size, square_size);
+                                                }
+                                        }
+
+                                        newRow += rowOffsets[i];
+                                        newCol += colOffsets[i];
                                 }
-
-                                g2.drawRect(newX, newY, square_size, square_size);
-
-                                // Перемещаемся к следующей клетке по диагонали
-                                newRow += rowOffsets[i];
-                                newCol += colOffsets[i];
                         }
                 }
         }
@@ -412,21 +534,40 @@ public class ChessBoardView extends JPanel {
          * @param g2
          */
         private void showAvailableMoveToKnight(Graphics2D g2) {
+                int sX = selectedFigure.getCol() * square_size;
+                int sY = selectedFigure.getRow() * square_size;
                 int[] rowOffsets = {-2, -1, 1, 2, 2, 1, -1, -2};
                 int[] colOffsets = {1, 2, 2, 1, -1, -2, -2, -1};
 
+                Figure king = boardController.findKing(board);
+
                 g2.setColor(Color.BLUE);
+                g2.drawRect(sX, sY, square_size, square_size);
                 for (int i = 0; i < rowOffsets.length; i++) {
                         int newRow = selectedFigure.getRow() + rowOffsets[i];
                         int newCol = selectedFigure.getCol() + colOffsets[i];
                         if (newRow >= 0 && newRow < ROW_COUNT && newCol >= 0 && newCol < ROW_COUNT) {
-                                if (board[newRow][newCol] == null) {
-                                        // клетка пустая
+                                boolean underAttack = king.isUnderAttack(king.getCol(), king.getRow(), board);
+                                if (board[newRow][newCol] == null && !underAttack) {
+                                        // Mozne tahy na prazdne misto
                                         int x = newCol * square_size;
                                         int y = newRow * square_size;
                                         g2.drawRect(x, y, square_size, square_size);
-                                } else if (board[newRow][newCol].getColor() != selectedFigure.getColor()) {
-                                        // на клетке стоит конь противника
+                                } else if(board[newRow][newCol] == null && underAttack && selectedFigure.canSafeKing(selectedFigureX, selectedFigureY, newCol, newRow, board)) {
+                                        // Muze zachranit krale
+                                        int x = newCol * square_size;
+                                        int y = newRow * square_size;
+                                        g2.drawRect(x, y, square_size, square_size);
+                                } else if (board[newRow][newCol] != null && board[newRow][newCol].getColor() != selectedFigure.getColor() && !underAttack) {
+                                        // Muze zabit protihrace
+                                        int x = newCol * square_size;
+                                        int y = newRow * square_size;
+                                        g2.setColor(Color.RED);
+                                        g2.drawRect(x, y, square_size, square_size);
+                                        g2.setColor(Color.BLUE);
+                                } else if (board[newRow][newCol] != null && board[newRow][newCol].getColor() != selectedFigure.getColor() && underAttack &&
+                                        selectedFigure.canSafeKing(selectedFigureX, selectedFigureY, newCol, newRow, board)) {
+                                        // Muze zabit protihrace a zachranit krale
                                         int x = newCol * square_size;
                                         int y = newRow * square_size;
                                         g2.setColor(Color.RED);
@@ -435,6 +576,7 @@ public class ChessBoardView extends JPanel {
                                 }
                         }
                 }
+
         }
 
         /**
@@ -446,106 +588,151 @@ public class ChessBoardView extends JPanel {
                 int y = selectedFigure.getRow() * square_size;
                 g2.setColor(Color.BLUE);
                 g2.drawRect(x, y, square_size, square_size);
+                Figure king = boardController.findKing(board);
                 if (selectedFigure.getColor().equals(Color.WHITE)) {
-                        // Проверяем возможный ход на одну клетку вверх
-                        if (selectedFigure.getRow() > 0 && board[selectedFigure.getRow() - 1][selectedFigure.getCol()] == null) {
-                                g2.drawRect(x, y - square_size, square_size, square_size);
-                        }
-
-                        // Проверяем возможный ход на две клетки вверх из начальной позиции
-                        if (selectedFigure.getRow() == 6) {
-                                if (board[selectedFigure.getRow() - 1][selectedFigure.getCol()] == null &&
-                                        board[selectedFigure.getRow() - 2][selectedFigure.getCol()] == null) {
+                        if(!king.isUnderAttack(king.getCol(), king.getRow(), board)) {
+                                // Kontroluje mozny tah na jeden cetverec
+                                if (selectedFigure.getRow() > 0 && board[selectedFigure.getRow() - 1][selectedFigure.getCol()] == null) {
                                         g2.drawRect(x, y - square_size, square_size, square_size);
-                                        g2.drawRect(x, y - 2 * square_size, square_size, square_size);
                                 }
-                        }
-                        if (selectedFigure.getRow() > 0 && selectedFigure.getCol() > 0 &&
-                                board[selectedFigure.getRow() - 1][selectedFigure.getCol() - 1] != null &&
-                                !selectedFigure.getColor().equals(board[selectedFigure.getRow() - 1][selectedFigure.getCol() - 1].getColor())) {
-                                g2.setColor(Color.RED);
-                                g2.drawRect(x - square_size, y - square_size, square_size, square_size);
-                        }
-                        if (selectedFigure.getRow() > 0 && selectedFigure.getCol() < 7 &&
-                                board[selectedFigure.getRow() - 1][selectedFigure.getCol() + 1] != null &&
-                                !selectedFigure.getColor().equals(board[selectedFigure.getRow() - 1][selectedFigure.getCol() + 1].getColor())) {
-                                g2.setColor(Color.RED);
-                                g2.drawRect(x + square_size, y - square_size, square_size, square_size);
-                        }
-                        if(selectedFigure.getCol() != 7) {
-                                if (board[selectedFigure.getRow()][selectedFigure.getCol() + 1] != null &&
-                                        board[selectedFigure.getRow()][selectedFigure.getCol() + 1] instanceof Pawns &&
-                                        board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getCountOfMove() == 1 &&
-                                        board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getColor() != selectedFigure.getColor() &&
-                                        ((Pawns) board[selectedFigure.getRow()][selectedFigure.getCol() + 1]).firstStep(board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getHistory())) {
+                                // Kontroluje mozny tah na dva cetverce z pocatecni pozice
+                                if (selectedFigure.getRow() == 6) {
+                                        if (board[selectedFigure.getRow() - 1][selectedFigure.getCol()] == null &&
+                                                board[selectedFigure.getRow() - 2][selectedFigure.getCol()] == null) {
+                                                g2.drawRect(x, y - square_size, square_size, square_size);
+                                                g2.drawRect(x, y - 2 * square_size, square_size, square_size);
+                                        }
+                                }
+                                // Kontroluje jestli muze zabit protihrace zleva
+                                if (selectedFigure.getRow() > 0 && selectedFigure.getCol() > 0 &&
+                                        board[selectedFigure.getRow() - 1][selectedFigure.getCol() - 1] != null &&
+                                        !selectedFigure.getColor().equals(board[selectedFigure.getRow() - 1][selectedFigure.getCol() - 1].getColor())) {
                                         g2.setColor(Color.RED);
-                                        g2.drawRect(x + square_size, y, square_size, square_size);
-                                        g2.setColor(Color.GREEN);
+                                        g2.drawRect(x - square_size, y - square_size, square_size, square_size);
+                                }
+                                // Kontroluje jestli muze zabit protihrace zprava
+                                if (selectedFigure.getRow() > 0 && selectedFigure.getCol() < 7 &&
+                                        board[selectedFigure.getRow() - 1][selectedFigure.getCol() + 1] != null &&
+                                        !selectedFigure.getColor().equals(board[selectedFigure.getRow() - 1][selectedFigure.getCol() + 1].getColor())) {
+                                        g2.setColor(Color.RED);
                                         g2.drawRect(x + square_size, y - square_size, square_size, square_size);
                                 }
-                        }
-                        if(selectedFigure.getCol() != 0) {
-                                if (board[selectedFigure.getRow()][selectedFigure.getCol() - 1] != null &&
-                                        board[selectedFigure.getRow()][selectedFigure.getCol() - 1] instanceof Pawns &&
-                                        board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getCountOfMove() == 1 &&
-                                        board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getColor() != selectedFigure.getColor() &&
-                                        ((Pawns) board[selectedFigure.getRow()][selectedFigure.getCol() - 1]).firstStep(board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getHistory())) {
-                                        g2.setColor(Color.RED);
-                                        g2.drawRect(x - square_size, y, square_size, square_size);
-                                        g2.setColor(Color.GREEN);
-                                        g2.drawRect(x - square_size, y - square_size, square_size, square_size);
+                                // Kontroluje jestli muze vzit mimochodem zleva
+                                if (selectedFigure.getCol() != 7) {
+                                        if (board[selectedFigure.getRow()][selectedFigure.getCol() + 1] != null &&
+                                                board[selectedFigure.getRow()][selectedFigure.getCol() + 1] instanceof Pawns &&
+                                                board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getCountOfMove() == 1 &&
+                                                board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getColor() != selectedFigure.getColor() &&
+                                                ((Pawns) board[selectedFigure.getRow()][selectedFigure.getCol() + 1]).firstStep(board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getHistory())) {
+                                                g2.setColor(Color.RED);
+                                                g2.drawRect(x + square_size, y, square_size, square_size);
+                                                g2.setColor(Color.GREEN);
+                                                g2.drawRect(x + square_size, y - square_size, square_size, square_size);
+                                        }
+                                }
+                                // Kontroluje jestli muze vzit mimochodem zleva
+                                if (selectedFigure.getCol() != 0) {
+                                        if (board[selectedFigure.getRow()][selectedFigure.getCol() - 1] != null &&
+                                                board[selectedFigure.getRow()][selectedFigure.getCol() - 1] instanceof Pawns &&
+                                                board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getCountOfMove() == 1 &&
+                                                board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getColor() != selectedFigure.getColor() &&
+                                                ((Pawns) board[selectedFigure.getRow()][selectedFigure.getCol() - 1]).firstStep(board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getHistory())) {
+                                                g2.setColor(Color.RED);
+                                                g2.drawRect(x - square_size, y, square_size, square_size);
+                                                g2.setColor(Color.GREEN);
+                                                g2.drawRect(x - square_size, y - square_size, square_size, square_size);
+                                        }
+                                }
+                        } else {
+                                // Kontroluje jestli muze zachranit krale
+                                int[] xOffset = {-1, 1};
+                                int[] yOffset = {-1, -2};
+                                for (int i = 0; i < yOffset.length; i++) {
+                                        if (selectedFigure.getRow() > 0 && board[selectedFigure.getRow() - 1][selectedFigure.getCol()] == null &&
+                                                selectedFigure.canSafeKing(selectedFigureX, selectedFigureY, (int)(x/square_size), (int)((y/square_size)+yOffset[i]), board)) {
+                                                g2.drawRect(x, (y + yOffset[i] * square_size), square_size, square_size);
+                                        }
+                                }
+                                for (int i = 0; i < xOffset.length; i++) {
+                                        if(xOffset[i] + x / square_size > 0 && xOffset[i] + x / square_size < ROW_COUNT) {
+                                                if(board[yOffset[0] + y  / square_size][xOffset[i] + x / square_size] != null &&
+                                                        board[yOffset[0] + y  / square_size][xOffset[i] + x / square_size].getColor() != selectedFigure.getColor()) {
+                                                        g2.setColor(Color.RED);
+                                                        g2.drawRect(xOffset[i] * square_size + x, y + yOffset[0] * square_size, square_size, square_size);
+                                                }
+                                        }
                                 }
                         }
                 } else if (selectedFigure.getColor().equals(Color.BLACK)) {
-                        // Проверяем возможный ход на одну клетку вниз
-                        if (selectedFigure.getRow() < ROW_COUNT - 1 && board[selectedFigure.getRow() + 1][selectedFigure.getCol()] == null) {
-                                g2.drawRect(x, y + square_size, square_size, square_size);
-                        }
-
-                        // Проверяем возможный ход на две клетки вниз из начальной позиции
-                        if (selectedFigure.getRow() == 1) {
-                                if (board[selectedFigure.getRow() + 1][selectedFigure.getCol()] == null &&
-                                        board[selectedFigure.getRow() + 2][selectedFigure.getCol()] == null) {
+                        if(!king.isUnderAttack(king.getCol(), king.getRow(), board)) {
+                                // Проверяем возможный ход на одну клетку вниз
+                                if (selectedFigure.getRow() < ROW_COUNT - 1 && board[selectedFigure.getRow() + 1][selectedFigure.getCol()] == null) {
                                         g2.drawRect(x, y + square_size, square_size, square_size);
-                                        g2.drawRect(x, y + 2 * square_size, square_size, square_size);
                                 }
-                        }
-                        if (selectedFigure.getRow() < 7 && selectedFigure.getCol() > 0 &&
-                                board[selectedFigure.getRow() + 1][selectedFigure.getCol() - 1] != null &&
-                                !selectedFigure.getColor().equals(board[selectedFigure.getRow() + 1][selectedFigure.getCol() - 1].getColor())) {
-                                g2.setColor(Color.RED);
-                                g2.drawRect(x - square_size, y + square_size, square_size, square_size);
-                        }
 
-                        // Проверяем возможный ход по диагонали вправо-вверх, если там есть фигура противоположного цвета
-                        if (selectedFigure.getRow() < 7 && selectedFigure.getCol() < 7 &&
-                                board[selectedFigure.getRow() + 1][selectedFigure.getCol() + 1] != null &&
-                                !selectedFigure.getColor().equals(board[selectedFigure.getRow() + 1][selectedFigure.getCol() + 1].getColor())) {
-                                g2.setColor(Color.RED);
-                                g2.drawRect(x + square_size, y + square_size, square_size, square_size);
-                        }
-                        if(selectedFigure.getCol() != 7) {
-                                if (board[selectedFigure.getRow()][selectedFigure.getCol() + 1] != null &&
-                                        board[selectedFigure.getRow()][selectedFigure.getCol() + 1] instanceof Pawns &&
-                                        board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getCountOfMove() == 1 &&
-                                        board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getColor() != selectedFigure.getColor() &&
-                                        ((Pawns) board[selectedFigure.getRow()][selectedFigure.getCol() + 1]).firstStep(board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getHistory())) {
+                                // Проверяем возможный ход на две клетки вниз из начальной позиции
+                                if (selectedFigure.getRow() == 1) {
+                                        if (board[selectedFigure.getRow() + 1][selectedFigure.getCol()] == null &&
+                                                board[selectedFigure.getRow() + 2][selectedFigure.getCol()] == null) {
+                                                g2.drawRect(x, y + square_size, square_size, square_size);
+                                                g2.drawRect(x, y + 2 * square_size, square_size, square_size);
+                                        }
+                                }
+                                if (selectedFigure.getRow() < 7 && selectedFigure.getCol() > 0 &&
+                                        board[selectedFigure.getRow() + 1][selectedFigure.getCol() - 1] != null &&
+                                        !selectedFigure.getColor().equals(board[selectedFigure.getRow() + 1][selectedFigure.getCol() - 1].getColor())) {
                                         g2.setColor(Color.RED);
-                                        g2.drawRect(x + square_size, y, square_size, square_size);
-                                        g2.setColor(Color.GREEN);
+                                        g2.drawRect(x - square_size, y + square_size, square_size, square_size);
+                                }
+
+                                // Проверяем возможный ход по диагонали вправо-вверх, если там есть фигура противоположного цвета
+                                if (selectedFigure.getRow() < 7 && selectedFigure.getCol() < 7 &&
+                                        board[selectedFigure.getRow() + 1][selectedFigure.getCol() + 1] != null &&
+                                        !selectedFigure.getColor().equals(board[selectedFigure.getRow() + 1][selectedFigure.getCol() + 1].getColor())) {
+                                        g2.setColor(Color.RED);
                                         g2.drawRect(x + square_size, y + square_size, square_size, square_size);
                                 }
-                        }
-                        if(selectedFigure.getCol() != 0) {
-                                if (board[selectedFigure.getRow()][selectedFigure.getCol() - 1] != null &&
-                                        board[selectedFigure.getRow()][selectedFigure.getCol() - 1] instanceof Pawns &&
-                                        board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getCountOfMove() == 1 &&
-                                        board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getColor() != selectedFigure.getColor() &&
-                                        ((Pawns) board[selectedFigure.getRow()][selectedFigure.getCol() - 1]).firstStep(board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getHistory())) {
-                                        g2.setColor(Color.RED);
-                                        g2.drawRect(x - square_size, y, square_size, square_size);
-                                        g2.setColor(Color.GREEN);
-                                        g2.drawRect(x - square_size, y + square_size, square_size, square_size);
+                                if (selectedFigure.getCol() != 7) {
+                                        if (board[selectedFigure.getRow()][selectedFigure.getCol() + 1] != null &&
+                                                board[selectedFigure.getRow()][selectedFigure.getCol() + 1] instanceof Pawns &&
+                                                board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getCountOfMove() == 1 &&
+                                                board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getColor() != selectedFigure.getColor() &&
+                                                ((Pawns) board[selectedFigure.getRow()][selectedFigure.getCol() + 1]).firstStep(board[selectedFigure.getRow()][selectedFigure.getCol() + 1].getHistory())) {
+                                                g2.setColor(Color.RED);
+                                                g2.drawRect(x + square_size, y, square_size, square_size);
+                                                g2.setColor(Color.GREEN);
+                                                g2.drawRect(x + square_size, y + square_size, square_size, square_size);
+                                        }
+                                }
+                                if (selectedFigure.getCol() != 0) {
+                                        if (board[selectedFigure.getRow()][selectedFigure.getCol() - 1] != null &&
+                                                board[selectedFigure.getRow()][selectedFigure.getCol() - 1] instanceof Pawns &&
+                                                board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getCountOfMove() == 1 &&
+                                                board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getColor() != selectedFigure.getColor() &&
+                                                ((Pawns) board[selectedFigure.getRow()][selectedFigure.getCol() - 1]).firstStep(board[selectedFigure.getRow()][selectedFigure.getCol() - 1].getHistory())) {
+                                                g2.setColor(Color.RED);
+                                                g2.drawRect(x - square_size, y, square_size, square_size);
+                                                g2.setColor(Color.GREEN);
+                                                g2.drawRect(x - square_size, y + square_size, square_size, square_size);
+                                        }
+                                }
+                        } else {
+                                int[] xOffset = {-1, 1};
+                                int[] yOffset = {1, 2};
+                                for (int i = 0; i < yOffset.length; i++) {
+                                        if (selectedFigure.getRow() < ROW_COUNT && board[selectedFigure.getRow() + 1][selectedFigure.getCol()] == null &&
+                                                selectedFigure.canSafeKing(selectedFigureX, selectedFigureY, (int)(x/square_size), (int)((y/square_size)+yOffset[i]), board)) {
+                                                g2.drawRect(x, (y + yOffset[i] * square_size), square_size, square_size);
+                                        }
+                                }
+                                for (int i = 0; i < xOffset.length; i++) {
+                                        if(xOffset[i] + x / square_size > 0 && xOffset[i] + x / square_size < ROW_COUNT) {
+                                                if(board[yOffset[0] + y  / square_size][xOffset[i] + x / square_size] != null &&
+                                                        board[yOffset[0] + y  / square_size][xOffset[i] + x / square_size].getColor() != selectedFigure.getColor()) {
+                                                        g2.setColor(Color.RED);
+                                                        g2.drawRect(xOffset[i] * square_size + x, y + yOffset[0] * square_size, square_size, square_size);
+                                                }
+                                        }
                                 }
                         }
                 }

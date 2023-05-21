@@ -1,6 +1,7 @@
 package Figures;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Trida Queen, vykresli damu
@@ -170,24 +171,57 @@ public class Queen extends Figure {
 	}
 
 	public boolean hasMoves(double x, double y, Figure[][] board) {
-		for (int i = -1; i <= 1; i++) {
-			for (int j = -1; j <= 1; j++) {
-				if (i == 0 && j == 0) continue;
+		ArrayList<Integer> xOffset = new ArrayList<>();
+		ArrayList<Integer> yOffset = new ArrayList<>();
+		int startX = (int) x;
+		int startY = (int) y;
 
-				int row = (int)y + i;
-				int col = (int)x + j;
+		while (startX < 8 && startY >= 0) {
+			xOffset.add(startX);
+			yOffset.add(startY);
+			startX++;
+			startY--;
+		}
+		startX = (int) x;
+		startY = (int) y;
 
-				while (row >= 0 && row < 8 && col >= 0 && col < 8) {
-					Figure figure = board[row][col];
-					if (figure == null) {
-						if (moveTo(col, row, x, y, board)) return true;
-					} else if (figure.getColor() != getColor() && figure.moveTo(col, row, x, y, board)) {
+		while (startX < 8 && startY < 8) {
+			xOffset.add(startX);
+			yOffset.add(startY);
+			startX++;
+			startY++;
+		}
+		startX = (int) x;
+		startY = (int) y;
+
+		while (startX >= 8 && startY < 8) {
+			xOffset.add(startX);
+			yOffset.add(startY);
+			startX--;
+			startY++;
+		}
+		startX = (int) x;
+		startY = (int) y;
+
+		while (startX >= 8 && startY >= 8) {
+			xOffset.add(startX);
+			yOffset.add(startY);
+			startX--;
+			startY--;
+		}
+
+		for (int i = 0; i < xOffset.size(); i++) {
+			if(moveTo((int)x, (int)y, xOffset.get(i), yOffset.get(i), board)) {
+				return true;
+			}
+		}
+
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if(i == x || j == y) {
+					if(moveTo(x, y, i, j, board)) {
 						return true;
-					} else {
-						break;
 					}
-					row += i;
-					col += j;
 				}
 			}
 		}

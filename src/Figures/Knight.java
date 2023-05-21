@@ -79,14 +79,13 @@ public class Knight extends Figure{
 	}
 
 	public boolean hasMoves(double x, double y, Figure[][] board) {
-		int[] dx = {-2, -1, 1, 2, 2, 1, -1, -2};
-		int[] dy = {1, 2, 2, 1, -1, -2, -2, -1};
+		int[] xOffset = {-2, -1, 1, 2, 2, 1, -1, -2};
+		int[] yOffset = {1, 2, 2, 1, -1, -2, -2, -1};
 		for (int i = 0; i < 8; i++) {
-			int nx = (int)x + dx[i];
-			int ny = (int)y + dy[i];
-			if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8) {
-				Figure figure = board[ny][nx];
-				if (figure == null || figure.getColor() != getColor()) {
+			int dx = (int)x + xOffset[i];
+			int dy = (int)y + yOffset[i];
+			if (dx >= 0 && dx < 8 && dy >= 0 && dy < 8) {
+				if(moveTo(x, y, dx, dy, board)) {
 					return true;
 				}
 			}
