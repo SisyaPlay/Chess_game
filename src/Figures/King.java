@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
  * Dedi od spolecni a abtraktni tridy Figure
  */
 public class King extends Figure {
-	private Timer timer;
+	private Timer animationTimer; // Casovac pro animace
 	public King(double x, double y, Color color, double square_size) {
 		super(x, y, color, square_size);
 		this.type = EFigure.KING;
@@ -42,18 +42,18 @@ public class King extends Figure {
 		g.drawOval((int)(x + square_size / 3), (int)(y + square_size /4), (int)(square_size / 3), (int)(square_size / 2));
 	}
 	@Override
-	public boolean moveTo(double cX, double cY, double x, double y, Figure[][] board) {
-		int deltaX = (int)Math.abs(getCol() - x);
-		int deltaY = (int)Math.abs(getRow() - y);
+	public boolean moveTo(double sX, double sY, double dX, double dY, Figure[][] board) {
+		int deltaX = (int)Math.abs(getCol() - dX);
+		int deltaY = (int)Math.abs(getRow() - dY);
 
 		// Rosada
-		if(doCastling(cX, cY, x, y, board)) {
-			if(x == 6) {
-				animation(5, cY, 7, board);
+		if(doCastling(sX, sY, dX, dY, board)) {
+			if(dX == 6) {
+				animation(5, sY, 7, board);
 				addCountOfMove();
 				return true;
-			} else if(x == 2) {
-				animation(3, cY, 0, board);
+			} else if(dX == 2) {
+				animation(3, sY, 0, board);
 				addCountOfMove();
 				return true;
 			}
@@ -64,9 +64,9 @@ public class King extends Figure {
 			return false;
 		}
 
-		if (board[(int)y][(int)x] == null || board[(int)y][(int)x].getColor() != getColor()) {
+		if (board[(int) dY][(int) dX] == null || board[(int) dY][(int) dX].getColor() != getColor()) {
 			addCountOfMove();
-			addHistory((int)cX, (int)cY, (int)x, (int)y);
+			addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 			return true;
 
 		}
@@ -91,39 +91,40 @@ public class King extends Figure {
 
 	/**
 	 * Metoda kontroluje pokud je moznost udelat rosadu
-	 * @param cX pocatecni pozice na ose x
-	 * @param cY pocatecni pozice na ose y
-	 * @param x konecni pozice na ose x
-	 * @param y konecni pozice na ose y
+	 *
+	 * @param sX    pocatecni pozice na ose x
+	 * @param sY    pocatecni pozice na ose y
+	 * @param dX    konecni pozice na ose x
+	 * @param dY    konecni pozice na ose y
 	 * @param board pole figur
 	 * @return
 	 */
-	public boolean doCastling(double cX, double cY, double x, double y, Figure[][] board) {
+	public boolean doCastling(double sX, double sY, double dX, double dY, Figure[][] board) {
 		if(this.countOfMove == 0) {
-			if (board[(int) cY][(int) cX + 1] == null && board[(int) cY][(int) cX + 2] == null &&
-					board[(int) cY][(int) cX + 3] instanceof Rook &&
-					board[(int) cY][(int) cX + 3].getCountOfMove() == 0 &&
-					!this.isUnderAttack(cX, cY, board)) {
+			if (board[(int) sY][(int) sX + 1] == null && board[(int) sY][(int) sX + 2] == null &&
+					board[(int) sY][(int) sX + 3] instanceof Rook &&
+					board[(int) sY][(int) sX + 3].getCountOfMove() == 0 &&
+					!this.isUnderAttack(sX, sY, board)) {
 				return true;
 			}
-			if (board[(int) cY][(int) cX - 1] == null && board[(int) cY][(int) cX - 2] == null &&
-					board[(int) cY][(int) cX - 3] == null &&
-					board[(int) cY][(int) cX - 4] instanceof Rook &&
-					board[(int) cY][(int) cX - 4].getCountOfMove() == 0 &&
-					!this.isUnderAttack(cX, cY, board)) {
+			if (board[(int) sY][(int) sX - 1] == null && board[(int) sY][(int) sX - 2] == null &&
+					board[(int) sY][(int) sX - 3] == null &&
+					board[(int) sY][(int) sX - 4] instanceof Rook &&
+					board[(int) sY][(int) sX - 4].getCountOfMove() == 0 &&
+					!this.isUnderAttack(sX, sY, board)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public boolean isUnderAttack(double cX, double cY, Figure[][] board) {
-		Figure king = board[(int)cY][(int)cX];
+	public boolean isUnderAttack(double sX, double sY, Figure[][] board) {
+		Figure king = board[(int) sY][(int) sX];
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				Figure figure = board[j][i];
 				if (figure != null && figure.getColor() != getColor()) {
-					if (king != null && figure.canEatKing(i, j, cX, cY, board)) {
+					if (king != null && figure.canEatKing(i, j, sX, sY, board)) {
 						return true;
 					}
 				}
@@ -133,23 +134,23 @@ public class King extends Figure {
 	}
 
 	@Override
-	public boolean isThisPlaceIsSafe(int col, int row, Figure[][] board, Figure king) {
-		if (board[row][col] == null) {
+	public boolean isThisPlaceIsSafe(int dX, int dY, Figure[][] board, Figure king) {
+		if (board[dY][dX] == null) {
 			Figure prevFigure = board[king.getRow()][king.getCol()]; // сохраняем предыдущую фигуру на месте короля
 			board[king.getRow()][king.getCol()] = null; // удаляем короля из предыдущего места
-			board[row][col] = king; // перемещаем короля на новое место
-			boolean isSafe = !king.isUnderAttack(col, row, board); // проверяем, является ли новое место безопасным
-			board[row][col] = null; // удаляем короля с нового места
+			board[dY][dX] = king; // перемещаем короля на новое место
+			boolean isSafe = !king.isUnderAttack(dX, dY, board); // проверяем, является ли новое место безопасным
+			board[dY][dX] = null; // удаляем короля с нового места
 			board[king.getRow()][king.getCol()] = prevFigure; // восстанавливаем предыдущую фигуру на место короля
 			return isSafe;
 		}
-		if(board[row][col] != null && !board[row][col].getColor().equals(getColor())) {
-			Figure prevFigure = board[row][col];
+		if(board[dY][dX] != null && !board[dY][dX].getColor().equals(getColor())) {
+			Figure prevFigure = board[dY][dX];
 			Figure prevKing = board[king.getRow()][king.getCol()];
 			board[king.getRow()][king.getCol()] = null;
-			board[row][col] = king;
-			boolean isSafe = !king.isUnderAttack(col, row, board);
-			board[row][col] = prevFigure;
+			board[dY][dX] = king;
+			boolean isSafe = !king.isUnderAttack(dX, dY, board);
+			board[dY][dX] = prevFigure;
 			board[king.getRow()][king.getCol()] = prevKing;
 			return isSafe;
 		}
@@ -188,7 +189,7 @@ public class King extends Figure {
 		final double stepSize = totalDistance / 10;
 		final double xStep = distanceX / totalDistance * stepSize;
 		final int directionX = endX > startX ? 1 : -1;
-		timer = new Timer(15, new ActionListener() {
+		animationTimer = new Timer(30, new ActionListener() {
 			double x = startX;
 			double distanceCovered = 0;
 			@Override
@@ -205,6 +206,6 @@ public class King extends Figure {
 				}
 			}
 		});
-		timer.start();
+		animationTimer.start();
 	}
 }

@@ -38,13 +38,13 @@ public class BoardController implements MouseListener{
     private ArrayList<Integer> blackTime = new ArrayList<>(); // List sekund cerneho hrace
     private ArrayList<Integer> whiteCountOfMove = new ArrayList<>(); // List poctu tahu bileho hrace
     private ArrayList<Integer> blackCountOfMove = new ArrayList<>(); // List poctu tahu bileho hrace
-    public int WqC = 0, WbC = 0, WkC = 0, WrC = 0, WpC = 0;
+    public int WqC = 0, WbC = 0, WkC = 0, WrC = 0, WpC = 0; // Pocet zabitych figur
     public int BqC = 0, BbC = 0, BkC = 0, BrC = 0, BpC = 0;
-    public String positionAfter = null;
+    public String positionAfter = null; // Pozice pro StockFish
     public String positionBefore = null;
-    public int bTotalSeconds;
-    private Stockfish sf;
-    private Figure killableFigure = null;
+    public int bTotalSeconds; // Pocet casu pro cerneho hrace
+    private Stockfish sf; // StockFish
+    private Figure killableFigure = null; // Mozna zabita figura
 
     /**
      * Konstruktor tridy BoardController.
@@ -121,35 +121,40 @@ public class BoardController implements MouseListener{
             int col = x / chessBoardView.getSquare_size();
             if (col > ROW_COUNT - 1 || row > ROW_COUNT - 1 || col < 0 || row < 0 || x < 0 || y < 0) {
                 chessBoardView.getBoard()[chessBoardView.getSelectedFigureY()][chessBoardView.getSelectedFigureX()] = chessBoardView.getSelectedFigure();
+            } else {
+                moveFigure(col, row);
             }
-            moveFigure(col, row);
-
         }
     }
 
+    /**
+     * Pretah figury
+     * @param col
+     * @param row
+     */
     public void move(int col, int row) {
-        chessBoardView.animate(col, row);
+        chessBoardView.animate(col, row); // Animace
         if(killableFigure != null) {
             eatFigure(killableFigure);
         }
         chessBoardView.getBoard()[chessBoardView.getSelectedFigure().getRow()][chessBoardView.getSelectedFigure().getCol()] = null;
         chessBoardView.getBoard()[row][col] = chessBoardView.getSelectedFigure(); // Zapise do pole figuru
-        chessBoardView.getSelectedFigure().setRow(row);
+        chessBoardView.getSelectedFigure().setRow(row); // Nastavi pozice podle x, y
         chessBoardView.getSelectedFigure().setCol(col);
-        positionBefore = codeCoord(col, row);
-        chessBoardView.addCountOfBeingSelected();
-        chessBoardView.setLastSelectedFigureX(col);
+        positionBefore = codeCoord(col, row); // Zapise pozice pro StockFish
+        chessBoardView.addCountOfBeingSelected(); // Prida pocet vybranych figur
+        chessBoardView.setLastSelectedFigureX(col); // Postavi konecne pozice pro vykres odkud kam byla pretahovana figura
         chessBoardView.setLastSelectedFigureY(row);
-        chessBoardView.setStartSelectedFigureX(chessBoardView.getSelectedFigureX());
+        chessBoardView.setStartSelectedFigureX(chessBoardView.getSelectedFigureX()); // Postavi pocatecni pozice figury
         chessBoardView.setStartSelectedFigureY(chessBoardView.getSelectedFigureY());
-        currentPlayerMove();
-        changePawnToQueen();
-        if (isCheckmate()) {
+        currentPlayerMove(); // Zmeni barvu aktualniho hrace
+        changePawnToQueen(); // Promena pesaka
+        if (isCheckmate()) { // Mat
             chessBoardView.restart();
             countOfCheckWhite = 0;
             countOfCheckBlack = 0;
         }
-        if (isStalemate(col, row)) {
+        if (isStalemate(col, row)) { // Pat
             chessBoardView.restart();
             countOfCheckWhite = 0;
             countOfCheckBlack = 0;
@@ -157,9 +162,9 @@ public class BoardController implements MouseListener{
     }
 
     /**
-     *
-     * @param col   new column position
-     * @param row   new row position
+     * Kotrluje jestli figura muze pretahovat
+     * @param col    konecni pozice na ose x
+     * @param row    konecni pozice na ose y
      */
     public void moveFigure(int col, int row) {
         killableFigure = chessBoardView.getBoard()[row][col];
@@ -170,8 +175,8 @@ public class BoardController implements MouseListener{
                 move(col, row);
             }
         } else if(!(chessBoardView.getSelectedFigure() instanceof King)) {
-            if(chessBoardView.getSelectedFigure().canSafeKing(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(),
-                    col, row, chessBoardView.getBoard()) && makeAMove(row, col) && chessBoardView.getSelectedFigure().getColor().equals(currentPlayer)) {
+            if(chessBoardView.getSelectedFigure().canSafeKing(chessBoardView.getSelectedFigureX(), chessBoardView.getSelectedFigureY(), col, row, chessBoardView.getBoard()) &&
+                    makeAMove(row, col) && chessBoardView.getSelectedFigure().getColor().equals(currentPlayer)) {
                 move(col, row);
             }
         } else {
@@ -184,6 +189,13 @@ public class BoardController implements MouseListener{
 
     }
 
+    /**
+     * Kontroluje je-li bude sach
+     * @param col    konecni pozice na ose x
+     * @param row    konecni pozice na ose y
+     * @param board
+     * @return
+     */
     private boolean posibleCheck(int col, int row, Figure[][] board) {
         Figure figure = chessBoardView.getSelectedFigure();
         Figure king = findKing(board);
@@ -192,25 +204,19 @@ public class BoardController implements MouseListener{
             Figure prevFigure = board[figure.getRow()][figure.getCol()];
             board[figure.getRow()][figure.getCol()] = null;
             board[row][col] = figure;
-            boolean isSafe = king != null && !king.isUnderAttack(king.getCol(), king.getRow(), board); // проверяем, является ли новое место безопасным
-            board[row][col] = null; // удаляем короля с нового места
-            board[figure.getRow()][figure.getCol()] = prevFigure; // восстанавливаем предыдущую фигуру на место короля
+            boolean isSafe = king != null && !king.isUnderAttack(king.getCol(), king.getRow(), board);
+            board[row][col] = null;
+            board[figure.getRow()][figure.getCol()] = prevFigure;
             return isSafe;
         }
         return false;
-
-        /*
-        Figure prevFigure = board[row][col];
-            Figure prevEatableFig = board[king.getRow()][king.getCol()];
-            board[king.getRow()][king.getCol()] = null;
-            board[row][col] = king;
-            boolean isSafe = !king.isUnderAttack(col, row, board);
-            board[row][col] = prevFigure;
-            board[king.getRow()][king.getCol()] = prevEatableFig;
-            return isSafe;
-         */
     }
 
+    /**
+     * Hleda krale soucastneho hrace
+     * @param board
+     * @return
+     */
     public Figure findKing(Figure[][] board) {
         Figure king = null;
         for (int y = 0; y < ROW_COUNT; y++) {
@@ -225,7 +231,12 @@ public class BoardController implements MouseListener{
         return king;
     }
 
-
+    /**
+     * Kodue pozice pro Engine StockFish
+     * @param x
+     * @param y
+     * @return
+     */
     private String codeCoord(int x, int y) {
         String outputX = null;
         String outputY = null;
@@ -252,6 +263,10 @@ public class BoardController implements MouseListener{
         return outputX + outputY;
     }
 
+    /**
+     * Pridava pocet zabitych figur
+     * @param figure
+     */
     private void eatFigure(Figure figure) {
         if(figure.getColor().equals(Color.WHITE)) {
             switch (figure.getType()) {
@@ -302,6 +317,13 @@ public class BoardController implements MouseListener{
         }
     }
 
+    /**
+     * Kontroluje jestli misto, kam kral chce pretahovat je bezpecne
+     * @param col    konecni pozice na ose x
+     * @param row    konecni pozice na ose y
+     * @param board
+     * @return
+     */
     private boolean isSaveForKing(int col, int row, Figure[][] board) {
         if(chessBoardView.getSelectedFigure() instanceof King) {
             Figure king = chessBoardView.getSelectedFigure();
@@ -366,6 +388,12 @@ public class BoardController implements MouseListener{
         }
     }
 
+    /**
+     * Kontrola jestli figura udelala tah
+     * @param row
+     * @param col
+     * @return
+     */
     private boolean makeAMove(int row, int col) {
         if(chessBoardView.getSelectedFigureX() == col) { // jestli figura se neposunula, aktualni hrac se nesmeni
             if(chessBoardView.getSelectedFigureY() == row){
@@ -404,8 +432,8 @@ public class BoardController implements MouseListener{
         for (int i = 0; i < ROW_COUNT; i++) {
             for (int j = 0; j < ROW_COUNT; j++) {
                 Figure figure = chessBoardView.getBoard()[j][i];
-                if(figure != null && figure.getColor().equals(currentPlayer) && (!(figure instanceof King) && figure.hasMoves(figure.getCol(), figure.getRow(), chessBoardView.getBoard()) ||
-                        !(figure instanceof King) && figure.safeKing(figure.getCol(), figure.getRow(), chessBoardView.getBoard()))) {
+                if(figure != null && figure.getColor().equals(currentPlayer) && (!(figure instanceof King) && figure.hasMoves(figure.getCol(), figure.getRow(), chessBoardView.getBoard()) &&
+                        figure.safeKing(figure.getCol(), figure.getRow(), chessBoardView.getBoard()))) {
                     return false;
                 }
             }
@@ -447,6 +475,7 @@ public class BoardController implements MouseListener{
                 }
             }
         }
+        // Kontoluje jestli figury maji tahy nebo jestli mohou zachranit krale
         for (int i = 0; i < ROW_COUNT; i++) {
             for (int j = 0; j < ROW_COUNT; j++) {
                 Figure figure = chessBoardView.getBoard()[j][i];
@@ -553,11 +582,11 @@ public class BoardController implements MouseListener{
      * Obnovi text aktualnim casem
      */
     public void updateTimeLabel() {
-        minToSec = chessBoardView.getGameMinuts() * 60;
+        minToSec = chessBoardView.getGameMinuts() * 60; // Previd minut do secund
 
-        int wTotalSeconds = minToSec - wTimeCounter;
-        int wMinutes = wTotalSeconds / 60;
-        int wSeconds = wTotalSeconds % 60;
+        int wTotalSeconds = minToSec - wTimeCounter; // Cas pro bileho hrace
+        int wMinutes = wTotalSeconds / 60; // Minuty Bileho hrace
+        int wSeconds = wTotalSeconds % 60; // Sekundy bileho hrace
 
         bTotalSeconds = minToSec - bTimeCounter;
         int bMinutes = bTotalSeconds / 60;
@@ -569,12 +598,13 @@ public class BoardController implements MouseListener{
         String bMinutesString = (bMinutes < 10) ? "0" + bMinutes : Integer.toString(bMinutes);
         String bSecondsString = (bSeconds < 10) ? "0" + bSeconds : Integer.toString(bSeconds);
 
-        String wTimeString = "White " + wMinutesString + ":" + wSecondsString;
+        String wTimeString = "White " + wMinutesString + ":" + wSecondsString; // Vypis casu do Stringu
         String bTimeString = "Black " + bMinutesString + ":" + bSecondsString;
 
         chessBoardView.setTextToTimer1(wTimeString);
         chessBoardView.setTextToTimer2(bTimeString);
 
+        // Kontrolue jestli vypersil cas
         if(wMinutes == 0 && wSeconds == 0) {
             JOptionPane.showMessageDialog(null, "Black wins!");
             chessBoardView.restart();
@@ -659,22 +689,43 @@ public class BoardController implements MouseListener{
         return bTimer;
     }
 
+    /**
+     * Vrati barvu aktualniho hrace
+     * @return
+     */
     public static Color getCurrentPlayer() {
         return currentPlayer;
     }
 
+    /**
+     * Nastavi vybranou figuru pro StockFish
+     * @param row
+     * @param col
+     */
     public void setSelectedFigure(int row, int col) {
         chessBoardView.setSelectedFigure(chessBoardView.getBoard()[row][col]);
     }
 
+    /**
+     * Nastavi x pozice vybrane figury pro StockFish
+     * @param col
+     */
     public void setSelectedFigureX(int col) {
         chessBoardView.setSelectedFigureX(col);
     }
 
+    /**
+     * Nastavi y pozice vybrane figury pro StockFish
+     * @param row
+     */
     public void setSelectedFigureY(int row) {
         chessBoardView.setSelectedFigureY(row);
     }
 
+    /**
+     * Vrati StackFish
+     * @return
+     */
     public Stockfish getSf() {
         return sf;
     }

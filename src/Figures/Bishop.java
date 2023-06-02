@@ -42,16 +42,16 @@ public class Bishop extends Figure {
 	}
 
 	@Override
-	public boolean moveTo(double cX, double cY, double x, double y, Figure[][] board) {
-		int deltaX = (int)Math.abs(getCol() - x);
-		int deltaY = (int)Math.abs(getRow() - y);
+	public boolean moveTo(double sX, double sY, double dX, double dY, Figure[][] board) {
+		int deltaX = (int)Math.abs(getCol() - dX);
+		int deltaY = (int)Math.abs(getRow() - dY);
 
 		if (deltaX != deltaY) {
 			return false;
 		}
 
-		int stepX = (x - getCol()) > 0 ? 1 : -1;
-		int stepY = (y - getRow()) > 0 ? 1 : -1;
+		int stepX = (dX - getCol()) > 0 ? 1 : -1;
+		int stepY = (dY - getRow()) > 0 ? 1 : -1;
 
 		for (int i = 1; i < deltaX; i++) {
 			int checkX = getCol() + i * stepX;
@@ -62,7 +62,7 @@ public class Bishop extends Figure {
 			}
 		}
 
-		if (board[(int)y][(int)x] == null || board[(int)y][(int)x].getColor() != getColor()) {
+		if (board[(int) dY][(int) dX] == null || board[(int) dY][(int) dX].getColor() != getColor()) {
 			addCountOfMove();
 			return true;
 		}

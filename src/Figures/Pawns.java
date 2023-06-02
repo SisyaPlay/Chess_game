@@ -39,71 +39,71 @@ public class Pawns extends Figure {
 	}
 
 	@Override
-	public boolean moveTo(double cX, double cY, double x, double y, Figure[][] board) {
-		if (enPassant(cX, cY, x, y, board)) {
+	public boolean moveTo(double sX, double sY, double dX, double dY, Figure[][] board) {
+		if (enPassant(sX, sY, dX, dY, board)) {
 			return true;
 		} else if (getColor().equals(Color.WHITE)) {
-			if (cY == 6) {
-				if (x != getCol()) {
-					if ((getRow() - (int)y == 1) && (((int)cX - (int)x == 1) || ((int)x - (int)cX == 1))
-							&& (board[(int)y][(int)x] != null) && (board[(int)y][(int)x].getColor() != getColor())) {
+			if (sY == 6) {
+				if (dX != getCol()) {
+					if ((getRow() - (int) dY == 1) && (((int) sX - (int) dX == 1) || ((int) dX - (int) sX == 1))
+							&& (board[(int) dY][(int) dX] != null) && (board[(int) dY][(int) dX].getColor() != getColor())) {
 						addCountOfMove();
-						addHistory((int)cX, (int)cY, (int)x, (int)y);
+						addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 						return true;
 					} else {
 						return false;
 					}
-				} else if (board[(int)y][(int)x] == null && getRow() - (int)y == 1 || board[(int)y][(int)x] == null && getRow() - (int)y == 2) {
+				} else if (board[(int) dY][(int) dX] == null && getRow() - (int) dY == 1 || board[(int) dY][(int) dX] == null && getRow() - (int) dY == 2) {
 					addCountOfMove();
-					addHistory((int)cX, (int)cY, (int)x, (int)y);
+					addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 					return true;
 				}
 			} else {
-				if (x != getCol()) {
-					if ((getRow() - (int)y == 1) && (((int)cX - (int)x == 1) || ((int)x - (int)cX == 1))
-							&& (board[(int)y][(int)x] != null) && (board[(int)y][(int)x].getColor() != getColor())) {
+				if (dX != getCol()) {
+					if ((getRow() - (int) dY == 1) && (((int) sX - (int) dX == 1) || ((int) dX - (int) sX == 1))
+							&& (board[(int) dY][(int) dX] != null) && (board[(int) dY][(int) dX].getColor() != getColor())) {
 						addCountOfMove();
-						addHistory((int)cX, (int)cY, (int)x, (int)y);
+						addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 						return true;
 					} else {
 						return false;
 					}
-				} else if (getRow() - (int)y == 1 && board[(int)cY - 1][(int)x] == null) {
+				} else if (getRow() - (int) dY == 1 && board[(int) sY - 1][(int) dX] == null) {
 					addCountOfMove();
-					addHistory((int)cX, (int)cY, (int)x, (int)y);
+					addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 					return true;
 				}
 			}
 			return false;
 		} else if (getColor().equals(Color.BLACK)) {
-			if (cY == 1) {
-				if (x != getCol()) {
-					if ((getRow() - (int)y == -1) && (((int)cX - (int)x == -1) || ((int)x - (int)cX == -1))
-							&& (board[(int)y][(int)x] != null) && (board[(int)y][(int)x].getColor() != getColor())) {
+			if (sY == 1) {
+				if (dX != getCol()) {
+					if ((getRow() - (int) dY == -1) && (((int) sX - (int) dX == -1) || ((int) dX - (int) sX == -1))
+							&& (board[(int) dY][(int) dX] != null) && (board[(int) dY][(int) dX].getColor() != getColor())) {
 						addCountOfMove();
-						addHistory((int)cX, (int)cY, (int)x, (int)y);
+						addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 						return true;
 					} else {
 						return false;
 					}
-				} else if (board[(int)y][(int)x] == null && getRow() - (int)y == -1 || board[(int)y][(int)x] == null && getRow() - (int)y == -2) {
+				} else if (board[(int) dY][(int) dX] == null && getRow() - (int) dY == -1 || board[(int) dY][(int) dX] == null && getRow() - (int) dY == -2) {
 					addCountOfMove();
-					addHistory((int)cX, (int)cY, (int)x, (int)y);
+					addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 					return true;
 				}
 			} else {
-				if (x != getCol()) {
-					if ((getRow() - (int)y == -1) && ((cX - (int)x == -1) || ((int)x - (int)cX == -1))
-							&& (board[(int)y][(int)x] != null) && (board[(int)y][(int)x].getColor() != getColor())) {
+				if (dX != getCol()) {
+					if ((getRow() - (int) dY == -1) && ((sX - (int) dX == -1) || ((int) dX - (int) sX == -1))
+							&& (board[(int) dY][(int) dX] != null) && (board[(int) dY][(int) dX].getColor() != getColor())) {
 						addCountOfMove();
-						addHistory((int)cX, (int)cY, (int)x, (int)y);
+						addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 						return true;
 					} else {
 						return false;
 					}
-				} else if (getRow() - (int)y == -1 && board[(int)cY + 1][(int)x] == null) {
+				} else if (getRow() - (int) dY == -1 && board[(int) sY + 1][(int) dX] == null) {
 					addCountOfMove();
-					addHistory((int)cX, (int)cY, (int)x, (int)y);
+					addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 					return true;
 				}
 			}

@@ -15,7 +15,6 @@ public class Main {
 
     public static void main(String[] args) {
         GameView gameView = new GameView(); // Vytvoru hru, ktera vykresli okno a sachovnice
-        gameView.createWindow(gameView); // Vytvori okno
-
+        gameView.createStartMenu(gameView); // Vytvori okno
     }
 }

@@ -51,12 +51,11 @@ public class ChessBoardView extends JPanel {
         private boolean doAnimate = false;              // Zobrazeni moznych pozic (zluta / modra / ..)
         private final int DELAY = 30; // Delka casu animace
         public int countOfBeingSelected = 0; // Pocet kolik bylo vybrano
-        public KilledFigureView whiteFigureView;
+        public KilledFigureView whiteFigureView; // JPanel pro vykres poctu zabitych figur
         public KilledFigureView blackFigureView;
-        private int gameMinuts;
+        private int gameMinuts; // Pocet minut pro casovac
         private GameView gv;
-
-        private Timer animationTimer;
+        private Timer animationTimer; // Casovac pro animace
 
 
         /**
@@ -109,20 +108,15 @@ public class ChessBoardView extends JPanel {
 //                board[2][1].setCountOfMove(5);
 
                 // Mat
-//                board[4][0] = new Pawns(0,4,Color.WHITE, square_size);
-//                board[4][2] = new Pawns(2,4,Color.WHITE, square_size);
-//                board[4][4] = new Knight(4, 4, Color.BLACK, square_size);
-//                board[4][7] = new Pawns(7,4,Color.WHITE, square_size);
-//                board[5][7] = new Bishop(7, 5, Color.WHITE, square_size);
-//                board[6][1] = new Bishop(1, 6, Color.WHITE, square_size);
-//                board[6][2] = new Pawns(2,6,Color.WHITE, square_size);
-//                board[6][5] = new Queen(5, 6, Color.BLACK, square_size);
-//                board[7][0] = new Rook(0, 7, Color.WHITE, square_size);
-//                board[7][3] = new King(3, 7, Color.WHITE, square_size);
-//                board[7][7] = new Rook(7, 7, Color.WHITE, square_size);
+//                board[7][4] = new King(4, 7, Color.WHITE, square_size);
 //                board[0][4] = new King(4, 0, Color.BLACK, square_size);
+//                board[6][4] = new Pawns(4, 6, Color.WHITE, square_size);
+//                board[6][3] = new Pawns(3, 6, Color.WHITE, square_size);
+//                board[7][3] = new Queen(3, 7, Color.WHITE, square_size);
+//                board[6][7] = new Queen(7, 6, Color.BLACK, square_size);
+//                board[7][5] = new Bishop(5, 7, Color.WHITE, square_size);
+//                board[4][6] = new Knight(6, 4, Color.BLACK, square_size);
 //                BoardController.setCurrentPlayer(Color.BLACK);
-//                board[7][3].setCountOfMove(5);
 
                 // Mat
 //                board[0][4] = new King(4, 0, Color.BLACK, square_size);
@@ -279,7 +273,6 @@ public class ChessBoardView extends JPanel {
 
                                         g2.drawRect(newX, newY, square_size, square_size);
 
-                                        // Перемещаемся к следующей клетке по диагонали
                                         newRow += rowOffsets[i];
                                         newCol += colOffsets[i];
                                 }
@@ -395,7 +388,6 @@ public class ChessBoardView extends JPanel {
 
                                         g2.drawRect(newX, newY, square_size, square_size);
 
-                                        // Перемещаемся к следующей клетке по диагонали
                                         newRow += rowOffsetsGor[i];
                                         newCol += colOffsetsGor[i];
                                 }
@@ -436,9 +428,11 @@ public class ChessBoardView extends JPanel {
                         int row = selectedFigure.getRow() + yOffset[i];
                         int col = selectedFigure.getCol() + xOffset[i];
                         if (row >= 0 && row < ROW_COUNT && col >= 0 && col < ROW_COUNT) {
-                                if (selectedFigure instanceof King && selectedFigure.isThisPlaceIsSafe(col, row, board, selectedFigure)) {
+                                if (selectedFigure instanceof King && selectedFigure.isThisPlaceIsSafe(col, row, board, selectedFigure)) { // Mozne bezpecne tahy
                                         g2.drawRect(col * square_size, row * square_size, square_size, square_size);
-                                } else if (board[row][col] != null && board[row][col].getColor() != selectedFigure.getColor()) {
+                                }
+                                if (board[row][col] != null && board[row][col].getColor() != selectedFigure.getColor() &&
+                                        selectedFigure.isThisPlaceIsSafe(col, row, board, selectedFigure)) { // Kontroluje jestli je mozne zabit figuru
                                         g2.setColor(Color.RED);
                                         g2.drawRect(col * square_size, row * square_size, square_size, square_size);
                                         g2.setColor(Color.BLUE);
@@ -446,6 +440,7 @@ public class ChessBoardView extends JPanel {
                         }
                 }
 
+                // Rosada
                 if(selectedFigure.getCountOfMove() == 0 && (selectedFigure.getRow() == 0 || selectedFigure.getRow() == 7) && selectedFigure.getCol() == 4) {
                         if (board[selectedFigure.getRow()][selectedFigure.getCol() + 1] == null && board[selectedFigure.getRow()][selectedFigure.getCol() + 2] == null &&
                                 board[selectedFigure.getRow()][selectedFigure.getCol() + 3] instanceof Rook &&
@@ -665,12 +660,10 @@ public class ChessBoardView extends JPanel {
                         }
                 } else if (selectedFigure.getColor().equals(Color.BLACK)) {
                         if(!king.isUnderAttack(king.getCol(), king.getRow(), board)) {
-                                // Проверяем возможный ход на одну клетку вниз
                                 if (selectedFigure.getRow() < ROW_COUNT - 1 && board[selectedFigure.getRow() + 1][selectedFigure.getCol()] == null) {
                                         g2.drawRect(x, y + square_size, square_size, square_size);
                                 }
 
-                                // Проверяем возможный ход на две клетки вниз из начальной позиции
                                 if (selectedFigure.getRow() == 1) {
                                         if (board[selectedFigure.getRow() + 1][selectedFigure.getCol()] == null &&
                                                 board[selectedFigure.getRow() + 2][selectedFigure.getCol()] == null) {
@@ -685,7 +678,6 @@ public class ChessBoardView extends JPanel {
                                         g2.drawRect(x - square_size, y + square_size, square_size, square_size);
                                 }
 
-                                // Проверяем возможный ход по диагонали вправо-вверх, если там есть фигура противоположного цвета
                                 if (selectedFigure.getRow() < 7 && selectedFigure.getCol() < 7 &&
                                         board[selectedFigure.getRow() + 1][selectedFigure.getCol() + 1] != null &&
                                         !selectedFigure.getColor().equals(board[selectedFigure.getRow() + 1][selectedFigure.getCol() + 1].getColor())) {
@@ -875,22 +867,42 @@ public class ChessBoardView extends JPanel {
                 countOfBeingSelected++;
         }
 
+        /**
+         * Vrati pocet minut pro casovac
+         * @return
+         */
         public int getGameMinuts() {
                 return gameMinuts;
         }
 
+        /**
+         * nastavi minuty pro casovac
+         * @param gameMinuts
+         */
         public void setGameMinuts(int gameMinuts) {
                 this.gameMinuts = gameMinuts;
         }
 
+        /**
+         * Vrati kontroler sachovnice
+         * @return
+         */
         public BoardController getBoardController() {
                 return boardController;
         }
 
+        /**
+         * Vrati JPanel zabitych figur cerneho hrace
+         * @return
+         */
         public KilledFigureView getWhiteFigureView() {
                 return whiteFigureView;
         }
 
+        /**
+         * Vrati JPanel zabitych figur bileho hrace
+         * @return
+         */
         public KilledFigureView getBlackFigureView() {
                 return blackFigureView;
         }
@@ -925,6 +937,8 @@ public class ChessBoardView extends JPanel {
                 board[0][5] = new Bishop( 5, 0, Color.BLACK, square_size);
                 board[7][2] = new Bishop( 2, 7, Color.WHITE, square_size);
                 board[7][5] = new Bishop( 5, 7, Color.WHITE, square_size);
+
+                selectedFigure = null;
 
                 BoardController.setCurrentPlayer(Color.WHITE);
                 for (int i = 0; i < board.length; i++) {
@@ -1139,15 +1153,25 @@ public class ChessBoardView extends JPanel {
                 }
         }
 
+        /**
+         * Pusti casovac
+         */
         public void startGame() {
                 boardController.whiteStart();
-                //boardController.blackStart();
-                //boardController.blackStop();
         }
 
+        /**
+         * Nastavi text casovace bileho hrace
+         * @param time
+         */
         public void setTextToTimer1(String time) {
                 gv.setTextToTimer1(time);
         }
+
+        /**
+         * Nastavi text casovace cerneho hrace
+         * @param time
+         */
         public void setTextToTimer2(String time) {
                 gv.setTextToTimer2(time);
         }

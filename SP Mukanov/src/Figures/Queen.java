@@ -1,6 +1,7 @@
 package Figures;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Trida Queen, vykresli damu
@@ -58,33 +59,33 @@ public class Queen extends Figure {
 		g.drawLine((int)(x + square_size - square_size / 3), (int)(y + square_size / 2), (int)(x + square_size / 3), (int)(y + square_size / 2));
 	}
 	@Override
-	public boolean moveTo(double cX, double cY, double x, double y, Figure[][] board) {
-		int deltaX = (int)Math.abs(getCol() - x);
-		int deltaY = (int)Math.abs(getRow() - y);
+	public boolean moveTo(double sX, double sY, double dX, double dY, Figure[][] board) {
+		int deltaX = (int)Math.abs(getCol() - dX);
+		int deltaY = (int)Math.abs(getRow() - dY);
 
-		if (getCol() == x || getRow() == y) {
+		if (getCol() == dX || getRow() == dY) {
 			int start, end;
-			if (getCol() == x) { // движение по вертикали
-				start = (int)Math.min(getRow(), y);
-				end = (int)Math.max(getRow(), y);
-			} else { // движение по горизонтали
-				start = (int)Math.min(getCol(), x);
-				end = (int)Math.max(getCol(), x);
+			if (getCol() == dX) { // Tahy po vertikale
+				start = (int)Math.min(getRow(), dY);
+				end = (int)Math.max(getRow(), dY);
+			} else { // Tahy po horizontale
+				start = (int)Math.min(getCol(), dX);
+				end = (int)Math.max(getCol(), dX);
 			}
 
-			for (int i = start + 1; i < end; i++) { // проверяем все клетки на пути
-				if (getCol() == x) { // движение по вертикали
-					if (board[i][getCol()] != null) { // есть фигура на пути
+			for (int i = start + 1; i < end; i++) {
+				if (getCol() == dX) { // Tahy po diagonale
+					if (board[i][getCol()] != null) { // Kontroluje jestli je figura na ceste
 						return false;
 					}
 				} else { // движение по горизонтали
-					if (board[getRow()][i] != null) { // есть фигура на пути
+					if (board[getRow()][i] != null) { // Kontroluje jestli je figura na ceste
 						return false;
 					}
 				}
 			}
-			// проверяем цвет фигуры на конечной позиции
-			if (board[(int)y][(int)x] == null || board[(int)y][(int)x].getColor() != getColor()) {
+			// Kontroluje jestli barva figury na konecne pozice neni stejna
+			if (board[(int) dY][(int) dX] == null || board[(int) dY][(int) dX].getColor() != getColor()) {
 				addCountOfMove();
 				return true;
 			}
@@ -94,20 +95,19 @@ public class Queen extends Figure {
 			return false;
 		}
 
-		int stepX = (x - getCol()) > 0 ? 1 : -1;
-		int stepY = (y - getRow()) > 0 ? 1 : -1;
+		int stepX = (dX - getCol()) > 0 ? 1 : -1;
+		int stepY = (dY - getRow()) > 0 ? 1 : -1;
 
 		for (int i = 1; i < deltaX; i++) {
 			int checkX = getCol() + i * stepX;
 			int checkY = getRow() + i * stepY;
 
 			if (board[checkY][checkX] != null) {
-				// на пути стоит фигура
 				return false;
 			}
 		}
 
-		if (board[(int)y][(int)x] == null || board[(int)y][(int)x].getColor() != getColor()) {
+		if (board[(int) dY][(int) dX] == null || board[(int) dY][(int) dX].getColor() != getColor()) {
 			addCountOfMove();
 			return true;
 		}
@@ -157,37 +157,66 @@ public class Queen extends Figure {
 			int checkX = getCol() + i * stepX;
 			int checkY = getRow() + i * stepY;
 
-			if (board[checkY][checkX] != null) {
+			if (board[checkY][checkX] != null && !(board[checkY][checkX]instanceof King)) {
 				return false;
 			}
 		}
 
-		if (board[(int)y][(int)x] != null && (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
-			return true;
-		}
-
-		return false;
+		return board[(int) y][(int) x] != null && (board[(int) y][(int) x].getColor() != getColor() && board[(int) y][(int) x] instanceof King);
 	}
 
 	public boolean hasMoves(double x, double y, Figure[][] board) {
-		for (int i = -1; i <= 1; i++) {
-			for (int j = -1; j <= 1; j++) {
-				if (i == 0 && j == 0) continue;
+		ArrayList<Integer> xOffset = new ArrayList<>();
+		ArrayList<Integer> yOffset = new ArrayList<>();
+		int startX = (int) x;
+		int startY = (int) y;
 
-				int row = (int)y + i;
-				int col = (int)x + j;
+		while (startX < 8 && startY >= 0) {
+			xOffset.add(startX);
+			yOffset.add(startY);
+			startX++;
+			startY--;
+		}
+		startX = (int) x;
+		startY = (int) y;
 
-				while (row >= 0 && row < 8 && col >= 0 && col < 8) {
-					Figure figure = board[row][col];
-					if (figure == null) {
-						if (moveTo(col, row, x, y, board)) return true;
-					} else if (figure.getColor() != getColor() && figure.moveTo(col, row, x, y, board)) {
+		while (startX < 8 && startY < 8) {
+			xOffset.add(startX);
+			yOffset.add(startY);
+			startX++;
+			startY++;
+		}
+		startX = (int) x;
+		startY = (int) y;
+
+		while (startX >= 0 && startY < 8) { // Исправлено условие
+			xOffset.add(startX);
+			yOffset.add(startY);
+			startX--;
+			startY++;
+		}
+		startX = (int) x;
+		startY = (int) y;
+
+		while (startX >= 0 && startY >= 0) { // Исправлено условие
+			xOffset.add(startX);
+			yOffset.add(startY);
+			startX--;
+			startY--;
+		}
+
+		for (int i = 0; i < xOffset.size(); i++) {
+			if (moveTo((int)x, (int)y, xOffset.get(i), yOffset.get(i), board)) {
+				return true;
+			}
+		}
+
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (i == x || j == y) {
+					if (moveTo(x, y, i, j, board)) {
 						return true;
-					} else {
-						break;
 					}
-					row += i;
-					col += j;
 				}
 			}
 		}

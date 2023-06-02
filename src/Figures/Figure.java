@@ -104,14 +104,15 @@ public abstract class Figure extends JPanel{
 
 	/**
 	 * Metoda, ktera kontroluje, pokud nahodni figura muze nekam se posunout
-	 * @param cX pocatecni pozice na ose x
-	 * @param cY pocatecni pozice na ose y
-	 * @param x konecni pozice na ose x
-	 * @param y konecni pozice na ose y
+	 *
+	 * @param sX    pocatecni pozice na ose x
+	 * @param sY    pocatecni pozice na ose y
+	 * @param dX    konecni pozice na ose x
+	 * @param dY    konecni pozice na ose y
 	 * @param board pole figur
 	 * @return
 	 */
-	public boolean moveTo(double cX, double cY, double x, double y, Figure[][] board) {
+	public boolean moveTo(double sX, double sY, double dX, double dY, Figure[][] board) {
 		return true;
 	}
 
@@ -132,36 +133,39 @@ public abstract class Figure extends JPanel{
 
 	/**
 	 * Metoda kontroluje jestli krala figura muze zabit
-	 * @param i pocatecni pozice na ose x
-	 * @param j pocatecni pozice na ose y
-	 * @param col konecni pozice na ose x
-	 * @param row konecni pozice na ose y
+	 *
+	 * @param sX    pocatecni pozice na ose x
+	 * @param sY    pocatecni pozice na ose y
+	 * @param dX    konecni pozice na ose x
+	 * @param dY    konecni pozice na ose y
 	 * @param board pole figur
 	 */
-	protected boolean canEatKing(double i, double j, double col, double row, Figure[][] board) {
+	protected boolean canEatKing(double sX, double sY, double dX, double dY, Figure[][] board) {
 		return false;
 	}
 
 	/**
 	 * Metoda kontroluje jestli kral je pod utokem
-	 * @param cX pozice krala na ose X
-	 * @param cY pozice krala na ose Y
+	 *
+	 * @param sX    pozice krala na ose X
+	 * @param sY    pozice krala na ose Y
 	 * @param board pole figur
 	 * @return
 	 */
-	public boolean isUnderAttack(double cX, double cY, Figure[][] board) {
+	public boolean isUnderAttack(double sX, double sY, Figure[][] board) {
 		return false;
 	}
 
 	/**
 	 * Metoda kontroluje jestli kral muze pretahovat na bezpecne misto
-	 * @param col konecni pozice na ose x
-	 * @param row konecni pozice na ose y
+	 *
+	 * @param dX    konecni pozice na ose x
+	 * @param dY    konecni pozice na ose y
 	 * @param board pole figur
-	 * @param king kral
+	 * @param king  kral
 	 * @return
 	 */
-	public boolean isThisPlaceIsSafe(int col, int row, Figure[][] board, Figure king) {
+	public boolean isThisPlaceIsSafe(int dX, int dY, Figure[][] board, Figure king) {
 		return false;
 	}
 

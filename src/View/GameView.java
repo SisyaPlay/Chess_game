@@ -93,6 +93,7 @@ public class GameView extends JFrame{
                 frame.getContentPane().remove(labelPanel);
                 playVSBot = false;
                 startNewGame(frame);
+                openTable();
             }
         });
 
@@ -111,6 +112,10 @@ public class GameView extends JFrame{
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+    private void openTable() {
+
     }
 
     private void startNewGame(JFrame frame) {
@@ -167,6 +172,16 @@ public class GameView extends JFrame{
                 }
             }
         });
+
+        menuHelp.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String message = "This game is made by Alimzhan Mukanov - A22B0388P.\nTo get more information read documentation.";
+
+                JOptionPane.showMessageDialog(null, message, "Help Menu", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         dialogPanel.add(Box.createVerticalGlue());

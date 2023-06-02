@@ -49,12 +49,12 @@ public class Knight extends Figure{
 		g2.rotate(Math.toRadians(-45), (int)(x + square_size / 2), (int)(y + square_size / 3));
 	}
 	@Override
-	public boolean moveTo(double cX, double cY, double x, double y, Figure[][] board) {
-		int deltaX = (int)Math.abs(getCol() - x);
-		int deltaY = (int)Math.abs(getRow() - y);
+	public boolean moveTo(double sX, double sY, double dX, double dY, Figure[][] board) {
+		int deltaX = (int)Math.abs(getCol() - dX);
+		int deltaY = (int)Math.abs(getRow() - dY);
 
 		if ((deltaX == 2 && deltaY == 1) || (deltaX == 1 && deltaY == 2)) {
-			if (board[(int)y][(int)x] != null && board[(int)y][(int)x].getColor().equals(getColor())) {
+			if (board[(int) dY][(int) dX] != null && board[(int) dY][(int) dX].getColor().equals(getColor())) {
 				return false;
 			}
 			addCountOfMove();

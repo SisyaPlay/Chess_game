@@ -1,7 +1,6 @@
 package Figures;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 /**
  * Trida Rook, vykresli vez
@@ -51,19 +50,19 @@ public class Rook extends Figure {
 		g.drawRect((int)(x + square_size  - square_size /3), (int)(y + square_size / 6), (int)(square_size / 6), (int)(square_size / 6));
 	}
 	@Override
-	public boolean moveTo(double cX, double cY, double x, double y, Figure[][] board) {
-		if (getCol() == x || getRow() == y) {
+	public boolean moveTo(double sX, double sY, double dX, double dY, Figure[][] board) {
+		if (getCol() == dX || getRow() == dY) {
 			int start, end;
-			if (getCol() == x) { // движение по вертикали
-				start = (int)Math.min(getRow(), y);
-				end = (int)Math.max(getRow(), y);
-			} else { // движение по горизонтали
-				start = (int)Math.min(getCol(), x);
-				end = (int)Math.max(getCol(), x);
+			if (getCol() == dX) { // Tahy po vertikale
+				start = (int)Math.min(getRow(), dY);
+				end = (int)Math.max(getRow(), dY);
+			} else { // Tahy po horizontale
+				start = (int)Math.min(getCol(), dX);
+				end = (int)Math.max(getCol(), dX);
 			}
 
 			for (int i = start + 1; i < end; i++) {
-				if (getCol() == x) {
+				if (getCol() == dX) {
 					if (board[i][getCol()] != null) {
 						return false;
 					}
@@ -73,9 +72,9 @@ public class Rook extends Figure {
 					}
 				}
 			}
-			if (board[(int)y][(int)x] == null || board[(int)y][(int)x].getColor() != getColor()) {
+			if (board[(int) dY][(int) dX] == null || board[(int) dY][(int) dX].getColor() != getColor()) {
 				addCountOfMove();
-				addHistory((int)cX, (int)cY, (int)x, (int)y);
+				addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 				return true;
 			}
 		}
@@ -104,60 +103,21 @@ public class Rook extends Figure {
 					}
 				}
 			}
-			if (board[(int)y][(int)x] == null || (board[(int)y][(int)x].getColor() != getColor() && board[(int)y][(int)x] instanceof King)) {
-				addCountOfMove();
-				addHistory((int)cX, (int)cY, (int)x, (int)y);
-				return true;
-			}
+			return board[(int) y][(int) x] != null && (board[(int) y][(int) x].getColor() != getColor() && board[(int) y][(int) x] instanceof King);
 		}
 		return false;
 	}
 
 	public boolean hasMoves(double x, double y, Figure[][] board) {
-		for (int col = (int)x + 1; col < 8; col++) {
-			Figure figure = board[(int)y][col];
-			if (figure == null) {
-				continue;
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if(i == x || j == y) {
+					if(moveTo(x, y, i, j, board)) {
+						return true;
+					}
+				}
 			}
-			if (figure.getColor() != getColor()) {
-				return true;
-			}
-			break;
 		}
-
-		for (int col = (int)x - 1; col >= 0; col--) {
-			Figure figure = board[(int)y][col];
-			if (figure == null) {
-				continue;
-			}
-			if (figure.getColor() != getColor()) {
-				return true;
-			}
-			break;
-		}
-
-		for (int row = (int)y - 1; row >= 0; row--) {
-			Figure figure = board[row][(int)x];
-			if (figure == null) {
-				continue;
-			}
-			if (figure.getColor() != getColor()) {
-				return true;
-			}
-			break;
-		}
-
-		for (int row = (int)y + 1; row < 8; row++) {
-			Figure figure = board[row][(int)x];
-			if (figure == null) {
-				continue;
-			}
-			if (figure.getColor() != getColor()) {
-				return true;
-			}
-			break;
-		}
-
 		return false;
 	}
 }

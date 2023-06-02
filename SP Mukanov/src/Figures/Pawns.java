@@ -39,71 +39,71 @@ public class Pawns extends Figure {
 	}
 
 	@Override
-	public boolean moveTo(double cX, double cY, double x, double y, Figure[][] board) {
-		if (enPassant(cX, cY, x, y, board)) {
+	public boolean moveTo(double sX, double sY, double dX, double dY, Figure[][] board) {
+		if (enPassant(sX, sY, dX, dY, board)) {
 			return true;
 		} else if (getColor().equals(Color.WHITE)) {
-			if (cY == 6) {
-				if (x != getCol()) {
-					if ((getRow() - (int)y == 1) && (((int)cX - (int)x == 1) || ((int)x - (int)cX == 1))
-							&& (board[(int)y][(int)x] != null) && (board[(int)y][(int)x].getColor() != getColor())) {
+			if (sY == 6) {
+				if (dX != getCol()) {
+					if ((getRow() - (int) dY == 1) && (((int) sX - (int) dX == 1) || ((int) dX - (int) sX == 1))
+							&& (board[(int) dY][(int) dX] != null) && (board[(int) dY][(int) dX].getColor() != getColor())) {
 						addCountOfMove();
-						addHistory((int)cX, (int)cY, (int)x, (int)y);
+						addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 						return true;
 					} else {
 						return false;
 					}
-				} else if (getRow() - (int)y == 1 || getRow() - (int)y == 2) {
+				} else if (board[(int) dY][(int) dX] == null && getRow() - (int) dY == 1 || board[(int) dY][(int) dX] == null && getRow() - (int) dY == 2) {
 					addCountOfMove();
-					addHistory((int)cX, (int)cY, (int)x, (int)y);
+					addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 					return true;
 				}
 			} else {
-				if (x != getCol()) {
-					if ((getRow() - (int)y == 1) && (((int)cX - (int)x == 1) || ((int)x - (int)cX == 1))
-							&& (board[(int)y][(int)x] != null) && (board[(int)y][(int)x].getColor() != getColor())) {
+				if (dX != getCol()) {
+					if ((getRow() - (int) dY == 1) && (((int) sX - (int) dX == 1) || ((int) dX - (int) sX == 1))
+							&& (board[(int) dY][(int) dX] != null) && (board[(int) dY][(int) dX].getColor() != getColor())) {
 						addCountOfMove();
-						addHistory((int)cX, (int)cY, (int)x, (int)y);
+						addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 						return true;
 					} else {
 						return false;
 					}
-				} else if (getRow() - (int)y == 1 && board[(int)cY - 1][(int)x] == null) {
+				} else if (getRow() - (int) dY == 1 && board[(int) sY - 1][(int) dX] == null) {
 					addCountOfMove();
-					addHistory((int)cX, (int)cY, (int)x, (int)y);
+					addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 					return true;
 				}
 			}
 			return false;
 		} else if (getColor().equals(Color.BLACK)) {
-			if (cY == 1) {
-				if (x != getCol()) {
-					if ((getRow() - (int)y == -1) && (((int)cX - (int)x == -1) || ((int)x - (int)cX == -1))
-							&& (board[(int)y][(int)x] != null) && (board[(int)y][(int)x].getColor() != getColor())) {
+			if (sY == 1) {
+				if (dX != getCol()) {
+					if ((getRow() - (int) dY == -1) && (((int) sX - (int) dX == -1) || ((int) dX - (int) sX == -1))
+							&& (board[(int) dY][(int) dX] != null) && (board[(int) dY][(int) dX].getColor() != getColor())) {
 						addCountOfMove();
-						addHistory((int)cX, (int)cY, (int)x, (int)y);
+						addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 						return true;
 					} else {
 						return false;
 					}
-				} else if (getRow() - (int)y == -1 || getRow() - (int)y == -2) {
+				} else if (board[(int) dY][(int) dX] == null && getRow() - (int) dY == -1 || board[(int) dY][(int) dX] == null && getRow() - (int) dY == -2) {
 					addCountOfMove();
-					addHistory((int)cX, (int)cY, (int)x, (int)y);
+					addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 					return true;
 				}
 			} else {
-				if (x != getCol()) {
-					if ((getRow() - (int)y == -1) && ((cX - (int)x == -1) || ((int)x - (int)cX == -1))
-							&& (board[(int)y][(int)x] != null) && (board[(int)y][(int)x].getColor() != getColor())) {
+				if (dX != getCol()) {
+					if ((getRow() - (int) dY == -1) && ((sX - (int) dX == -1) || ((int) dX - (int) sX == -1))
+							&& (board[(int) dY][(int) dX] != null) && (board[(int) dY][(int) dX].getColor() != getColor())) {
 						addCountOfMove();
-						addHistory((int)cX, (int)cY, (int)x, (int)y);
+						addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 						return true;
 					} else {
 						return false;
 					}
-				} else if (getRow() - (int)y == -1 && board[(int)cY + 1][(int)x] == null) {
+				} else if (getRow() - (int) dY == -1 && board[(int) sY + 1][(int) dX] == null) {
 					addCountOfMove();
-					addHistory((int)cX, (int)cY, (int)x, (int)y);
+					addHistory((int) sX, (int) sY, (int) dX, (int) dY);
 					return true;
 				}
 			}
@@ -227,24 +227,32 @@ public class Pawns extends Figure {
 
 	public boolean hasMoves(double x, double y, Figure[][] board) {
 		if (getColor() == Color.WHITE) {
-			if ((int)x < 7 && (int)y > 0 && board[(int)y - 1][(int)x + 1] != null && board[(int)y - 1][(int)x + 1].getColor() == Color.BLACK) {
-				return true;
-			}
-			if ((int)x > 0 && (int)y > 0 && board[(int)y - 1][(int)x - 1] != null && board[(int)y - 1][(int)x - 1].getColor() == Color.BLACK) {
-				return true;
-			}
-			if (y > 0 && board[(int)y - 1][(int)x] == null) {
-				return true;
+			int[] xOffset = {-1, 0, 1};
+			int[] yOffset = {-1};
+			for (int i = (int)x; i < xOffset.length; i++) {
+				int dx = (int)x + xOffset[i];
+				for (int j = (int)y; j < yOffset.length; j++) {
+					int dy = (int)y + yOffset[i];
+					if(dx >= 0 && dx < 8 && dy >= 0 && dy < 8) {
+						if(moveTo(x, y, dx, dy, board)) {
+							return true;
+						}
+					}
+				}
 			}
 		} else {
-			if ((int)x < 7 && (int)y < 7 && board[(int)y + 1][(int)x + 1] != null && board[(int)y + 1][(int)x + 1].getColor() == Color.WHITE) {
-				return true;
-			}
-			if ((int)x > 0 && (int)y < 7 && board[(int)y + 1][(int)x - 1] != null && board[(int)y + 1][(int)x - 1].getColor() == Color.WHITE) {
-				return true;
-			}
-			if (y < 7 && board[(int)y + 1][(int)x] == null) {
-				return true;
+			int[] xOffset = {-1, 0, 1};
+			int[] yOffset = {1};
+			for (int i = (int)x; i < xOffset.length; i++) {
+				int dx = (int)x + xOffset[i];
+				for (int j = (int)y; j < yOffset.length; j++) {
+					int dy = (int)y + yOffset[i];
+					if(dx >= 0 && dx < 8 && dy >= 0 && dy < 8) {
+						if(moveTo(x, y, dx, dy, board)) {
+							return true;
+						}
+					}
+				}
 			}
 		}
 		return false;
