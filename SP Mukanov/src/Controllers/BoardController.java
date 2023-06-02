@@ -6,6 +6,7 @@ import Figures.King;
 import Figures.Pawns;
 import Figures.Queen;
 import View.ChessBoardView;
+import View.GameView;
 
 import javax.lang.model.type.ArrayType;
 import javax.swing.*;
@@ -45,6 +46,7 @@ public class BoardController implements MouseListener{
     public int bTotalSeconds; // Pocet casu pro cerneho hrace
     private Stockfish sf; // StockFish
     private Figure killableFigure = null; // Mozna zabita figura
+    private boolean isPause;
 
     /**
      * Konstruktor tridy BoardController.
@@ -69,6 +71,10 @@ public class BoardController implements MouseListener{
      */
     public void mousePressed(MouseEvent e) {
         if (chessBoardView.isAnimationOnProcess()) {
+            return;
+        }
+
+        if(isPaused()) {
             return;
         }
 
@@ -108,7 +114,6 @@ public class BoardController implements MouseListener{
             chessBoardView.repaint();
         }
     }
-
     /**
      * Posluchac mysi reaguje na odklinuti mysi
      * @param e the event to be processed
@@ -147,8 +152,16 @@ public class BoardController implements MouseListener{
         chessBoardView.setLastSelectedFigureY(row);
         chessBoardView.setStartSelectedFigureX(chessBoardView.getSelectedFigureX()); // Postavi pocatecni pozice figury
         chessBoardView.setStartSelectedFigureY(chessBoardView.getSelectedFigureY());
+        if(currentPlayer.equals(Color.WHITE)) {
+            GameView.updateTable(getCurrentPlayerStr(), getPosition(), wTimeCounter - whiteTime.get(whiteTime.size() - 1));
+        } else {
+            GameView.updateTable(getCurrentPlayerStr(), getPosition(), bTimeCounter - blackTime.get(blackTime.size() - 1));
+        }
         currentPlayerMove(); // Zmeni barvu aktualniho hrace
         changePawnToQueen(); // Promena pesaka
+        if(kingIsUnderAttack(chessBoardView.getBoard())) {
+            JOptionPane.showMessageDialog(null, "Is check! Safe your king!");
+        }
         if (isCheckmate()) { // Mat
             chessBoardView.restart();
             countOfCheckWhite = 0;
@@ -615,7 +628,15 @@ public class BoardController implements MouseListener{
         }
     }
 
+    private boolean isPaused() {
+        if(isPause)
+            return true;
+        return false;
+    }
 
+    public void setPause(boolean pause) {
+        isPause = pause;
+    }
 
     /**
      * Vrati list sekund bileho hrace
@@ -695,6 +716,18 @@ public class BoardController implements MouseListener{
      */
     public static Color getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public static String getCurrentPlayerStr() {
+        if(currentPlayer.equals(Color.WHITE)) {
+            return "White";
+        } else {
+            return "Black";
+        }
+    }
+
+    public String getPosition() {
+        return positionAfter + positionBefore;
     }
 
     /**

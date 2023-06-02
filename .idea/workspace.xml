@@ -11,95 +11,9 @@
   <component name="ChangeListManager">
     <list default="true" id="913933c6-3ac9-491f-b08e-28036316a50d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/Build.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/Alimzhan Dokumentace.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/Alimzhan Dokumentace.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/Dokumentace k projektu.docx" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/Dokumentace k projektu.docx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Controllers/BoardController.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Controllers/BoardController.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Controllers/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Controllers/package-summary.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Controllers/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Controllers/package-tree.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/Bishop.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/Bishop.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/EFigure.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/EFigure.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/ESide.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/Figure.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/Figure.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/King.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/King.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/Knight.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/Knight.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/Pawns.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/Pawns.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/Queen.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/Queen.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/Rook.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/Rook.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/package-summary.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/Figures/package-tree.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/View/ChessBoardView.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/View/ChessBoardView.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/View/GameView.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/View/GameView.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/View/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/View/package-summary.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/View/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/View/package-tree.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/allclasses-index.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/allclasses-index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/allclasses.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/allpackages-index.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/allpackages-index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/constant-values.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/constant-values.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/deprecated-list.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/element-list" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/element-list" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/help-doc.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/help-doc.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/index-all.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/index-all.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/external/jquery/jquery.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/images/ui-bg_flat_0_aaaaaa_40x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/images/ui-bg_flat_75_ffffff_40x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/images/ui-bg_glass_55_fbf9ee_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/images/ui-bg_glass_65_ffffff_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/images/ui-bg_glass_75_dadada_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/images/ui-bg_glass_75_e6e6e6_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/images/ui-bg_glass_95_fef1ec_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/images/ui-bg_highlight-soft_75_cccccc_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/images/ui-icons_222222_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/images/ui-icons_2e83ff_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/images/ui-icons_454545_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/images/ui-icons_888888_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/images/ui-icons_cd0a0a_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/jquery-3.3.1.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/jquery-migrate-3.0.1.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/jquery-ui.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/jquery-ui.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/jquery-ui.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/jquery-ui.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/jquery-ui.structure.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/jquery-ui.structure.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/jszip-utils/dist/jszip-utils-ie.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/jszip-utils/dist/jszip-utils-ie.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/jszip-utils/dist/jszip-utils.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/jszip-utils/dist/jszip-utils.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/jszip/dist/jszip.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/jquery/jszip/dist/jszip.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/member-search-index.js" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/member-search-index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/overview-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/overview-summary.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/overview-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/overview-tree.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/package-search-index.js" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/package-search-index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/search.js" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/search.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/serialized-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/serialized-form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/stylesheet.css" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/stylesheet.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/type-search-index.js" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/doc/javadoc/type-search-index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Controllers/BoardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/Controllers/BoardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Figures/Bishop.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/Figures/Bishop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Figures/Figure.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/Figures/Figure.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Figures/King.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/Figures/King.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Figures/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/Figures/Knight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Figures/Pawns.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/Figures/Pawns.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Figures/Queen.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/Figures/Queen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Figures/Rook.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/Figures/Rook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/View/ChessBoardView.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/View/ChessBoardView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SP Mukanov/src/View/GameView.java" beforeDir="false" afterPath="$PROJECT_DIR$/SP Mukanov/src/View/GameView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diagram.png" beforeDir="false" afterPath="$PROJECT_DIR$/diagram.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controllers/BoardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/BoardController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Engine/Stockfish.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Stockfish.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Figures/Bishop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Bishop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Figures/Figure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Figure.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Figures/King.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/King.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Figures/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Knight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Figures/Pawns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Pawns.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Figures/Queen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Queen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Figures/Rook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Rook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/Utils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/ChessBoardView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ChessBoardView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/GameView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/GameView.java" afterDir="false" />
     </list>
@@ -112,6 +26,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="JavaFXApplication" />
       </list>
     </option>
   </component>
@@ -133,7 +48,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/kekus/Downloads/Telegram Desktop/unnamed&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Program Files/Java/javafx-sdk-19.0.2.1/lib/javafx-swt.jar&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -262,7 +177,8 @@
       <workItem from="1685301863925" duration="1166000" />
       <workItem from="1685341845874" duration="15000" />
       <workItem from="1685380331045" duration="561000" />
-      <workItem from="1685692997751" duration="1345000" />
+      <workItem from="1685692997751" duration="1556000" />
+      <workItem from="1685694587036" duration="9017000" />
     </task>
     <servers />
   </component>
@@ -279,17 +195,6 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Controllers/BoardController.java</url>
-          <line>169</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

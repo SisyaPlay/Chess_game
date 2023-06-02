@@ -116,7 +116,6 @@ public class Stockfish {
                         bc.setSelectedFigureX(old_col);
                         bc.setSelectedFigureY(old_row);
                         bc.moveFigure(new_col, new_row);
-                        bc.blackStop();
 
                         System.out.println(code);
 

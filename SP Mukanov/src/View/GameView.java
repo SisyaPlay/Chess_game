@@ -6,6 +6,7 @@ import Figures.Figure;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -34,6 +35,7 @@ public class GameView extends JFrame{
     private JMenuItem item2 = new JMenuItem("Export graph"); // Tlacitko exportuje graf do PNG formatu
     private JMenuItem item3 = new JMenuItem("Export to PNG"); // Tlacitko exportuje sachovnice a figury do PNG formatu
     private JMenuItem item4 = new JMenuItem("Pause");
+    private JMenuItem item5 = new JMenuItem("Open the table");
     public JLabel timer1 = new JLabel("White 00:00"); // Prvni label na casovac
     public JLabel timer2 = new JLabel("Black 00:00"); // Druhy label na casovac
     private JButton playVsPlBttn = new JButton("Play VS. Player");
@@ -43,6 +45,10 @@ public class GameView extends JFrame{
     private boolean isTimerRunning = false;
     private boolean gameStarted = false;
     private boolean playVSBot;
+    private static JTable table;
+    public static final String[] columnNames = {"Player", "Position", "Time"};
+    private static DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
+    public static JFrame tb;
 
     /**
      * Konstruktor tridy GameView
@@ -93,6 +99,7 @@ public class GameView extends JFrame{
                 frame.getContentPane().remove(labelPanel);
                 playVSBot = false;
                 startNewGame(frame);
+                openTable();
             }
         });
 
@@ -103,6 +110,7 @@ public class GameView extends JFrame{
                 frame.getContentPane().remove(labelPanel);
                 playVSBot = true;
                 startNewGame(frame);
+                openTable();
             }
         });
 
@@ -111,6 +119,26 @@ public class GameView extends JFrame{
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+    public static void openTable() {
+        tb = new JFrame("Table");
+        tb.setPreferredSize(new Dimension(400, 300));
+
+        table = new JTable(tableModel);
+
+        table.setDefaultEditor(Object.class, null);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        tb.getContentPane().add(scrollPane, BorderLayout.CENTER);
+
+        tb.pack();
+        tb.setVisible(true);
+    }
+
+    public static void updateTable(String currentPlayer, String position, int time) {
+        Object[] rowData = {currentPlayer, position, time};
+        tableModel.addRow(rowData);
     }
 
     private void startNewGame(JFrame frame) {
@@ -280,7 +308,7 @@ public class GameView extends JFrame{
                 if(!isTimerRunning) {
                     board.getBoardController().whiteStop();
                     board.getBoardController().blackStop();
-                    //board.getBoardController().setAnimationIsOn(true);
+                    board.getBoardController().setPause(true);
                     item4.setText("Play");
                     isTimerRunning = true;
                 } else {
@@ -289,10 +317,17 @@ public class GameView extends JFrame{
                     } else {
                         board.getBoardController().blackStart();
                     }
-                    //board.getBoardController().setAnimationIsOn(false);
+                    board.getBoardController().setPause(false);
                     item4.setText("Pause");
                     isTimerRunning = false;
                 }
+            }
+        });
+
+        item5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openTable();
             }
         });
 
@@ -301,6 +336,7 @@ public class GameView extends JFrame{
         menuBar.add(menuHelp);
         menuGame.add(item);
         menuGame.add(item4);
+        menuGame.add(item5);
         menuGame.add(item2);
         menuGame.add(item3);
         this.setJMenuBar(menuBar);
@@ -347,9 +383,22 @@ public class GameView extends JFrame{
     }
 
     public void setTextToTimer1(String time) {
+        if(BoardController.getCurrentPlayer().equals(Color.WHITE)) {
+            timer1.setForeground(Color.RED);
+        } else {
+            timer1.setForeground(Color.BLACK);
+        }
         timer1.setText(time);
     }
     public void setTextToTimer2(String time) {
+        if(BoardController.getCurrentPlayer().equals(Color.BLACK)) {
+            timer2.setForeground(Color.RED);
+        } else {
+            timer2.setForeground(Color.BLACK);
+        }
         timer2.setText(time);
+    }
+    public static void setTableModel(DefaultTableModel tableModel) {
+        GameView.tableModel = tableModel;
     }
 }

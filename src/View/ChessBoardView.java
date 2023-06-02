@@ -16,6 +16,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -965,6 +966,9 @@ public class ChessBoardView extends JPanel {
                 if(boardController.getSf() != null) {
                         boardController.getSf().restartEngine();
                 }
+                GameView.setTableModel(new DefaultTableModel(GameView.columnNames, 0));
+                GameView.tb.dispose();
+                GameView.openTable();
                 repaint();
                 reset();
         }
