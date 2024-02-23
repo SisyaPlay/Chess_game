@@ -21,7 +21,7 @@ public abstract class Figure extends JPanel{
 	protected int countOfMove;
 
 	/**
-	 * Konstruktor, odstrani pozadi, nastavi preferovanou velikost figury 
+	 * Konstruktor, odstrani pozadi, nastavi preferovanou velikost figury
 	 * @param x
 	 * @param y
 	 * @param color
