@@ -10,7 +10,94 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="913933c6-3ac9-491f-b08e-28036316a50d" name="Changes" comment="Final work">
-      <change beforePath="$PROJECT_DIR$/src/Figures/Figure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Figures/Figure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/Build.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/Game/Build.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/Engine/stockfish-windows-2022-x86-64-avx2.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Game/Engine/stockfish-windows-2022-x86-64-avx2.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/Makedoc.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/Game/Makedoc.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/Run.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/Game/Run.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/Alimzhan Dokumentace.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/Alimzhan Dokumentace.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/Dokumentace k projektu.docx" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/Dokumentace k projektu.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Controllers/BoardController.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Controllers/BoardController.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Controllers/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Controllers/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Controllers/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Controllers/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Engine/Stockfish.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Engine/Stockfish.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Engine/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Engine/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Engine/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Engine/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Figures/Bishop.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Figures/Bishop.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Figures/EFigure.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Figures/EFigure.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Figures/Figure.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Figures/Figure.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Figures/King.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Figures/King.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Figures/Knight.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Figures/Knight.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Figures/Pawns.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Figures/Pawns.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Figures/Queen.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Figures/Queen.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Figures/Rook.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Figures/Rook.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Figures/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Figures/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Figures/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Figures/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Utils/Utils.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Utils/Utils.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Utils/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Utils/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/Utils/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/Utils/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/View/ChessBoardView.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/View/ChessBoardView.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/View/GameView.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/View/GameView.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/View/KilledFigureView.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/View/KilledFigureView.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/View/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/View/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/View/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/View/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/allclasses-index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/allclasses-index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/allpackages-index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/allpackages-index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/constant-values.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/constant-values.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/copy.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/copy.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/element-list" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/element-list" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/help-doc.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/help-doc.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/index-all.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/index-all.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/jquery-ui.overrides.css" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/jquery-ui.overrides.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/legal/COPYRIGHT" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/legal/COPYRIGHT" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/legal/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/legal/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/legal/jquery.md" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/legal/jquery.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/legal/jqueryUI.md" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/legal/jqueryUI.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/member-search-index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/member-search-index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/module-search-index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/module-search-index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/overview-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/overview-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/overview-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/overview-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/package-search-index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/package-search-index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/resources/glass.png" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/resources/glass.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/resources/x.png" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/resources/x.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/script-dir/images/ui-bg_glass_55_fbf9ee_1x400.png" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/script-dir/images/ui-bg_glass_55_fbf9ee_1x400.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/script-dir/images/ui-bg_glass_65_dadada_1x400.png" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/script-dir/images/ui-bg_glass_65_dadada_1x400.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/script-dir/images/ui-bg_glass_75_dadada_1x400.png" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/script-dir/images/ui-bg_glass_75_dadada_1x400.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/script-dir/images/ui-bg_glass_75_e6e6e6_1x400.png" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/script-dir/images/ui-bg_glass_75_e6e6e6_1x400.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/script-dir/images/ui-bg_glass_95_fef1ec_1x400.png" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/script-dir/images/ui-bg_glass_95_fef1ec_1x400.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/script-dir/images/ui-bg_highlight-soft_75_cccccc_1x100.png" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/script-dir/images/ui-bg_highlight-soft_75_cccccc_1x100.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/script-dir/images/ui-icons_222222_256x240.png" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/script-dir/images/ui-icons_222222_256x240.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/script-dir/images/ui-icons_2e83ff_256x240.png" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/script-dir/images/ui-icons_2e83ff_256x240.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/script-dir/images/ui-icons_454545_256x240.png" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/script-dir/images/ui-icons_454545_256x240.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/script-dir/images/ui-icons_888888_256x240.png" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/script-dir/images/ui-icons_888888_256x240.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/script-dir/images/ui-icons_cd0a0a_256x240.png" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/script-dir/images/ui-icons_cd0a0a_256x240.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/script-dir/jquery-3.5.1.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/script-dir/jquery-3.5.1.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/script-dir/jquery-ui.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/script-dir/jquery-ui.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/script-dir/jquery-ui.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/script-dir/jquery-ui.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/script-dir/jquery-ui.structure.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/script-dir/jquery-ui.structure.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/search.js" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/search.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/serialized-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/serialized-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/stylesheet.css" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/stylesheet.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/tag-search-index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/tag-search-index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/doc/javadoc/type-search-index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Game/doc/javadoc/type-search-index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/src/Controllers/BoardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Game/src/Controllers/BoardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/src/Engine/Stockfish.java" beforeDir="false" afterPath="$PROJECT_DIR$/Game/src/Engine/Stockfish.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/src/Figures/Bishop.java" beforeDir="false" afterPath="$PROJECT_DIR$/Game/src/Figures/Bishop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/src/Figures/EFigure.java" beforeDir="false" afterPath="$PROJECT_DIR$/Game/src/Figures/EFigure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/src/Figures/Figure.java" beforeDir="false" afterPath="$PROJECT_DIR$/Game/src/Figures/Figure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/src/Figures/King.java" beforeDir="false" afterPath="$PROJECT_DIR$/Game/src/Figures/King.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/src/Figures/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/Game/src/Figures/Knight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/src/Figures/Pawns.java" beforeDir="false" afterPath="$PROJECT_DIR$/Game/src/Figures/Pawns.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/src/Figures/Queen.java" beforeDir="false" afterPath="$PROJECT_DIR$/Game/src/Figures/Queen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/src/Figures/Rook.java" beforeDir="false" afterPath="$PROJECT_DIR$/Game/src/Figures/Rook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Game/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/src/Utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Game/src/Utils/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/src/View/ChessBoardView.java" beforeDir="false" afterPath="$PROJECT_DIR$/Game/src/View/ChessBoardView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/src/View/GameView.java" beforeDir="false" afterPath="$PROJECT_DIR$/Game/src/View/GameView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess Mukanov/src/View/KilledFigureView.java" beforeDir="false" afterPath="$PROJECT_DIR$/Game/src/View/KilledFigureView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiv-upg.iml" beforeDir="false" afterPath="$PROJECT_DIR$/kiv-upg.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,7 +274,8 @@
       <workItem from="1708340678801" duration="438000" />
       <workItem from="1708432396326" duration="70000" />
       <workItem from="1708715403316" duration="648000" />
-      <workItem from="1708716065015" duration="777000" />
+      <workItem from="1708716065015" duration="1798000" />
+      <workItem from="1708777508149" duration="123000" />
     </task>
     <task id="LOCAL-00001" summary="Final work">
       <option name="closed" value="true" />
@@ -197,7 +285,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708716232365</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Final work">
+      <option name="closed" value="true" />
+      <created>1708717336826</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1708717336826</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
