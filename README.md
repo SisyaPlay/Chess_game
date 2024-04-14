@@ -1,10 +1,10 @@
 # Chess game on Java swing
-The game is made on Java Swing and use chess engine StockFish. This game is made for the subject KIV/UPG and KIV/UUR. It takes about 1-2 month.
-# How to Install and Play
+This Java Swing chess game incorporates the powerful StockFish engine. Developed for academic subjects KIV/UPG and KIV/UUR, this project spanned approximately 1-2 months.
+# Installation
 1. Open Game folder. 
-2. Make sure Java JDK 17 is installed on your PC.
-3. Run Build.cmd.
-4. Run Run.cmd.
+2. Ensure that Java JDK 17 is installed on your computer.
+3. Run 'Build.cmd'.
+4. Execute 'Run.cmd'.
 # Gameplay
 ![gifchess](https://github.com/SisyaPlay/Chess_game/assets/76509044/7f8d37f9-345d-4b64-9cb3-7b5fd7b31cc5)
 # UML diagram
