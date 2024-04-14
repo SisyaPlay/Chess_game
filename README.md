@@ -5,6 +5,8 @@ The game is made on Java Swing and use chess engine StockFish. This game is made
 2. Make sure Java JDK 17 is installed on your PC.
 3. Run Build.cmd.
 4. Run Run.cmd.
+# Gameplay
+![Uploading gifchess.gif…]()
 # UML diagram
 ![diagram](https://github.com/SisyaPlay/Chess_game/assets/76509044/0f80a080-58bc-46d7-9185-1efc48ae1cfb)
 # GUI
