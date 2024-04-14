@@ -9,7 +9,7 @@ This Java Swing chess game incorporates the powerful StockFish engine. Developed
 ![gifchess](https://github.com/SisyaPlay/Chess_game/assets/76509044/7f8d37f9-345d-4b64-9cb3-7b5fd7b31cc5)
 # UML diagram
 ![diagram](https://github.com/SisyaPlay/Chess_game/assets/76509044/0f80a080-58bc-46d7-9185-1efc48ae1cfb)
-# GUI
+# GUI Screenshots
 ![изображение](https://github.com/SisyaPlay/Chess_game/assets/76509044/aa7a38a4-3d16-4adc-a32d-00d26cbb956c)
 ![изображение](https://github.com/SisyaPlay/Chess_game/assets/76509044/70e00d00-94ed-4434-b39d-309c785e34c0)
 ![изображение](https://github.com/SisyaPlay/Chess_game/assets/76509044/77f978fc-cc96-4c5c-958e-57a94e3145e2)
