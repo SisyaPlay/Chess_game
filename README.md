@@ -1,5 +1,5 @@
 # Chess game on Java swing
-The game is made on Java Swing and use chess engine StockFish.
+The game is made on Java Swing and use chess engine StockFish. This game is made for the subject KIV/UPG and KIV/UUR. It takes about 1-2 month.
 # How to Install and Play
 1. Open Game folder. 
 2. Make sure Java JDK 17 is installed on your PC.
